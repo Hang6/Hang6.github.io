@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Hello World | 小Hang同学的博客</title>
+  <title>关于Java虚拟机的垃圾回收 | 小Hang同学的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+  <meta name="description" content="JVM的内存区域分配&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;要讲垃圾收集算法，首先需要分清楚JVM的内存区域分配：JVM的运行时数据区可以分为程序计数器（Program Counter Register）、虚拟机栈（VM Stack）、本地方法栈（Native Method Stack）、堆（Heap）、方法区（Method Area）五个部分。其中Sun HotSpot虚拟机将虚拟机栈和">
+<meta name="keywords" content="JVM,垃圾收集">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2017/07/31/hello-world/index.html">
+<meta property="og:title" content="关于Java虚拟机的垃圾回收">
+<meta property="og:url" content="http://yoursite.com/2017/09/05/关于Java虚拟机的垃圾回收/index.html">
 <meta property="og:site_name" content="小Hang同学的博客">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="JVM的内存区域分配&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;要讲垃圾收集算法，首先需要分清楚JVM的内存区域分配：JVM的运行时数据区可以分为程序计数器（Program Counter Register）、虚拟机栈（VM Stack）、本地方法栈（Native Method Stack）、堆（Heap）、方法区（Method Area）五个部分。其中Sun HotSpot虚拟机将虚拟机栈和">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-07-31T08:46:28.840Z">
+<meta property="og:updated_time" content="2017-09-06T01:52:49.537Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="关于Java虚拟机的垃圾回收">
+<meta name="twitter:description" content="JVM的内存区域分配&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;要讲垃圾收集算法，首先需要分清楚JVM的内存区域分配：JVM的运行时数据区可以分为程序计数器（Program Counter Register）、虚拟机栈（VM Stack）、本地方法栈（Native Method Stack）、堆（Heap）、方法区（Method Area）五个部分。其中Sun HotSpot虚拟机将虚拟机栈和">
   
     <link rel="alternative" href="/atom.xml" title="小Hang同学的博客" type="application/atom+xml">
   
@@ -146,35 +147,35 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-hello-world" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-关于Java虚拟机的垃圾回收" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Hello World
+      关于Java虚拟机的垃圾回收
     </h1>
   
 
         
-        <a href="/2017/07/31/hello-world/" class="archive-article-date">
-  	<time datetime="2017-07-31T08:46:28.840Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-31</time>
+        <a href="/2017/09/05/关于Java虚拟机的垃圾回收/" class="archive-article-date">
+  	<time datetime="2017-09-05T13:22:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-05</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <h2 id="JVM的内存区域分配"><a href="#JVM的内存区域分配" class="headerlink" title="JVM的内存区域分配"></a>JVM的内存区域分配</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;要讲垃圾收集算法，首先需要分清楚JVM的内存区域分配：JVM的运行时数据区可以分为程序计数器（Program Counter Register）、虚拟机栈（VM Stack）、本地方法栈（Native Method Stack）、堆（Heap）、方法区（Method Area）五个部分。其中Sun HotSpot虚拟机将虚拟机栈和本地方法栈合二为一，并且方法区是堆的一个逻辑部分。而我们将要讲到的垃圾回收就是发生在堆中。<br>&nbsp;&nbsp;&nbsp;&nbsp;从垃圾收集的角度讲，HotSpot虚拟机将堆区分为GC堆和方法区，也有人将其分为永生代（方法区）、新生代、老年代，其中新生代和老年代属于GC堆，而新生代又可分为Eden空间、From Survivor空间、To Survivior空间。至此，堆区的内存分布大致已经讲清楚了，下面我们将介绍几种垃圾收集算法。</p>
+<hr>
+<h2 id="各垃圾收集算法的含义"><a href="#各垃圾收集算法的含义" class="headerlink" title="各垃圾收集算法的含义"></a>各垃圾收集算法的含义</h2><h3 id="标记-清除算法"><a href="#标记-清除算法" class="headerlink" title="标记-清除算法"></a>标记-清除算法</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;“标记-清除”算法是最基础的收集算法，它分为“标记”和“清除”两个阶段：首先标记出所有需要回收的对象，标记完成后，统一回收所有标记的对象。之所以说它是最基础的收集算法，是因为后续的收集算法都是基于这种思路并对齐不足进而改进得到的。<br>&nbsp;&nbsp;&nbsp;&nbsp;该方法主要有两个不足：<br>&nbsp;&nbsp;&nbsp;&nbsp;1.效率问题，标记和清除两个过程的效率都不高<br>&nbsp;&nbsp;&nbsp;&nbsp;2.空间问题，该方法清除之后会产生大量零散的内存空间，若之后程序遇到需要分配较大对象而内存空间不足时，会提前触发下一次的垃圾收集动作。</p>
+<h3 id="标记-整理算法"><a href="#标记-整理算法" class="headerlink" title="标记-整理算法"></a>标记-整理算法</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;“标记-整理”算法过程与“标记-清理”算法一样，只是后续步骤不是直接对可回收对象进行清理，而是让所有存活的对象都向一端移动，然后直接清理掉存活端边界以外的内存。</p>
+<h3 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;“复制”算法将内存分为一块较大的Eden空间和两块较小的From Survivior和To Survivior空间，HotSpot虚拟机默认将三者的比例分为8:1:1，每次新生代的可用内存空间为整个新生代容量的90%(80%+10%)。当产生垃圾收集动作时，虚拟机会将存活的对象复制到To Survivior空间，然后把已使用过的内存空间一次清理掉，这样就不存在垃圾收集后空闲内存空间零散的情况；若回收后To Survivior空间没有足够的空间存放上一次新生代收集下来的存活对象，就需要依赖其他内存(这里指老年代)进行<strong>分配担保</strong>。</p>
+<hr>
+<h2 id="各区垃圾收集方式"><a href="#各区垃圾收集方式" class="headerlink" title="各区垃圾收集方式"></a>各区垃圾收集方式</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;虚拟机根据对象存活周期和大小会将对象分配到相应的“年代区”：对象会优先在Eden区分配，大对象直接进入老年代，长期存活的对象将进入老年代（新生代第一次回收To Survivior空间不够时），class、常量等信息直接加载进永生代。<br>&nbsp;&nbsp;&nbsp;&nbsp;当前商业虚拟机的垃圾回收都采用<strong>“分代收集（Generational Collection）”算法</strong>，这种算法会根据各个年代的特点采用最适当的垃圾收集算法。在<strong>新生代</strong>中，每次垃圾收集时都发现有大批对象死去，只有少量存活，所以选用<strong>复制</strong>算法，只需要付出少量存活对象的复制成本就可以完成收集；而<strong>老年代</strong>因为对象存活率高、没有额外空间对它进行分配担保，就必须使用“<strong>标记-清理</strong>”或者“<strong>标记-整理</strong>”算法进行回收。</p>
+<hr>
+<p>转载请注明出处：www.yhang6.com</p>
 
       
 
@@ -204,7 +205,33 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">垃圾收集</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/原创/" class="article-tag-list-link color3">原创</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
 
@@ -254,7 +281,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/07/31/hello-world/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/09/05/关于Java虚拟机的垃圾回收/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -268,15 +295,11 @@
   
 <nav id="article-nav">
   
-    <a href="/2017/08/01/谈谈感受吧/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          谈谈感受吧
-        
-      </div>
-    </a>
   
+    <a href="/2017/08/18/浅谈GET-POST-PUT-DELETE的含义与区别/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">浅谈GET,POST,PUT,DELETE含义及区别</div>
+      <i class="icon-circle-right"></i>
+    </a>
   
 </nav>
 
@@ -301,7 +324,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM的内存区域分配"><span class="toc-number">1.</span> <span class="toc-text">JVM的内存区域分配</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#各垃圾收集算法的含义"><span class="toc-number">2.</span> <span class="toc-text">各垃圾收集算法的含义</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#标记-清除算法"><span class="toc-number">2.1.</span> <span class="toc-text">标记-清除算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#标记-整理算法"><span class="toc-number">2.2.</span> <span class="toc-text">标记-整理算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#复制算法"><span class="toc-number">2.3.</span> <span class="toc-text">复制算法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#各区垃圾收集方式"><span class="toc-number">3.</span> <span class="toc-text">各区垃圾收集方式</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -318,8 +341,8 @@
   <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
 <script>
   var cloudTieConfig = {
-    url: "http://yoursite.com/2017/07/31/hello-world/", 
-    sourceId: "hello-world",
+    url: "http://yoursite.com/2017/09/05/关于Java虚拟机的垃圾回收/", 
+    sourceId: "关于Java虚拟机的垃圾回收",
     productKey: "true",
     target: "cloud-tie-wrapper"
   };
