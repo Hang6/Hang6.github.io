@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="小Hang同学的博客">
 <meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 近期在学习SpringMVC的有关知识，里面涉及到HTTP协议里的GET,POST,PUT和DELETE这四种与服务器交互的基本方法，感觉懵懵懂懂，不是很理解，于是上网查询相关资料。来做一下简单的总结，方便以后学习，有什么不对的地方欢迎指正。  含义1.GET GET请求用于向服务器发出索取请求，从而获取相关信息，它的操作是幂等的、安全的（不管进行">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-08-21T07:18:21.580Z">
+<meta property="og:updated_time" content="2017-09-06T02:38:16.269Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="浅谈GET,POST,PUT,DELETE含义及区别">
 <meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 近期在学习SpringMVC的有关知识，里面涉及到HTTP协议里的GET,POST,PUT和DELETE这四种与服务器交互的基本方法，感觉懵懵懂懂，不是很理解，于是上网查询相关资料。来做一下简单的总结，方便以后学习，有什么不对的地方欢迎指正。  含义1.GET GET请求用于向服务器发出索取请求，从而获取相关信息，它的操作是幂等的、安全的（不管进行">
@@ -170,6 +170,7 @@
         <p>&nbsp;&nbsp;&nbsp;&nbsp; 近期在学习SpringMVC的有关知识，里面涉及到HTTP协议里的GET,POST,PUT和DELETE这四种与服务器交互的基本方法，感觉懵懵懂懂，不是很理解，于是上网查询相关资料。来做一下简单的总结，方便以后学习，有什么不对的地方欢迎指正。</p>
 <hr>
 <h2 id="含义"><a href="#含义" class="headerlink" title="含义"></a>含义</h2><p><strong>1.GET</strong><br> GET请求用于向服务器发出索取请求，从而获取相关信息，它的操作是幂等的、安全的（不管进行多少次操作，该资源的状态都不会改变）。其类似于我们请求数据库的select(R)操作，只用作查询数据，没有副作用。</p>
+<a id="more"></a>
 <p><strong>2.POST</strong><br> POST请求用于向服务器发送数据，从而改变信息，该操作既不安全也不幂等，比较常见的问题：当我们多次发送POST请求时，会创建多个资源。其类似于请求数据库的insert(C)操作，创建新的内容。目前几乎所有的提交操作都使用POST请求。</p>
 <p><strong>3.PUT</strong><br> PUT操作和POST请求类似，但是PUT操作是幂等的（不管进行多少次操作，结果是一样。如：修改了一篇文章，用PUT请求多次，该文章还是一样）。PUT操作类似于数据库的update(U)操作，修改相关类容。</p>
 <p><strong>4.DELETE</strong><br> 顾名思义，DELETE请求用于删除某个数据，和数据库的delete(D)操作一样。</p>
@@ -462,6 +463,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">我</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
@@ -483,10 +488,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">DELETE</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">我</a>
               </li>
             
             <div class="clearfix"></div>
