@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="小Hang同学的博客">
 <meta property="og:description" content="JVM的内存区域分配&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;要讲垃圾收集算法，首先需要分清楚JVM的内存区域分配：JVM的运行时数据区可以分为程序计数器（Program Counter Register）、虚拟机栈（VM Stack）、本地方法栈（Native Method Stack）、堆（Heap）、方法区（Method Area）五个部分。其中Sun HotSpot虚拟机将虚拟机栈和">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-09-11T10:50:49.036Z">
+<meta property="og:updated_time" content="2017-09-11T12:32:00.863Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于Java虚拟机的垃圾回收">
 <meta name="twitter:description" content="JVM的内存区域分配&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;要讲垃圾收集算法，首先需要分清楚JVM的内存区域分配：JVM的运行时数据区可以分为程序计数器（Program Counter Register）、虚拟机栈（VM Stack）、本地方法栈（Native Method Stack）、堆（Heap）、方法区（Method Area）五个部分。其中Sun HotSpot虚拟机将虚拟机栈和">
@@ -175,7 +175,7 @@
 <hr>
 <h2 id="各区垃圾收集方式"><a href="#各区垃圾收集方式" class="headerlink" title="各区垃圾收集方式"></a>各区垃圾收集方式</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;几条最普遍的内存分配规则，虚拟机根据对象存活周期和大小会将对象分配到相应的“年代区”：对象会优先在Eden区分配，大对象直接进入老年代，长期存活的对象将进入老年代（默认值为15，即垃圾收集15次之后依然存活），另外，当Survivior空间不够时，存活对象时会通过分配担保机制进入老年代，class、常量等信息直接加载进永生代。<br>&nbsp;&nbsp;&nbsp;&nbsp;当前商业虚拟机的垃圾回收都采用<strong>“分代收集（Generational Collection）”算法</strong>，这种算法会根据各个年代的特点采用最适当的垃圾收集算法。在<strong>新生代</strong>中，每次垃圾收集时都发现有大批对象死去，只有少量存活，所以选用<strong>复制</strong>算法，只需要付出少量存活对象的复制成本就可以完成收集；而<strong>老年代</strong>因为对象存活率高、没有额外空间对它进行分配担保，就必须使用“<strong>标记-清理</strong>”或者“<strong>标记-整理</strong>”算法进行回收。</p>
 <hr>
-<p>转载请注明出处：<a href="www.yhang6.com">www.yhang6.com</a></p>
+<p>转载请注明出处：<a href="http://www.yhang6.com" target="_blank" rel="external">www.yhang6.com</a></p>
 
       
 
