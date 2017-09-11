@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="小Hang同学的博客">
 <meta property="og:description" content="JVM的内存区域分配&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;要讲垃圾收集算法，首先需要分清楚JVM的内存区域分配：JVM的运行时数据区可以分为程序计数器（Program Counter Register）、虚拟机栈（VM Stack）、本地方法栈（Native Method Stack）、堆（Heap）、方法区（Method Area）五个部分。其中Sun HotSpot虚拟机将虚拟机栈和">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-09-07T09:01:25.055Z">
+<meta property="og:updated_time" content="2017-09-11T10:50:49.036Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于Java虚拟机的垃圾回收">
 <meta name="twitter:description" content="JVM的内存区域分配&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;要讲垃圾收集算法，首先需要分清楚JVM的内存区域分配：JVM的运行时数据区可以分为程序计数器（Program Counter Register）、虚拟机栈（VM Stack）、本地方法栈（Native Method Stack）、堆（Heap）、方法区（Method Area）五个部分。其中Sun HotSpot虚拟机将虚拟机栈和">
@@ -54,7 +54,7 @@
 		  <h1 class="header-author"><a href="/">小Hang同学</a></h1>
 		</hgroup>
 		
-		<p class="header-subtitle">每天进步一点点</p>
+		<p class="header-subtitle">yeah~~</p>
 		
 
 		<nav class="header-menu">
@@ -108,7 +108,7 @@
 			  <h1 class="header-author js-header-author">小Hang同学</h1>
 			</hgroup>
 			
-			<p class="header-subtitle"><i class="icon icon-quo-left"></i>每天进步一点点<i class="icon icon-quo-right"></i></p>
+			<p class="header-subtitle"><i class="icon icon-quo-left"></i>yeah~~<i class="icon icon-quo-right"></i></p>
 			
 			
 			
@@ -169,13 +169,13 @@
       
         <h2 id="JVM的内存区域分配"><a href="#JVM的内存区域分配" class="headerlink" title="JVM的内存区域分配"></a>JVM的内存区域分配</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;要讲垃圾收集算法，首先需要分清楚JVM的内存区域分配：JVM的运行时数据区可以分为程序计数器（Program Counter Register）、虚拟机栈（VM Stack）、本地方法栈（Native Method Stack）、堆（Heap）、方法区（Method Area）五个部分。其中Sun HotSpot虚拟机将虚拟机栈和本地方法栈合二为一，并且方法区是堆的一个逻辑部分。而我们将要讲到的垃圾回收就是发生在堆中。<br><a id="more"></a><br>&nbsp;&nbsp;&nbsp;&nbsp;从垃圾收集的角度讲，HotSpot虚拟机将堆区分为GC堆和方法区，也有人将其分为永生代（方法区）、新生代、老年代，其中新生代和老年代属于GC堆，而新生代又可分为Eden空间、From Survivor空间、To Survivior空间。至此，堆区的内存分布大致已经讲清楚了，下面我们将介绍几种垃圾收集算法。</p>
 <hr>
-<h2 id="各垃圾收集算法的含义"><a href="#各垃圾收集算法的含义" class="headerlink" title="各垃圾收集算法的含义"></a>各垃圾收集算法的含义</h2><h3 id="标记-清除算法"><a href="#标记-清除算法" class="headerlink" title="标记-清除算法"></a>标记-清除算法</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;“标记-清除”算法是最基础的收集算法，它分为“标记”和“清除”两个阶段：首先标记出所有需要回收的对象，标记完成后，统一回收所有标记的对象。之所以说它是最基础的收集算法，是因为后续的收集算法都是基于这种思路并对齐不足进而改进得到的。<br>&nbsp;&nbsp;&nbsp;&nbsp;该方法主要有两个不足：<br>&nbsp;&nbsp;&nbsp;&nbsp;1.效率问题，标记和清除两个过程的效率都不高<br>&nbsp;&nbsp;&nbsp;&nbsp;2.空间问题，该方法清除之后会产生大量零散的内存空间，若之后程序遇到需要分配较大对象而内存空间不足时，会提前触发下一次的垃圾收集动作。</p>
+<h2 id="各垃圾收集算法的含义"><a href="#各垃圾收集算法的含义" class="headerlink" title="各垃圾收集算法的含义"></a>各垃圾收集算法的含义</h2><h3 id="标记-清除算法"><a href="#标记-清除算法" class="headerlink" title="标记-清除算法"></a>标记-清除算法</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;“标记-清除”算法是最基础的收集算法，它分为“标记”和“清除”两个阶段：首先标记出所有需要回收的对象，标记完成后，统一回收所有标记的对象。之所以说它是最基础的收集算法，是因为后续的收集算法都是基于这种思路并对其不足进而改进得到的。<br>&nbsp;&nbsp;&nbsp;&nbsp;该方法主要有两个不足：<br>&nbsp;&nbsp;&nbsp;&nbsp;1.效率问题，标记和清除两个过程的效率都不高<br>&nbsp;&nbsp;&nbsp;&nbsp;2.空间问题，该方法清除之后会产生大量零散的内存空间，若之后程序遇到需要分配较大对象而内存空间不足时，会提前触发下一次的垃圾收集动作。</p>
 <h3 id="标记-整理算法"><a href="#标记-整理算法" class="headerlink" title="标记-整理算法"></a>标记-整理算法</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;“标记-整理”算法过程与“标记-清理”算法一样，只是后续步骤不是直接对可回收对象进行清理，而是让所有存活的对象都向一端移动，然后直接清理掉存活端边界以外的内存。</p>
 <h3 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;“复制”算法将内存分为一块较大的Eden空间和两块较小的From Survivior和To Survivior空间，HotSpot虚拟机默认将三者的比例分为8:1:1，每次新生代的可用内存空间为整个新生代容量的90%(80%+10%)。当产生垃圾收集动作时，虚拟机会将存活的对象复制到To Survivior空间，然后把已使用过的内存空间一次清理掉，这样就不存在垃圾收集后空闲内存空间零散的情况；若回收后To Survivior空间没有足够的空间存放上一次新生代收集下来的存活对象，就需要依赖其他内存(这里指老年代)进行<strong>分配担保</strong>。</p>
 <hr>
 <h2 id="各区垃圾收集方式"><a href="#各区垃圾收集方式" class="headerlink" title="各区垃圾收集方式"></a>各区垃圾收集方式</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;几条最普遍的内存分配规则，虚拟机根据对象存活周期和大小会将对象分配到相应的“年代区”：对象会优先在Eden区分配，大对象直接进入老年代，长期存活的对象将进入老年代（默认值为15，即垃圾收集15次之后依然存活），另外，当Survivior空间不够时，存活对象时会通过分配担保机制进入老年代，class、常量等信息直接加载进永生代。<br>&nbsp;&nbsp;&nbsp;&nbsp;当前商业虚拟机的垃圾回收都采用<strong>“分代收集（Generational Collection）”算法</strong>，这种算法会根据各个年代的特点采用最适当的垃圾收集算法。在<strong>新生代</strong>中，每次垃圾收集时都发现有大批对象死去，只有少量存活，所以选用<strong>复制</strong>算法，只需要付出少量存活对象的复制成本就可以完成收集；而<strong>老年代</strong>因为对象存活率高、没有额外空间对它进行分配担保，就必须使用“<strong>标记-清理</strong>”或者“<strong>标记-整理</strong>”算法进行回收。</p>
 <hr>
-<p>转载请注明出处：www.yhang6.com</p>
+<p>转载请注明出处：<a href="www.yhang6.com">www.yhang6.com</a></p>
 
       
 
@@ -294,6 +294,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/2017/09/08/虚拟机类加载机制/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          虚拟机类加载机制
+        
+      </div>
+    </a>
   
   
     <a href="/2017/08/18/浅谈GET-POST-PUT-DELETE的含义与区别/" id="article-nav-older" class="article-nav-link-wrap">
@@ -441,7 +450,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">我</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">垃圾收集</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -461,11 +474,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+                <a href="javascript:void(0)" class="js-tag color4">类加载</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">垃圾收集</a>
+                <a href="javascript:void(0)" class="js-tag color2">我</a>
               </li>
             
             <div class="clearfix"></div>
