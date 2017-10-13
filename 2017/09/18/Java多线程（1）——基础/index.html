@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="小Hang同学的博客">
 <meta property="og:description" content="进程与线程&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;进程是什么，想必学计算机的同学都不会陌生，打开windows任务管理器，或者linux服务器上top命令锁展示的结果，就是一个个的进程。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;进程（Process）是计算机中的程序关于某数据集合上的一次运行活动，是系统进行资源分配和调度的基本单位，是操作系统结构的基础。在早期面向进程设计的计算机结">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-09-18T01:50:22.216Z">
+<meta property="og:updated_time" content="2017-10-13T03:23:49.517Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java多线程（1）——基础">
 <meta name="twitter:description" content="进程与线程&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;进程是什么，想必学计算机的同学都不会陌生，打开windows任务管理器，或者linux服务器上top命令锁展示的结果，就是一个个的进程。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;进程（Process）是计算机中的程序关于某数据集合上的一次运行活动，是系统进行资源分配和调度的基本单位，是操作系统结构的基础。在早期面向进程设计的计算机结">
@@ -205,7 +205,7 @@
             </nav>
         </header>                
     </div>
-    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
       <div class="body-wrap"><article id="post-Java多线程（1）——基础" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -252,10 +252,10 @@
       
           
         <h1 id="进程与线程"><a href="#进程与线程" class="headerlink" title="进程与线程"></a>进程与线程</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>进程</strong>是什么，想必学计算机的同学都不会陌生，打开windows任务管理器，或者linux服务器上top命令锁展示的结果，就是一个个的进程。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;<em>进程（Process）是计算机中的程序关于某数据集合上的一次运行活动，是系统进行资源分配和调度的基本单位，是操作系统结构的基础。在早期面向进程设计的计算机结构中，进程是程序的基本执行实体；在当代面向线程设计的计算机结构中<a id="more"></a>，进程是线程的容器。程序是指令、数据及其组织形式的描述，进程是程序的实体。——引自百度百科</em></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<em>进程</em>（Process）是计算机中的程序关于某数据集合上的一次运行活动，是系统进行资源分配和调度的基本单位，是操作系统结构的基础。在早期面向进程设计的计算机结构中，进程是程序的基本执行实体；在当代面向线程设计的计算机结构中<a id="more"></a>，进程是线程的容器。程序是指令、数据及其组织形式的描述，进程是程序的实体。——引自百度百科</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;但是一个应用只有一个进程吗，NO，一个应用可能会开除多个子进程来进行需要的工作。举个例子，php解析的服务进程，可以配置要使用多少个子进程进行工作，所以在top命令中，会看到多个同名进程，而他们的创建者都是php主进程创建的。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>线程</strong>大家肯定也听过，一般一个进程下会有多个线程。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;<em>线程，有时被称为轻量级进程，是程序执行流的最小单元。在单个程序中同时运行多个线程完成不同的工作，称为多线程。——引自百度百科</em></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<em>线程</em>，有时被称为轻量级进程，是程序执行流的最小单元。在单个程序中同时运行多个线程完成不同的工作，称为多线程。——引自百度百科</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;另外，一个进程至少会有一个线程，如果只有一个线程，那就是程序本身了。一般程序有多个线程的话都会有一个主线程去执行入口程序，之后再发起其他线程去进行其他的工作。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;看起来还是不太清晰的话，我来举个例子解释一下。比如一个应用，需要干两件事情，A是发送一个请求等待响应之后打印出来（这个请求加上响应的时间可能是2s），B也是发送一个请求等待响应之后打印出来（这个时间是3s）。如果没有线程就需要顺序执行了，这个总的执行时间我们可以预估到是5s。如果使用了多线程，线程1发起请求A，这时候再起一个线程2发起请求B，线程1等待2s收到响应打印，线程2等待3s收到响应打印。总的程序执行时间就是3s了。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;其实多线程，是利用CPU空闲去干多件事。就比如上面的例子，A在等待的时候，CPU是闲着的，这时候这2s的时间内就可以去干别的事情。其实多线程只是看起来是同时执行了多个任务，实际上只是利用的空闲时间去相互插空而已，只是我们感觉不到。</p>
@@ -299,17 +299,17 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/09/18/Java多线程（1）——基础/">Java多线程（1）——基础</a></p>
-        <p><span>文章作者:</span><a href="/" title="回到主页">小Hang同学</a></p>
-        <p><span>发布时间:</span>2017-09-18, 09:15:51</p>
-        <p><span>最后更新:</span>2017-09-18, 09:50:22</p>
+        <p><span>Title:</span><a href="/2017/09/18/Java多线程（1）——基础/">Java多线程（1）——基础</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage">小Hang同学</a></p>
+        <p><span>Created:</span>2017-09-18, 09:15:51</p>
+        <p><span>Updated:</span>2017-10-13, 11:23:49</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/09/18/Java多线程（1）——基础/" title="Java多线程（1）——基础">http://yoursite.com/2017/09/18/Java多线程（1）——基础/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/09/18/Java多线程（1）——基础/　　作者: 小Hang同学" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>Full URL:</span><a class="post-url" href="/2017/09/18/Java多线程（1）——基础/" title="Java多线程（1）——基础">http://yoursite.com/2017/09/18/Java多线程（1）——基础/</a>
+            <span class="copy-path" data-clipboard-text="From http://yoursite.com/2017/09/18/Java多线程（1）——基础/　　By 小Hang同学" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
-            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
         </p>
     </div>
 
@@ -336,7 +336,7 @@
 </article>
 
     <div id="toc" class="toc-article">
-        <strong class="toc-title">文章目录</strong>
+        <strong class="toc-title">Contents</strong>
         
             <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#进程与线程"><span class="toc-number">1.</span> <span class="toc-text">进程与线程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Java中怎么实现多线程"><span class="toc-number">2.</span> <span class="toc-text">Java中怎么实现多线程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#并发访问数据"><span class="toc-number">3.</span> <span class="toc-text">并发访问数据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#几个基础方法"><span class="toc-number">4.</span> <span class="toc-text">几个基础方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#currentThread-方法"><span class="toc-number">4.1.</span> <span class="toc-text">currentThread()方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#isAlive-方法"><span class="toc-number">4.2.</span> <span class="toc-text">isAlive()方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sleep-方法"><span class="toc-number">4.3.</span> <span class="toc-text">sleep()方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#停止线程"><span class="toc-number">4.4.</span> <span class="toc-text">停止线程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#睡眠中停止"><span class="toc-number">4.5.</span> <span class="toc-text">睡眠中停止</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#暂停与恢复"><span class="toc-number">4.6.</span> <span class="toc-text">暂停与恢复</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#yield方法"><span class="toc-number">4.7.</span> <span class="toc-text">yield方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线程的优先级"><span class="toc-number">4.8.</span> <span class="toc-text">线程的优先级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#守护线程"><span class="toc-number">4.9.</span> <span class="toc-text">守护线程</span></a></li></ol></li></ol>
         
@@ -352,10 +352,10 @@
         }
     </style>
 
-    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
 
     <script>
-        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
     </script>
 
 
@@ -413,15 +413,15 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/09/18/Java多线程（2）——并发访问控制/" title="上一篇: Java多线程（2）——并发访问控制">
+            <a href="/2017/09/18/Java多线程（2）——并发访问控制/" title="Pre: Java多线程（2）——并发访问控制">
                 <i class="fa fa-angle-left"></i>
             </a>
         
 
-        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/09/12/Java内存模型/" title="下一篇: Java内存模型">
+            <a href="/2017/09/12/Java内存模型/" title="Next: Java内存模型">
                 <i class="fa fa-angle-right"></i>
             </a>
         
@@ -444,14 +444,14 @@
                 2016-2017 小Hang同学
             </div>
             <div class="footer-right">
-                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+                <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
             </div>
         </div>
         
             <div class="visit">
                 
                     <span id="busuanzi_container_site_pv" style='display:none'>
-                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
                         </span>
                     </span>
                 
@@ -460,7 +460,7 @@
                 
                 
                     <span id="busuanzi_container_page_pv" style='display:none'>
-                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
                         </span>
                     </span>
                 
@@ -493,9 +493,9 @@
 
 
 <div class="scroll" id="scroll">
-    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
-    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
-    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
 </div>
 <script>
     // Open in New Window
