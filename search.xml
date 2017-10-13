@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+    
+    <entry>
+      <title><![CDATA[Java多线程（4）——Lock]]></title>
+      <url>/2017/09/18/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%884%EF%BC%89%E2%80%94%E2%80%94Lock/</url>
+      <content type="html"><![CDATA[<p>&nbsp;&nbsp;&nbsp;&nbsp;java的多线程有两种方式，我们先前面学习了基础的synchronized方式，大家忘记了建议先去回忆一下再来看这部分。Lock其实对应着synchronized的方式加锁，但是更加灵活，本节讲的时候会对照着synchronized相关的知识来说。</p>
+<hr>
+<h1 id="ReentrantLock类"><a href="#ReentrantLock类" class="headerlink" title="ReentrantLock类"></a>ReentrantLock类</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;Java中实现并发控制锁的一个关键类。我们可以使用synchronized关键字来实现线程间的同步互斥<a id="more"></a>，也可以通过ReentrantLock来实现。</p>
+<h2 id="ReentrantLock与synchronized区别"><a href="#ReentrantLock与synchronized区别" class="headerlink" title="ReentrantLock与synchronized区别"></a>ReentrantLock与synchronized区别</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;首先我们想一下，synchronized的实现，有两种方式，一种是修饰方法的关键字，一种是选择一个监控对象以代码块的形式来实现同步互斥，在遇到异常时自动退出同步互斥状态。这种方式比较简单，我们不需要去操心锁会不会得不到释放，只要代码能够正常执行完，锁就会得到释放。但是我们如果想以更灵活的一些方式去实现这个流程，不好意思，synchronized比较固定，你没法控制。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;ReentrantLock就很灵活了。他有两个关键方法，lock、unlock。什么情况获得锁，什么情况释放锁，都是可以灵活控制的。而除了这点的灵活性以外，后面部分还会介绍更加灵活的内容。我们首先需要知道的是，ReentrantLock相比synchronized的灵活性强很多。但是灵活性势必带来复杂性，如果不小心就很容易出错。</p>
+<h2 id="ReentrantLock同步示例"><a href="#ReentrantLock同步示例" class="headerlink" title="ReentrantLock同步示例"></a>ReentrantLock同步示例</h2><p>功能测试类如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">public class AService &#123;</div><div class="line">    private Lock lock = new ReentrantLock();</div><div class="line">    public void <span class="function"><span class="title">a</span></span>() &#123;</div><div class="line">        try &#123;</div><div class="line">            lock.lock();</div><div class="line">            // 打印时间戳</div><div class="line">            Thread.sleep(1000);</div><div class="line">            // 一些操作</div><div class="line">        &#125; catch &#123;</div><div class="line">            e.printSatckTrack();</div><div class="line">        &#125; finally &#123;</div><div class="line">            lock.unlock();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"> </div><div class="line">    public void <span class="function"><span class="title">b</span></span>() &#123;</div><div class="line">        try &#123;</div><div class="line">            lock.lock();</div><div class="line">            // 打印时间戳</div><div class="line">            Thread.sleep(1000);</div><div class="line">            // 一些操作</div><div class="line">        &#125; catch &#123;</div><div class="line">            e.printSatckTrack();</div><div class="line">        &#125; finally &#123;</div><div class="line">            lock.unlock();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;现在有两个线程接收一个对象作为参数，内部run分别调用这个对象的a和b方法。打印结果回事顺序打印两个时间戳，时间相差1秒。大家可以实际实验一下，结论就是lock可以实现同步的互斥。</p>
+<hr>
+<h1 id="Condition实现等待通知"><a href="#Condition实现等待通知" class="headerlink" title="Condition实现等待通知"></a>Condition实现等待通知</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;我们在之前synchronized的时候，使用wait、notify来实现等待和通知，那么在用Lock的时候，肯定他也得有这样对应的实现啊。Condition就是他这样的实现。而且要比synchronized里面的形式更加灵活。</p>
+<p>我们先来看个例子：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">public class AService &#123;</div><div class="line">    private Lock lock = new ReentrantLock();</div><div class="line">    private Condition condition = lock.newCondition();</div><div class="line">    public void <span class="function"><span class="title">a</span></span>() &#123;</div><div class="line">        try &#123;</div><div class="line">            lock.lock();</div><div class="line">            // 打印时间戳</div><div class="line">            condition.await();</div><div class="line">            Thread.sleep(1000);</div><div class="line">            // 一些操作</div><div class="line">        &#125; catch &#123;</div><div class="line">            e.printSatckTrack();</div><div class="line">        &#125; finally &#123;</div><div class="line">            lock.unlock();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"> </div><div class="line">    public void <span class="function"><span class="title">signal</span></span>() &#123;</div><div class="line">        try &#123;</div><div class="line">            lock.lock();</div><div class="line">            condition.signal();</div><div class="line">        &#125; finally &#123;</div><div class="line">            lock.unlock();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;这里展示了Condition的两个重要方法，以及怎么生成Condition的方法。由于所有类都是继承自Object的，所以wait与notify已经都被占了，所以Condition使用的是await与signal，当然，他也会有个signalAll方法与notifyAll对应。另外Condition和synchronized形式的wait、notify一样，也必须在同步状态下，否则也是会报错的。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;我们看到，Condition的对象是通过调用lock.newCondition获取的，所以实际上是可以获取多个Condition对象的，所以这就是Lock比synchronized灵活的另外一个地方了，它可以有多个不同的Condition监视来做wait、notify。而<strong>每组await、signal只影响相同的Condition的，不同的Condition的await、signal互不相干</strong>。</p>
+<hr>
+<h1 id="公平锁与非公平锁"><a href="#公平锁与非公平锁" class="headerlink" title="公平锁与非公平锁"></a>公平锁与非公平锁</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;Lock的另外一个灵活的地方是可以选择这个锁是个公平锁还是个非公平锁。公平锁意思是线程获取锁的顺序是按照线程启动顺序来分配的，类似于FIFO先进先出。而非公平锁线程间是通过抢占机制，随机获得锁的，所以在非公平锁的情况下有些线程可能永远拿不到锁。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;是否是公平锁，这个的设置很简单，就是在创建ReentrantLock的时候，传入一个布尔型的参数即可，这里就不列出代码了,大家可以自己实验一下。在默认的情况下，ReentrantLock类使用的是非公平锁。</p>
+<hr>
+<h1 id="ReentrantReadWriteLock类"><a href="#ReentrantReadWriteLock类" class="headerlink" title="ReentrantReadWriteLock类"></a>ReentrantReadWriteLock类</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;Lock里面还可以进一步提高效率。synchronized和ReentrantLock都会独占锁，也就是同一时间只有一个线程可以监控lock，操作某一关键对象。但是这种情况性能很差，等于并发变成顺序执行了。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;而我们想一个场景，当一个关键数据读多写少的时候（事实上我们多数的需求也都是这样，读多写少），我们让所有的数据读取都顺序执行，势必降低了运行效率，如果在数值不变的情况下，完全大家可以一起去并发访问这个数据，而没有必要顺序访问。这就是ReentrantReadWriteLock的作用。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;实际上这个类就类似于使用了两个锁，一个读锁一个写锁。我们想想一下如果要让读写锁分开的话，什么情况是允许的呢？</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;读，大家是可以共享锁的，不需要阻塞互斥，而写与写的操作是必须互斥的，不然可能导致数据错乱。那么读写呢，肯定也需要互斥，不然可能读到脏数据。所以只要有写的操作，就必须其他都不能获取锁，而没有写的时候，所有的读都可以获取到锁。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;道理很简单，总结起来就是读读共享、写写互斥、读写互斥、写读互斥。只要有写就互斥。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;关键方法就是lock.readLock().lock()与lock.readLock().unlock()，lock.writeLock().lock()与lock.writeLock().unlock()。使用的时候必须成对出现。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;到此，所有有关Lock的内容就都说完了，其实Lock并没有什么难的，api是有点多，关键还是实战经验了。</p>
+<hr>
+<p>转载自：<a href="http://irfen.me/java-multi-thread-4/" target="_blank" rel="external">赵伊凡’s Blog</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 转载 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> 多线程 </tag>
+            
+            <tag> 并发 </tag>
+            
+            <tag> 性能 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Java多线程（3）——线程间通信]]></title>
+      <url>/2017/09/18/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%883%EF%BC%89%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/</url>
+      <content type="html"><![CDATA[<p>&nbsp;&nbsp;&nbsp;&nbsp;本文主要学习线程间相互通信的内容。线程见需要通信，才能协同完成工作，虽然这增加的这里的复杂度，也很容易出错，但是线程间通信是很重要也很不可缺少的功能。</p>
+<hr>
+<h1 id="等待与通知"><a href="#等待与通知" class="headerlink" title="等待与通知"></a>等待与通知</h1><h2 id="wait、notify介绍"><a href="#wait、notify介绍" class="headerlink" title="wait、notify介绍"></a>wait、notify介绍</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;如果看一眼java最基础的一个类Object的源码的话，会发现Object类有两个方法，wait、notify。所有的类都是默认继承Object类的，所以我们创建的所有的类都有这两个方法。<br><a id="more"></a><br>&nbsp;&nbsp;&nbsp;&nbsp;举个例子，我们去麦当劳、或者奶茶店，买好了之后会得到小票，这时候店家会开始准备我们的餐饮，我们可以不用一直顶着店家看的，我们就站在一边玩会手机（这其实就是多线程，你在等待取餐的时间内去干了别的），等到东西做好了，服务员会叫号，说xxxx号好了，这时候我们一听，是我们的东西好了，于是放下手机去取餐。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;这个例子就是等待通知。我们买好餐之后，拿到小票，就在一边等着，这时候就相当于调用了wait方法，当餐好了，服务员叫我们，这相当于调用了notify方法，我们收到之后就停止wait去取餐了。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;所以这里的一个线程，就是我们点餐取餐，示例代码如下。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">String lock = <span class="string">"你的餐"</span>;</div><div class="line">synchronized (lock) &#123;</div><div class="line">    // 点餐 付款</div><div class="line">    lock.wait();</div><div class="line">    // 取餐 吃饭</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>还有一个线程，是服务员，示例代码如下。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">String lock = <span class="string">"你的餐"</span>;</div><div class="line">synchronized (lock) &#123;</div><div class="line">    // 备餐</div><div class="line">    lock.notify();</div><div class="line">    // 确认你的小票</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;这里我们付款之后，wait等待（阻塞当前线程），这里的线程是点餐取餐的过程，而我们自己相当于一个cpu，这时候可以分享cpu去执行其他线程的工作（比如玩手机）。服务员备餐，当备餐好了之后，调用notify，然后看看你的小票，确认没问题把餐给你他就走了。这时候你从阻塞状态恢复回来，取餐然后去吃饭。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;这里特别说明一下，<strong>wait调用之后，会释放锁（同时阻塞），这样其他线程才能获得锁去工作。而notify执行之后不会立刻释放锁，需要同步语句块所有内容执行完之后才会释放锁，wait后面的代码才能开始执行</strong>。所以上面的例子中，服务员叫你的号了，但是你不能立刻把餐拿走，需要先确认你的小票是不是这个号，确认完了他的工作才算结束，你才能拿餐。</p>
+<h2 id="等待通知必须在同步语句块中"><a href="#等待通知必须在同步语句块中" class="headerlink" title="等待通知必须在同步语句块中"></a>等待通知必须在同步语句块中</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;可以是同步语句块，也可以是synchronized修饰的方法中，总是需要处于同步状态下，而这个等待、通知的主体也必须是同步状态下监视的对象。如果不在同步状态下，会抛出IllegalMonitorStateException异常。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;而且向我们上面的例子，同步监控的是lock字符串，那么wait、notify的主体也就必须是lock；对于synchronized修饰的方法而言，由于锁的是当前对象，所以主体应该是this。</p>
+<h2 id="线程状态介绍"><a href="#线程状态介绍" class="headerlink" title="线程状态介绍"></a>线程状态介绍</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;线程的状态有new、runnable、running、blocked/time wait/sleeping、terminated。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;其中新建一个线程就是new，然后调用start方法，线程会进入runnable（可运行）状态，但是这时候线程可能还没开始运行，因为他要争抢cpu资源，所以不一定你调用了start方法，这个线程就可以启动了。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;当线程的争抢到cpu资源了，那么他就会进入running（运行中）状态。当然runnable和running可能会互相转换的，如果有更高优先级的线程争抢到了cpu资源，那么这个线程可能会进入到runnable状态。线程进入runnable状态有如下可能：</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;a、调用sleep之后经过的时间超过了指定的sleep时间（sleep结束之后重新进入runnable状态争抢cpu资源）；<br>&nbsp;&nbsp;&nbsp;&nbsp;b、线程调用的阻塞IO已经返回，阻塞方法执行完毕；<br>&nbsp;&nbsp;&nbsp;&nbsp;c、线程成功的获得了试图同步的监视器；<br>&nbsp;&nbsp;&nbsp;&nbsp;d、线程正在等待某个通知，其他线程发出了通知；<br>&nbsp;&nbsp;&nbsp;&nbsp;e、处于挂起（suspend）状态的线程调用了resume恢复方法。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;blocked是阻塞的意思，time wait是处于等待的状态，sleeping是处于sleep状态。这三个状态通常统称为一种状态，他们比较相似。blocked比如遇到了一个IO操作，需要等待，而其他线程争抢到了cpu资源，这时候当前线程就处于blocked状态了。time wait比较好理解吧，就是处于wait阻塞的状态。sleeping就是主动调用的sleep方法处于等待状态。所以总结起来，可能引起进入blocked状态的情况有下面5种：</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;a、线程调用sleep方法主动放弃；<br>&nbsp;&nbsp;&nbsp;&nbsp;b、调用wait方法等待通知；<br>&nbsp;&nbsp;&nbsp;&nbsp;c、调用了阻塞IO，等待返回（这里比如发起一个http请求，需要等待服务员响应）；<br>&nbsp;&nbsp;&nbsp;&nbsp;d、线程试图获得某个对象监视器，但是这个同步对象正在被别的线程持有；<br>&nbsp;&nbsp;&nbsp;&nbsp;e、调用了suspend主动挂起（这种方法已经被废弃，容易引起死锁，建议弃用）。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;当run里面的内容都运行完了，线程的工作也就结束了，这时候他就可以销毁了，进入了terminated状态。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;这里额外说一点，<strong>wait和sleep其实有这一点相似，就是在阻塞状态时，调用了线程的interrupt方法，会出现InterruptedException异常</strong>。</p>
+<h2 id="其他补充"><a href="#其他补充" class="headerlink" title="其他补充"></a>其他补充</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;当一个对象监视器有多个线程正在wait的时候，这时候某个线程调用了notify之后，所有wait状态的线程开始争抢cpu资源，其中只有一个线程可以从wait状态进入运行状态，所以要想都唤醒，那就需要调用n遍notify方法，或者，调用notifyAll方法，这里还是要看具体的业务场景了。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;wait方法还有个带参的方法，参数可以是个long，意思就是等待n毫秒，如果还没有被唤醒，那么就自己醒。当然如果在n毫秒以内也可以被notify唤醒。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;假设你设计的程序中一个工作中只会执行一次wait、notify的话，那么一定要注意他们是不是一定会按照顺序执行的，假如先执行了notify，那么在执行wait的话就没人唤醒他了。</p>
+<hr>
+<h1 id="线程通信具体方式"><a href="#线程通信具体方式" class="headerlink" title="线程通信具体方式"></a>线程通信具体方式</h1><h2 id="wait、notify最简单的使用"><a href="#wait、notify最简单的使用" class="headerlink" title="wait、notify最简单的使用"></a>wait、notify最简单的使用</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;这种方式也很简单，就不细说了。就是一个线程等待获取另一个线程的数据的时候，首先在需要调用数据的前面执行wait，另外一个线程写入数据，写入之后执行notify方法通知等待的线程获取数据。这样就完成了线程间最简单的通信了。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;其实再复杂一点的话，就是读取数据这边，在读取完了之后又要通知写数据的线程写数据，数据两个线程其实在读写数据前后都需要wait和notify方法了。而这里都要对数据这块进行加锁。这就是复杂之处了，由于写数据的线程不会只有一个，读数据的线程也不会只有一个。所以有可能这个写线程的notify唤醒的是另一个写线程的wait，这就出错了，而且也可能导致所有读线程的wait都得不到唤醒而产生死锁。这里有个简单的解决办法，就是调用notifyAll，这样读线程也会读取了，而写的时候判断一下是否被写过，读的时候判断下是否被读过，这里的判断有很多办法，交给大家自己去实验一下了（其实加变量就可以了）。</p>
+<h2 id="管道通信，字节流、字符流"><a href="#管道通信，字节流、字符流" class="headerlink" title="管道通信，字节流、字符流"></a>管道通信，字节流、字符流</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;Java中提供了很多输入输出流，Stream，可以方便我们对数据进行操作。JDK提供了两组类来实现线程间通信，分别是PipedInputStream与PipedOutputStream、PipedReader与PipedWriter。 关于管道的知识这里就不详细介绍了，大家有兴趣可以自己搜索学习下。</p>
+<hr>
+<h1 id="join方法"><a href="#join方法" class="headerlink" title="join方法"></a>join方法</h1><h2 id="join的作用"><a href="#join的作用" class="headerlink" title="join的作用"></a>join的作用</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;join最重要的一个作用就是等待当前线程执行完毕。举个例子。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public static void main(String[] args) &#123;</div><div class="line">    TestThread t = new TestThread();</div><div class="line">    t.start();</div><div class="line">    t.join();</div><div class="line">    System.out.println(<span class="string">"我想最后说"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;正常情况下，如果没有这个join的调用的话，这个打印语句有可能是先于或者在线程运行中执行的，而调用了join方法之后，这个打印语句就会在t这个线程彻底执行完之后再打印了。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;其实这有很多作用，这里的main方法实际上是主线程，而t是子线程。如果我们不加这个join，实际上主线程会先于子线程结束。有时候我们需要等子线程执行完，比如修改一个字符串的内容，主线程再去获取修改后的内容，所以一定要等子线程执行完才可以。</p>
+<h2 id="join的原理"><a href="#join的原理" class="headerlink" title="join的原理"></a>join的原理</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;知道了join的作用之后，就需要知道他的原理了。实际上很简单，join的内部是通过wait实现的。所以join的一个特性我们就知道了，会被interrupt打断，和wait一样。</p>
+<h2 id="join其他内容"><a href="#join其他内容" class="headerlink" title="join其他内容"></a>join其他内容</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;join内部调用的wait，所以他也有一个join(long)的方法，这个方法和wait一样，也就是join多少毫秒，如果在这时间之后，线程还是没有结束，那么就不等了。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;join(long)和sleep(long)区别是什么呢，首先一个是如果在时间内线程执行结束，join等待的时间更少。另外一个就是join由于内部使用的是wait，所以在调用join之后，实际上是调用了对象的wait方法，所以会释放当前对象的锁，其他线程就可以获取锁了，可操作的内容就更多了。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;另外，由于join内部调用的是wait，所以当被notify是，他同样需要和其他当前对象正在wait状态的线程进行锁争抢，所以有的时候也可能产生意外。</p>
+<hr>
+<h1 id="ThreadLocal类"><a href="#ThreadLocal类" class="headerlink" title="ThreadLocal类"></a>ThreadLocal类</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;不知道大家有没有了解过这个类，其实我在最开始学mvc的时候就学到过，这个类就是一个线程共享变量的类。什么叫做线程共享变量呢？</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;对于我们使用public static修饰的，是个静态变量，大家都可以调用，而且就这一份。而线程共享变量，就是一个线程独享的变量。就算这个变量的声明就那一份，但是每个线程对这个变量的访问是互不干扰的。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;所以回到我最初说的，就这一个变量，我们在controller里面去写个值，在service、dao层去访问这个变量都是可以得到的，而多个用户的访问又是互不相干的。而一次访问映射的其实就是一个线程，controller去调用service、service调用dao，再到底层实现，都是一个在一个线程里的。</p>
+<h2 id="get、set"><a href="#get、set" class="headerlink" title="get、set"></a>get、set</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;ThreadLocal主要的两个方法就是get和set了，很简单，set放值，get取值。而ThreadLocal支持泛型，所以可以存取任何类型的对象。下面是示例。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public class ThreadTool &#123;</div><div class="line">    public static ThreadLocal&lt;String&gt; tl = new ThreadLocal&lt;String&gt;();</div><div class="line">&#125;</div><div class="line"> </div><div class="line">public class Run &#123;</div><div class="line">    public static void main(String[] args) &#123;</div><div class="line">        ThreadTool.tl.set(<span class="string">"a"</span>);</div><div class="line">        System.out.println(ThreadTool.tl.get());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="默认方法的重写"><a href="#默认方法的重写" class="headerlink" title="默认方法的重写"></a>默认方法的重写</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;ThreadLocal有个可重写的方法，一个是initialValue方法，这个方法返回默认值。如果我们没有set值的话，返回的会是null，而重写了这个方法，可以返回我们指定的默认值，当然一般情况下我们是没有必须要重写的。</p>
+<h2 id="InheritableThreadLocal"><a href="#InheritableThreadLocal" class="headerlink" title="InheritableThreadLocal"></a>InheritableThreadLocal</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;通过这个类名我们应该也可以知道，这个类其实和继承有关（其实不是）。其实是这个类可以让子线程可以继承父线程的内容。这样，子线程和父线程通过这个类，就可以共享变量了。这个比较简单，使用方法和TheadLocal一样，就不举例了。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;但是这个就会出现坑了，由于正常情况下我们的ThreadLocal是在一个线程中使用的，并发问题都是出在多线程中的，所以ThreadLocal并不会出现并发访问问题，而InheritableThreadLocal可能会出现在多个线程中了（父线程可以起多个子线程），所以线程多了，还是可能出现脏读之类的问题的，这点要注意。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;到此我们对于线程通信的内容就介绍完了。</p>
+<hr>
+<p>转载自：<a href="http://irfen.me/java-multi-thread-3/" target="_blank" rel="external">赵伊凡’s Blog</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 转载 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> 多线程 </tag>
+            
+            <tag> 并发 </tag>
+            
+            <tag> 性能 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Java多线程（2）——并发访问控制]]></title>
+      <url>/2017/09/18/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E5%B9%B6%E5%8F%91%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6/</url>
+      <content type="html"><![CDATA[<p>&nbsp;&nbsp;&nbsp;&nbsp;这章主要介绍一下synchronized关键字相关的用法，顺带也介绍一下volatile关键字。这两个关键字在java的并发访问控制中都很重要。</p>
+<hr>
+<h1 id="synchronized使用范围及加锁规则"><a href="#synchronized使用范围及加锁规则" class="headerlink" title="synchronized使用范围及加锁规则"></a>synchronized使用范围及加锁规则</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;synchronized这个关键字可以有很多用法，每种用法所加的锁都有不同的锁范围，下面一一介绍。<br><a id="more"></a><br>&nbsp;&nbsp;&nbsp;&nbsp;a、加在实例方法上作为关键字<br>&nbsp;&nbsp;&nbsp;&nbsp;b、加在静态方法上作为关键字<br>&nbsp;&nbsp;&nbsp;&nbsp;c、同步语句块，这块分两种，一种是使用对象，一种是使用class</p>
+<h2 id="1、synchronized加在实例方法上"><a href="#1、synchronized加在实例方法上" class="headerlink" title="1、synchronized加在实例方法上"></a>1、synchronized加在实例方法上</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;举个简单的例子吧。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public class A &#123;</div><div class="line">    public synchronized void <span class="function"><span class="title">xxx</span></span>()&#123;</div><div class="line">        // <span class="keyword">do</span> something</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;这样就是把关键字加在实例方法上，为什么要特别强调实例呢，因为我们对应的还有静态方法。实例方法需要new出对象来调用，而静态方法可以直接类名调用（这块就当废话）。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;由于调用这个xxx方法需要实例化出来一个对象，所以，多个线程调用这同一个对象的xxx方法，他们的调用就会是同步的了。下面看段代码实例。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public class AThread extends Thread &#123;</div><div class="line">    private A a;</div><div class="line">    public AThread(A a) &#123;</div><div class="line">        this.a = a;</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public void <span class="function"><span class="title">run</span></span>() &#123;</div><div class="line">        a.xxx();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public static void main(String[] args) &#123;</div><div class="line">    A a = new A();</div><div class="line">    AThread t1 = new AThread(a);</div><div class="line">    AThread t2 = new AThread(a);</div><div class="line">    t1.start();</div><div class="line">    t2.start();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;正常情况，这两个线程应该是并发异步执行的（即t2的run的内容不需要等t1结束在运行），但是由于线程调用了A的xxx方法，这个方法被synchronized关键字修饰了，这时候这个xxx方法变成了同步方法，所以t2的run在调用a的xxx的时候，会被阻塞，知道t1里面的内容执行完。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>另外提两句：如果t1和t2两个线程锁传入的对象，是两个不同的对象的话（例如new出两个A，a1、a2）则不会产生这个阻塞；如果synchronized这个关键字同时修饰了A类的两个实例方法xxx与yyy，t1里面调用的还是xxx，而t2里面调用的是yyy，那么仍然是同步的，和当前的运行结果没有什么差异。</strong></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;所以结论就是：<strong>synchronized关键字修饰在实例方法上，会对实例出来的对象加锁。</strong></p>
+<h2 id="2、synchronized关键字加在静态方法上"><a href="#2、synchronized关键字加在静态方法上" class="headerlink" title="2、synchronized关键字加在静态方法上"></a>2、synchronized关键字加在静态方法上</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;这里只举例一下修饰的例子，就不详细介绍调用的示例了。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public class A &#123;</div><div class="line">    public synchronized static void <span class="function"><span class="title">xxx</span></span>()&#123;</div><div class="line">        // <span class="keyword">do</span> something</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;这块其实很简单，就是把synchronized加在里一个静态方法上面。这种情况下，就是对这个A类的所有静态方法加锁了。当然同时也锁了下面要讲的一个synchronized同步语句块的一个情况的锁。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>这里还要额外补充一点，实例方法的锁，会锁同一实例的所有加了synchronized关键字的实例方法；静态方法的锁，会锁同一类（class）所有加了synchronized关键字的静态方法。</strong></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;对于1和2两部分，下面在举个例子，某个类X有这四个方法。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">synchronized void a();</div><div class="line">synchronized void b();</div><div class="line">synchronized static void sa();</div><div class="line">synchronized static void sb();</div></pre></td></tr></table></figure></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;现在有X类的两个实例x、y，对于下面的四种情况，我们分别说一下结果。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;1）x.a与x.b，这种情况就是我们1里面说过的，由于是同一个对象，所以是同步访问。<br>&nbsp;&nbsp;&nbsp;&nbsp;2）x.a与y.a，由于实例方法的锁是针对对象的，所以这里两个线程的访问会是异步非阻塞的。<br>&nbsp;&nbsp;&nbsp;&nbsp;3）x.sa与y.sb（其实应该这么写X.sa与X.sb），这里由于是修饰的静态方法，所以这个锁是针对class的，所以他们会阻塞，是同步的。<br>&nbsp;&nbsp;&nbsp;&nbsp;4）x.a与X.sa，这里大家可以去实验一下，会是异步的。我们可以这么理解，对象锁和class的类锁是互不相干的，他们只管自己的事。</p>
+<h2 id="3、synchronized同步语句块"><a href="#3、synchronized同步语句块" class="headerlink" title="3、synchronized同步语句块"></a>3、synchronized同步语句块</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;接下来我们来介绍同步语句块，为什么可以修饰在方法的关键字上之后，还要同步语句块呢？首先synchronized修饰在方法上其实易用性很强，我们不用管太多东西，只要方法结束或者方法中间抛出异常，这个同步锁就会解开结束。缺点是什么呢，不灵活、效率低。由于这个关键字加在了方法上，所以锁的是整个方法。加入一个方法a需要运行2s，那么同时过来3个线程，就是6s。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;假如有个投票的方法，这个方法会加票、写库、然后各种记录操作、扣钱（假设投票需要虚拟币）、通知前端、发消息什么的。一堆操作肯定很耗时，但是为了保持我们的投票数据准确不能出现脏读的情况，所以我们还必须加锁。假设这个投票方法要运行2s，那么在投票的快要结束的时间，同时1000个人来投票就要2000s时间来处理啊，半个多小时。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;实际上我们真正需要加锁的地方在哪，并不是上面提到的所有的情况都要锁起来，我们只需要在增加投票数那一块锁起来，后面的一些无关的操作并不一定需要是同步的。所以synchronized在方法上修饰就没那么灵活了。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;同步语句块要解决的就是这么个情况，可以在方法的中间需要加锁的地方加锁，只锁那一块。下面举个例子。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public class A &#123;</div><div class="line">    public void <span class="function"><span class="title">xxx</span></span>()&#123;</div><div class="line">        synchronized (this) &#123;</div><div class="line">            // 加票</div><div class="line">        &#125;</div><div class="line">        // 记录明细、扣钱...</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;上面的代码就只对加票这块做了同步处理，可能加票这部操作只需要1ms，就要快了很多。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;下面在说一下同步语句块的两种情况，一种是以对象为锁，一种是加类锁。上面的例子实际上是对象锁，this也是个对象嘛。当然这里也可以写成synchronized(A.class)，这样就是在A这个类上加锁。对于我们这次的业务需求来说都一样没啥差别（实际上应该加类锁，但是我们这块一般都会做成单例去处理这样的业务，就问题不大了）。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;其实同步语句块与上面的synchronized修饰于方法上面还是有互斥的，对应的情况就是如果同步语句块的参数是this的话，就是代表这个实例对象，所以会和1中所讲情况产生同步；如果是class的话，代表类，会与2中所讲内容产生同步。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;当然同步语句块的参数还可以使用其他对象，一般为了处理像是投票那种比较独立的需求，我们可以这样加锁。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public class A &#123;</div><div class="line">    private Object lock = new Object();</div><div class="line">    public void <span class="function"><span class="title">xxx</span></span>()&#123;</div><div class="line">        synchronized (lock) &#123;</div><div class="line">            // 加票</div><div class="line">        &#125;</div><div class="line">        // 记录明细、扣钱...</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;单独声明一个对象作为锁，这样锁的是这个实例对象，当在别的地方需要用到这个锁的时候也在这个实例对象上加锁就行，不会和A这个类的对象锁和类锁冲突。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;最后说一点，就是这个参数还可以是String字符串，但是一般尽量不要使用，由于String字符串在Java中存在常量池的问题，所以有时候虽然是两个变量，但是只要内容一样就会产生同步锁。</p>
+<h2 id="4、锁重入、继承问题"><a href="#4、锁重入、继承问题" class="headerlink" title="4、锁重入、继承问题"></a>4、锁重入、继承问题</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;最后再说一个锁重入与继承所产生的问题。锁重入，就是synchronized代码块中又有一个synchronized代码块，或者同步方法中调用了同步方法。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;同步代码块能否进锁就还是看能不能获取锁，有没有相同的锁内容正在执行。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;同步方法调用同步方法这里，只要是自己对象的锁，那么可以无限重新进锁。举上面2对比的那个例子，a里面如果调用了b，那么b中的方法也是可以执行的，并不会因为a方法持有了锁，而到里面的b会出现问题。但是直接调用b方法肯定还是会产生锁的。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;继承这块就两个重点，一个是继承就当是子类全部继承就好了，没有父子类关系。另外一个就是重写的时候，synchronized关键字也需要重新声明，否则重写方法不加synchronized关键字这个方法就不会是同步方法了。</p>
+<h2 id="5、死锁"><a href="#5、死锁" class="headerlink" title="5、死锁"></a>5、死锁</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;多线程的锁，很容易产生死锁问题，下面举个例子。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">public synchronized static void <span class="function"><span class="title">a</span></span>() &#123;</div><div class="line">    // ...</div><div class="line">    b();</div><div class="line">    // ...</div><div class="line">&#125;</div><div class="line"> </div><div class="line">public synchronized static void <span class="function"><span class="title">b</span></span>() &#123;</div><div class="line">    // ...</div><div class="line">    a();</div><div class="line">    // ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;这里是个简单明了的例子，两个线程同时进入a、b方法（他们肯定不能是一个类的了，不然b都进不去），这时候，a在等待进入b的锁，b在等待进入a的锁，就会产生互相等待，也就是死锁了。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;分析一个Java进程有没有死锁，可以通过运行<em>jstack -l</em> 进程ID来发现是否存在死锁。</p>
+<hr>
+<h1 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a>volatile关键字</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;其实对于同步来说，见的最多的双重校验单例的实现。里面其实也有用到了volatile关键字。这个关键字一般还是挺少用的，他有两个作用，一个是可见性，一个是禁止指令重排序。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;可见性这个问题，在一般情况下不容易见到，但是当运行server版Java进行的话，就会出现。当然也可以通过jvm增加-server参数来实现。线程内都会保存一个变量的内存副本，这个内存副本只会在初始化的时候读取，之后就是在线程内做了修改，回去写入和更新。但是如果外部去修改了这个变量，那么线程内的副本是不会主动更新的，这就是可见性的问题。所以如果给变量增加了volatile的关键字，那么就可以保证这个变量每次都去主内存中读写变量，不管内存副本了。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;指令重排序，这个大家可能会比较陌生，由于jvm有自己对代码的优化，比如一段代码的4行内容，他们互不影响，那么在jvm实际执行的时候有可能并不是按照顺序执行的，可能是1、3、2、4这样的顺序执行，这就是指令重排序。当然这和我们这次讲的锁没有关系，只是提一下，volatile还有禁止指令重排序的作用。</p>
+<hr>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;其实多线程的问题有点类似于我们一开始学习数据库，脏读啊，不可重复读什么的，都是并发引起的。当然这里就涉及到锁了。本次介绍了synchronized关键字的处理锁和同步的问题，其实Java中还有更灵活的方式也就是lock来处理锁和同步的问题，这个我们之后会讲到。</p>
+<hr>
+<p>转载自：<a href="http://irfen.me/java-multi-thread-2/" target="_blank" rel="external">赵伊凡’s Blog</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 转载 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> 多线程 </tag>
+            
+            <tag> 并发 </tag>
+            
+            <tag> 性能 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Java多线程（1）——基础]]></title>
+      <url>/2017/09/18/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%9F%BA%E7%A1%80/</url>
+      <content type="html"><![CDATA[<h1 id="进程与线程"><a href="#进程与线程" class="headerlink" title="进程与线程"></a>进程与线程</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>进程</strong>是什么，想必学计算机的同学都不会陌生，打开windows任务管理器，或者linux服务器上top命令锁展示的结果，就是一个个的进程。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<em>进程（Process）是计算机中的程序关于某数据集合上的一次运行活动，是系统进行资源分配和调度的基本单位，是操作系统结构的基础。在早期面向进程设计的计算机结构中，进程是程序的基本执行实体；在当代面向线程设计的计算机结构中<a id="more"></a>，进程是线程的容器。程序是指令、数据及其组织形式的描述，进程是程序的实体。——引自百度百科</em></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;但是一个应用只有一个进程吗，NO，一个应用可能会开除多个子进程来进行需要的工作。举个例子，php解析的服务进程，可以配置要使用多少个子进程进行工作，所以在top命令中，会看到多个同名进程，而他们的创建者都是php主进程创建的。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>线程</strong>大家肯定也听过，一般一个进程下会有多个线程。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<em>线程，有时被称为轻量级进程，是程序执行流的最小单元。在单个程序中同时运行多个线程完成不同的工作，称为多线程。——引自百度百科</em></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;另外，一个进程至少会有一个线程，如果只有一个线程，那就是程序本身了。一般程序有多个线程的话都会有一个主线程去执行入口程序，之后再发起其他线程去进行其他的工作。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;看起来还是不太清晰的话，我来举个例子解释一下。比如一个应用，需要干两件事情，A是发送一个请求等待响应之后打印出来（这个请求加上响应的时间可能是2s），B也是发送一个请求等待响应之后打印出来（这个时间是3s）。如果没有线程就需要顺序执行了，这个总的执行时间我们可以预估到是5s。如果使用了多线程，线程1发起请求A，这时候再起一个线程2发起请求B，线程1等待2s收到响应打印，线程2等待3s收到响应打印。总的程序执行时间就是3s了。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;其实多线程，是利用CPU空闲去干多件事。就比如上面的例子，A在等待的时候，CPU是闲着的，这时候这2s的时间内就可以去干别的事情。其实多线程只是看起来是同时执行了多个任务，实际上只是利用的空闲时间去相互插空而已，只是我们感觉不到。</p>
+<hr>
+<h1 id="Java中怎么实现多线程"><a href="#Java中怎么实现多线程" class="headerlink" title="Java中怎么实现多线程"></a>Java中怎么实现多线程</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;其实这个问题在面试的时候也很容易被问到。有两种方法，一种是继承Thread类，一种是实现Runnable接口。其实Thread类也是实现了Runnable接口的，看一眼源码就会知道了。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;这里实现起来其实很简单，继承Thread类就去重写run方法，实现Runnable就去实现run方法，然后调用start方法执行线程。这里要说一点的是，多线程具有异步性，就是在代码中写的顺序，不一定代表执行结果的顺序。举个例子，多个线程打印数字。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">public class PrintText extends Thread &#123;</div><div class="line">    private int num = 0;</div><div class="line">    public PrintText(int num) &#123;</div><div class="line">        this.num = num;</div><div class="line">    &#125;</div><div class="line"> </div><div class="line">    @Override</div><div class="line">    public void <span class="function"><span class="title">run</span></span>() &#123;</div><div class="line">        System.out.println(num);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>下面是程序主入口<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public class Test &#123;</div><div class="line">    public static void main(String[] args) &#123;</div><div class="line">        PrintText1 pt1 = new PrintText(1);</div><div class="line">        PrintText1 pt2 = new PrintText(2);</div><div class="line">        PrintText1 pt3 = new PrintText(3);</div><div class="line">        PrintText1 pt4 = new PrintText(4);</div><div class="line">        pt1.start();</div><div class="line">        pt2.start();</div><div class="line">        pt3.start();</div><div class="line">        pt4.start();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这里程序的执行顺序是1、2、3、4，但是显示的结果确实不确定的，因为他们谁先占用到了CPU的资源是不确定的，所以千万不用想当然的把代码的顺序作为了程序打印结果的依据。</p>
+<hr>
+<h1 id="并发访问数据"><a href="#并发访问数据" class="headerlink" title="并发访问数据"></a>并发访问数据</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;讲到多线程，肯定就要说说并发访问数据的问题了。多个线程同时去修改一个数据的时候，很容易产生问题。其实这个东西我们接触过，就是在学习数据库的时候，有一个读脏数据、不可重复读那块。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;我们想想一个场景，两个线程都要多一个数字做加一操作，比如这时候数字是5，那么两个线程同时读到目前是5（其实肯定是有先后顺序的，只不过这个时间差很短，短到两个线程都还没有完成加一并写入的操作执行完），那么每个线程各自加一得到6并写入变量，那么执行完的结果就是6，但是实际上两个线程都进行了加一操作，正确的结果应该是7才对。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;如何解决这个问题呢？两种办法synchronized关键字和Lock，这个我们以后在说。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;其实synchronized这个关键字就在我们身边，只不过我们从没注意过，我们总是在用，甚至一开始就学的System.out.println()这个打印语句，其中的println就是使用了这个关键字的一个线程安全的方法。</p>
+<hr>
+<h1 id="几个基础方法"><a href="#几个基础方法" class="headerlink" title="几个基础方法"></a>几个基础方法</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;下面我们来学几个多线程的基础方法，也就是Thread类给我们提供的一些方法。</p>
+<h2 id="currentThread-方法"><a href="#currentThread-方法" class="headerlink" title="currentThread()方法"></a>currentThread()方法</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;这个方法会返回当前正在执行的线程的一些信息。其实也都很容易理解。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Thread.currentThread().getName(); // 返回当前线程的名称</div><div class="line">Thread.currentThread().getId(); // 返回当前线程的唯一标识</div></pre></td></tr></table></figure></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;这里需要注意的是，currentThread返回的是当前正在执行的线程的信息，而main方法的入口本身也是一个主线程。所以假设我们在上面打印数字的例子中，实现Thread类的构造方法中获取当前的线程名字，会是main，而在run方法中获取线程名字才是当前这个类的线程，一般默认是Thread-0（这里如果不给线程设置名称的话，他默认按照线程创建顺序把线程命名为Thread-n这样的形式）。</p>
+<h2 id="isAlive-方法"><a href="#isAlive-方法" class="headerlink" title="isAlive()方法"></a>isAlive()方法</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;其实看英文也能差不多猜到，就是获取当前线程是否在活动状态。如果直接在run()方法中判断，一定会是true。说白了，就是run方法只要还在执行过程中，他就会是true。</p>
+<h2 id="sleep-方法"><a href="#sleep-方法" class="headerlink" title="sleep()方法"></a>sleep()方法</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;这个大家应该很熟悉吧，就是让线程等待多久的方法，默认单位是毫秒。一般我们都是用的Thread.sleep(1000)这样，其实他指的是currentThread的线程。</p>
+<h2 id="停止线程"><a href="#停止线程" class="headerlink" title="停止线程"></a>停止线程</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;在Java中有3中方法停止正在运行的线程。<br>&nbsp;&nbsp;&nbsp;&nbsp;a、用退出标志位，使线程正常退出，也就是当run方法执行完后线程停止。<br>&nbsp;&nbsp;&nbsp;&nbsp;b、stop方法强制停止。（这个方法已经弃用了，虽然很简单，但是简单必有坑）<br>&nbsp;&nbsp;&nbsp;&nbsp;c、使用interrupt方法中断线程。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;你当然可以用退出标志位来处理了，一般也就是各种if嵌套什么的，逻辑会比较混乱；stop就不用说了，官方都弃用了；最后也就是推荐的使用interrupt中断了。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;使用interrupt中断，可没有for循环中的break那么简单，调用thread的interrupt方法，并不会立刻终端线程，而只是标记这个线程要中断，能不能中断还是要看线程当前的状态的。你觉得这样不好？stop就是因为可以立刻中断，让线程没有好好办法善后，所以才推荐用interrupt的呀~</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;配合interrupt()方法的还有几个方法，他们是interrupted，isInterrupted，看起来好像是一个意思是吧。其实不一样，前者意思是当前线程是否已经中断，后者是线程是否已经中断。看一下程序的声明，会发现，前者是<strong>静态（static）</strong>方法，那肯定就是Thread可以直接调用了，所以默认也就是当前线程了；后者是类的普通方法，那么肯定要在某个类的实例化之后才能调用，所以就是那个线程的判断了。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;这里还要有一点需要注意，就是这个interrupted方法，如果在线程已经是中断的状态下的话连续调用两次，第一次会是true，第二次就回事false了。为什么呢？官方给出的解释是这个方法具有清楚状态的功能。所以第一次返回true，并且清除了状态，所以第二次就返回false了，这点要特别注意。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;所以我们我们怎么通过interrupt去结束线程呢？当然可以在run方法里面通过interrupted方法的判断来做if，但是这样真的会有些混乱，所以推荐的是<strong>异常法</strong>。先举例一个if判断的坏处。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">public class PrintText extends Thread &#123;</div><div class="line"> </div><div class="line">    @Override</div><div class="line">    public void <span class="function"><span class="title">run</span></span>() &#123;</div><div class="line">        <span class="keyword">for</span> (int i = 0; i &lt; 10000; i++) &#123;</div><div class="line">            <span class="keyword">if</span> (this.interrupted()) &#123;</div><div class="line">                System.out.println(<span class="string">"interrupted"</span>);</div><div class="line">                <span class="built_in">break</span>;</div><div class="line">            &#125;</div><div class="line">            System.out.println(i);</div><div class="line">        &#125;</div><div class="line">        System.out.println(<span class="string">"finish"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;上面的代码，如果程序出现中断了，那么会跳出for循环，但是如果想不打印最后的finish字符内容的话，怎么处理呢？在做一个判断吗？<br>&nbsp;&nbsp;&nbsp;&nbsp;如果这里我们<strong>把break改为抛出一个异常</strong>，然后在整个代码块上做个try…catch，这样，就可以不打印finish信息了。如果想打印的话，可以让try…catch不包含这个打印语句，这样就可以打印出来了，所以异常法更灵活一些吧。当然你这里也可以使用return不打印finish，但是也不够灵活。</p>
+<h2 id="睡眠中停止"><a href="#睡眠中停止" class="headerlink" title="睡眠中停止"></a>睡眠中停止</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;如果线程正处于sleep状态的时候，调用线程的interrupt，sleep会自动抛出InterruptedException，这样同样可以达到我们的目的。但是这种情况需要注意的是，抛出异常的同时也会把中断状态清除，这点要格外留意。<br>&nbsp;&nbsp;&nbsp;&nbsp;另外这里我给大家总结一点，就是sleep和interrupt两个方法的执行前后所产生的不同结果。上面说的是在sleep过程中调用interrupt，会抛出异常中断；还有一种情况，就是先interrupt，然后线程仍会执行，这时候调用sleep，立即也会产生中断异常。</p>
+<h2 id="暂停与恢复"><a href="#暂停与恢复" class="headerlink" title="暂停与恢复"></a>暂停与恢复</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;暂停与恢复应该很好理解，就是让线程的运行暂停或者恢复。对应的方法分别为suspend与resume，但是需要说的也是一样，这两个方法也已经被官方弃用了，弃用就说明一定有他不好的地方。使用起来很简单，这里就不做介绍了，大家可以自己试试。<br>&nbsp;&nbsp;&nbsp;&nbsp;这里说一下他们的缺点，比如有一个线程锁定了一个对象，然后暂停了，会造成对这个对象的长时间锁定，可能会堵死程序。另外也会造成数据的不一致，比如一个线程需要对这个数据做两次加一，结果只做了一次的时候暂停了，别的程序拿到的不是一个正确的结果，就出错了。</p>
+<h2 id="yield方法"><a href="#yield方法" class="headerlink" title="yield方法"></a>yield方法</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;这个方法意思就是主动放弃当前CPU资源，让其他线程使用。但是这里的其他线程也包括他自己的，所以并不是一个精准的功能。但是会造成CPU资源切换所导致的时间花销。</p>
+<h2 id="线程的优先级"><a href="#线程的优先级" class="headerlink" title="线程的优先级"></a>线程的优先级</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;线程可以设置优先级，有个方法是setPriority(int newPriority)。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;线程优先级只有10级就是1到10，如果超出范围会抛出异常的，这点大家可以看一下源码了解。默认的优先级都是5，但是这里需要说明一点的是，优先级并不会绝对代表程序的执行顺序，只是个建议，实际上可能会和我们设置的不一样。但是跨度很大的比如1和10的话，10比1先执行的可能性就大很多。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;另外线程的优先级具有继承性，比如A线程优先级是10，那么由A线程启动的B线程，优先级也会是10。</p>
+<h2 id="守护线程"><a href="#守护线程" class="headerlink" title="守护线程"></a>守护线程</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;守护线程就是一种特殊的线程，他依托于某一线程A存在，当A线程结束的时候，守护线程也会自动结束。<br>&nbsp;&nbsp;&nbsp;&nbsp;具体用法就也很简单，就是通过调用thread.setDaemon(true)来设置的。到此，所有有关多线程的基础内容也就介绍完了，希望大家能够掌握。</p>
+<hr>
+<p>转载自：<a href="http://irfen.me/java-multi-thread-1/" target="_blank" rel="external">赵伊凡’s Blog</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 转载 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> 多线程 </tag>
+            
+            <tag> 并发 </tag>
+            
+            <tag> 性能 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Java内存模型]]></title>
+      <url>/2017/09/12/Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/</url>
+      <content type="html"><![CDATA[<h1 id="主内存与工作内存"><a href="#主内存与工作内存" class="headerlink" title="主内存与工作内存"></a>主内存与工作内存</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;Java内存模型规定了所有的变量都存储于<strong>主内存（Main Memory）</strong>。每条线程都有自己的<strong>工作内存（Working Memory）</strong>，线程的工作内存中保存了被该线程使用到的<strong>变量的主内存拷贝</strong>。线程对变量的所有操作（读取、赋值等）都<strong>必须</strong>在<strong>工作内存</strong>中进行，而不能直接读写主内存中的变量。<br><a id="more"></a></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>注意：</strong><br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·</strong>上文的<strong>变量</strong>包括了实例字段、静态字段和构成数组对象的元素，但不包括局部变量与方法参数，因为后者是线程私有的，不会被共享。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·</strong>这里所讲的主内存、工作内存与Java内存区域中的Java堆、栈、方法区等并不是同一个层次的内存划分，这两者基本是没有关系的。</p>
+<h1 id="内存间的交互操作"><a href="#内存间的交互操作" class="headerlink" title="内存间的交互操作"></a>内存间的交互操作</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;关于主内存和工作内存间具体的交互协议，即一个变量如何从主内存拷贝到工作内存、如何从工作内存同步到主内存之类的实现细节，Java内存模型定义了以下<strong>8种操作</strong>来完成，虚拟机实现时<strong>必须保证</strong>下面提及的<strong>每一种操作</strong>都是<strong>原子的</strong>、<strong>不可再分的</strong>（double、long类型在某些平台的load、store、read、write允许有例外）。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·lock（锁定）：</strong>作用于<strong>主内存的变量</strong>，它把一个变量标识为一条线程独占的状态。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·unlock（解锁）：</strong>作用于<strong>主内存变量</strong>，它把一个处于锁定状态的变量释放出来，释放后的变量才可以被其他线程锁定。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·read（读取）：</strong>作用于<strong>主内存的变量</strong>，它把一个变量的值从主内存传输到线程的工作内存中，以便以后的load动作使用。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·load（载入）：</strong>作用于<strong>工作内存的变量</strong>，它把read操作从主内存得到的变量值放入工作内存的变量副本中。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·use（使用）：</strong>作用于<strong>工作内存的变量</strong>，它把工作内存中一个变量的值传递给执行引擎，每当虚拟机遇到一个需要使用到变量的值得字节码指令时将会执行这个操作。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·assign（赋值）：</strong>作用于<strong>工作内存的变量</strong>，它把一个从执行引擎接收到的值赋给工作内存的变量，每当虚拟机遇到一个给变量赋值的字节码指令时执行这个操作。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·store（存储）：</strong>作用于<strong>工作内存的变量</strong>，它把工作内存中一个变量的值传送到主内存中，以便以后的write操作使用。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·write（写入）：</strong>作用于<strong>主内存的变量</strong>，它把store操作从工作内存中得到的变量的值放入主内存的变量中。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;如果要把一个变量从主内存复制到工作内存，那就要<strong>顺序执行</strong>read和load操作，如果要把变量从工作内存同步回主内存，就要<strong>顺序执行</strong>store和write操作。注意：Java内存模型只要求顺序执行，没有保证是连续执行，如read a、read b、load a、load b是可以的。除此之外，Java内存模型还规定了在执行上述8种操作时<strong>必须满足以下规则</strong>：<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·</strong>不允许read和load、store和write操作之一单独出现，即不允许一个变量从主内存读取了但工作内存不接受，或者从工作内存发起回写了但主内存不接受的情况出现。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·</strong>不允许一个线程丢弃它的最近的assign操作，即变量在工作内存中改变了之后必须把该改变同步回主内存。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·</strong><br>不允许一个无原因的（没有发生任何assign操作）把数据从线程的工作内存同步回内存中。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·</strong>一个新的变量只能在主内存中“诞生”，不允许在工作内存中直接使用一个未被初始化（load或assign）的变量。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·</strong>一个变量在同一时刻只允许一条线程对其进行lock操作，但lock操作可以被同一条线程执行多次，多次执行lock后，只有执行相同次数的unlock操作，变量才会被解锁。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·</strong>如果对一个变量执行lock操作，那将会清空工作内存中此变量的值，在执行引擎使用这个变量之前，需要重新执行load或assign操作初始化其变量的值。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·</strong>如果一个变量事先没有被lock锁定，那就不允许对它进行unlock操作，也不允许去unlock一个被其他线程锁定的变量。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·</strong>对一个变量执行unlock操作之前，必须先把变量同步回主内存中（执行store、write操作）。</p>
+<h1 id="对于volatile型变量的特殊规则"><a href="#对于volatile型变量的特殊规则" class="headerlink" title="对于volatile型变量的特殊规则"></a>对于volatile型变量的特殊规则</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;关键字volatile可以说是Java虚拟机提供的最轻量级的同步机制，当一个变量定义为volatile之后，他将具备两种特性：</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>1、保证变量对所有的线程的可见性：</strong>这里的“可见性”是指当一条线程修改了这个变量的值，新值对于其他线程来说是可以立即得知的。由于Java里面的运算并非原子操作，所以volatile变量的运算在并发下是不安全的，因此，在<strong>不符合</strong>以下两条规则的运算场景中，我们仍然要通过加锁（使用synchronized或java.util.concurrent中的原子类）来保证原子性：<br>&nbsp;&nbsp;&nbsp;&nbsp;·运算结果并不依赖变量的当前值，或者能够确保只有单一的线程修改变量的值。<br>&nbsp;&nbsp;&nbsp;&nbsp;·变量不需要与其他的状态变量共同参与不变约束。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>2、volatile变量禁止指令重排序优化：</strong>普通的变量仅仅会保证在该方法的执行过程中所有的依赖赋值结果的地方都能获取到正确的结果，而不能保证变量赋值操作的顺序与程序代码中的执行顺序一致，而volatile变量将会禁止此情况发生。</p>
+<h1 id="先行发生原则-happens-before"><a href="#先行发生原则-happens-before" class="headerlink" title="先行发生原则(happens-before)"></a>先行发生原则(happens-before)</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>先行发生</strong>时Java内存模型中定义的两项操作之间的偏序关系，如果操作A先行发生于操作B，其实就是说在发生操作B之前，操作A产生的影响能够被操作B观察到，“影响”包括修改了内存中共享变量的值，发送了的消息，调用了方法等。<strong>先行发生原则</strong>是判断数据是否存在竞争、线程是否安全的主要依据，依靠这个原则，我们可以通过几条规则一览子地解决<strong>并发环境</strong>下两个操作之间是否可能存在冲突的所有问题。<br>&nbsp;&nbsp;&nbsp;&nbsp;下面是Java内存模型下一些“天然的”先行发生关系，这些先行发生关系无须任何同步器协助就已经存在，可以在编码中直接使用。如果两个操作之间的关系不在此列，并且无法从下列规则推导出来的话，他们就没有顺序性保障，虚拟机可以对它们随意的进行重排序。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·程序次序规则（Program Order Rule）：</strong>在一个线程内，按照程序代码顺序，书写在前面的操作先行发生于书写后面的操作。准确的说，应该是控制流顺序而不是代码顺序，因为还有分支、循环等结构。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·管程锁定规则（Monitor Lock Rule）：</strong>一个unlock操作先行发生于后面对同一个锁的lock操作。这里必须强调的是<strong>同一个锁</strong>，而“后面”是指<strong>时间</strong>上的先后顺序。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·volatile变量规则（volatile Variable Rule）：</strong>对一个volatile变量的写操作先行发生于后面对这个变量的读操作，这里的“后面”指<strong>时间</strong>上的先后顺序。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·线程启动规则（Thread Start Rule）：</strong>Thread对象的start()方法先行发生于此线程的每一个动作。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·线程终止规则（Thread Termination Rule）：</strong>线程中所有的操作都先行发生于对此线程终止检测，我们可以通过Thread.join()方法结束、Thread.isAlive()的返回值等手段检测到线程已经终止执行。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·线程中断规则（Thread Interruption Rule）：</strong>对线程interrupt()方法的调用先行发生于被中断线程的代码检测到中断事件的发生，可以通过Thread.interrupted()方法检测到是否有中断发生。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·对象终结规则（Finalizer Rule）：</strong>一个对象的初始化完成（构造函数执行结束）先行发生于它的finalize()方法的开始。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>·传递性（Transitivity）：</strong>如果A操作先行发生于B操作，B操作先行发生于C操作，那么A操作先行发生于C操作。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>注意：</strong>时间先后顺序与先行发生原则之间基本没有太大的关系，所以我们<strong>衡量并发安全</strong>问题的时候不要受到时间顺序的干扰，<strong>一切必须以先行发生原则为准</strong>。</p>
+<hr>
+<p>转载请注明出处：<a href="http://www.yhang6.com/" target="_blank" rel="external">www.yhang6.com</a> </p>
+]]></content>
+      
+        <categories>
+            
+            <category> 原创 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 内存交互 </tag>
+            
+            <tag> 内存模型 </tag>
+            
+            <tag> 主内存 </tag>
+            
+            <tag> 工作内存 </tag>
+            
+            <tag> 先行发生 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[虚拟机类加载机制]]></title>
+      <url>/2017/09/08/%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/</url>
+      <content type="html"><![CDATA[<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;我们都知道，计算机并不能直接读懂我们人所使用的语言，所以我们编写的程序必须转换成计算机能读懂的语言的才能执行。在JAVA的Class文件中描述的各种信息也不例外，最终都需要加载到虚拟机中之后才能运行和使用。而虚拟机如何加载这些Class文件？Class文件中的信息进入到虚拟机后会发生什么变化？这些都是接下来将要说的内容。<br><a id="more"></a><br>&nbsp;&nbsp;&nbsp;&nbsp;虚拟机把描述类的数据从Class文件<strong>加载(Loading)</strong>到内存，并对数据进行<strong>连接(Linking)</strong>和<strong>初始化(Initialization)</strong>，其中连接分为 <em>验证(Verification)</em>、<em>准备(Preparation)</em>、<em>解析(Resolution)</em> 三步，最终形成可以被虚拟机直接使用的JAVA类型，这就是虚拟机的<strong>类加载机制</strong>。</p>
+<hr>
+<h1 id="类加载的过程"><a href="#类加载的过程" class="headerlink" title="类加载的过程"></a>类加载的过程</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;接下来我们详细说一下JAVA虚拟机中类加载的全过程，也就是<strong>加载</strong>、<strong>验证</strong>、<strong>准备</strong>、<strong>解析</strong>和<strong>初始化</strong>这5个阶段所执行的具体动作。</p>
+<h2 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;加载是类加载过程的第一个阶段，在加载阶段，虚拟机需要完成以下3件事情：<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>1.</strong>通过一个类的全限定名来获取定义此类的二进制字节流。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>2.</strong>将这个字节流所代表的静态存储结构转化为方法区的运行时数据结构。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>3.</strong>在内存中生成一个代表这个类的java.lang.Class对象，作为方法区这个类的各种数据的访问入口。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;在这里，第一条中的二进制字节流并不只是单纯的从一个Class文件中获取，他还可以从ZIP包中读取，从网络中获取（最典型的应用：Applet），还可以运算时生成(动态代理技术)等方式。<br>&nbsp;&nbsp;&nbsp;&nbsp;相对于类加载过程的其他阶段，一个非数组类的加载阶段（准确的说是加载阶段中获取二进制字节流的的动作）是开发人员可控性最强的，因为加载阶段既可以使用系统提供的引导类加载器来完成，也可以由用户自定义的类加载器去完成。<br>&nbsp;&nbsp;&nbsp;&nbsp;加载阶段与连接阶段的部分内容（一部分字节码文件格式验证动作）是交叉进行的，这两个阶段的开始时间仍然保持着固定的先后顺序。</p>
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;验证是连接阶段的第一步，主要目的是确保Class文件的字节流中包含的信息符合当前虚拟机的要求，并不会危害虚拟机自身的安全。验证阶段是非常重要的，这个阶段是否严谨，直接决定了Java虚拟机是否能承受恶意代码的攻击。从整体上来看，验证阶段大致上分为4个阶段的检验动作：<strong>文件格式验证</strong>、<strong>元数据验证</strong>、<strong>字节码验证</strong>、<strong>符号引用验证</strong>。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>1.文件格式验证</strong>：该验证阶段的主要目的是保证输入的字节流能正确地解析并存储于方法区之内，格式上符合描述一个Java类型信息的要求。只有通过了这个阶段的验证后，字节流才会进入内存的方法区中存储，后面3个验证阶段全部是基于方法区的存储结构进行，不会再直接操作字节流。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>2.元数据验证</strong>：这个阶段的主要目的是对类的元数据信息进行语义校验，保证不存在不符合Java语言规范的元数据信息，此阶段是对元数据信息的<strong>数据类型</strong>进行校验。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>3.字节码验证</strong>：本阶段是整个验证过程中最复杂的一个阶段，主要是通过 <strong><em>数据流</em></strong> 和 <strong><em>控制流</em></strong> 分析，确定程序语义是合法的、符合逻辑的。这个阶段将对类的<strong>方法体</strong>进行校验分析。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>4.符号引用验证</strong>：本阶段是验证的最后一个阶段，发生在虚拟机将符号引用转化为直接引用的时候，这个转化将在连接的第三阶段——解析阶段发生。符号引用验证的目的是确保解析动作能正常执行。</p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;准备阶段是正式为类变量<strong>分配内存</strong>并<strong>设置类变量初始值</strong>的阶段。这里需要强调一下，首先，这时候进行内存分配的仅包括类变量(被static修饰的变量)，不包括实例变量，实例变量会在对象实例化时伴随对象一起分配在Java堆中。其次，这里的初始值“通常情况”下为数据的零值，看下方的代码：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">public static int value = 123;</div></pre></td></tr></table></figure></p>
+<p>这里value在准备阶段过后的初始值是0而不是123，把value赋值为123的动作将在<strong>初始化阶段</strong>才会执行。既然有通常情况，也就会有“特殊情况”：如果类字段的字段属性表中存在ConstantValue属性，那么准备阶段变量value就会被初始化为ConstantValue属性所指定的值，代码如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">public static final int value = 123;</div></pre></td></tr></table></figure></p>
+<p>这时，在准备阶段虚拟机会根据ConstantValue的设置将value赋值为123.</p>
+<h2 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;解析阶段是虚拟机将常量池内的<strong>符号引用</strong>替换为<strong>直接引用(得到类或者字段、方法在内存中的指针或者偏移量，以便直接调用该方法)</strong>的过程。</p>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;在<strong>准备</strong>阶段，变量已经赋值过一次系统要求的初始值，而在<strong>初始化阶段</strong>，则根据程序员通过程序制定的主观计划去初始化<strong>类变量</strong>和<strong>其他资源</strong>，举个例子：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public static int value1 = 2;</div><div class="line">public static int value2 = 6;</div><div class="line">static&#123;</div><div class="line">	value2 = 8;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在准备阶段，value1和value2都等于0，在初始化阶段value1和value2分别等于2和8。类的初始化阶段就是执行类构造器“<strong>&lt; clinit&gt;()</strong>”方法的过程，该方法只能在类加载的过程中由JVM调用，下面介绍一下&lt; clinit&gt;()的特点和细节：<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>1.</strong>编译器收集的顺序是由语句在源文件中出现的顺序决定的，静态语句块中只能访问到定义在静态语句块之前的变量；<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>2.</strong>如果一个类的父类还没有初始化，那么会优先初始化父类，但是&lt; clinit&gt;()方法不会显示地调用父类&lt; clinit&gt;()方法，JVM负责保证一个类的&lt; clinit&gt;()方法执行之前，他父类的&lt; clinit&gt;()方法已经被执行；因此在虚拟机中第一个被执行&lt; clinit&gt;()方法的类一定是java.lang.Object。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>3.</strong>JVM必须确保一个类在初始化的过程中，如果是多线程需要同时初始化它，仅仅只能允许其中一个线程对其执行初始化操作，其余线程必须等待，只有在活动线程执行完对类的初始化操作之后，才会通知正在等待的其他线程。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>4.</strong>如果一个类中没有静态语句块，也没有对类变量的进行赋值操作，那么该类可以没有&lt; clinit&gt;()方法。另外，在接口中不需要先执行父接口的&lt; clinit&gt;()方法，只有当父接口中定义的变量被使用时，父接口才会初始化；接口的实现类在初始化时也一样不会执行接口的&lt; clinit&gt;()方法。</p>
+<p><strong><em>触发初始化的时间</em></strong><br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>1.</strong>遇到<strong>new</strong>、<strong>getstatic</strong>、<strong>putstatic</strong>或<strong>invokestatic</strong>这4条字节码指令时，如果类没有进行过初始化，则需要先触发其初始化。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>2.</strong>使用java.lang.reflect包的方法对类进行反射调用的时候。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>3.</strong>放初始化一个类的时候，发现其父类还没有进行初始化过，则先初始化父类。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>4.</strong>当虚拟机启动时，用户需要指定一个要执行的主类（包含main方法的类），虚拟机会先初始化这个主类。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>5.</strong>当使用动态语言支持时，如果一个java.lang.invoke.MethodHandle实例最后的解析结果REF_getStstic、REF_putStatic、REF_invokeStatic的方法句柄，并且这个方法句柄对应的类没有进行初始化，则先触发初始化。</p>
+<hr>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;Java虚拟机规范中并没有对 什么时候开始类加载过程的<strong>加载阶段</strong> 进行强制约束，这点可以交给虚拟机的具体实现来自由把握。但是对于<strong>初始化阶段</strong>，虚拟机规范则是严格规定了有且只有上文提到的5种情况。<br>&nbsp;&nbsp;&nbsp;&nbsp;类的整个生命周期包括：加载、验证、准备、解析、初始化、使用、卸载7个阶段；其中加载、验证、准备、初始化、卸载这5个阶段的顺序是确定的，类的加载过程必须按照这种顺序按部就班的<strong>开始</strong>（不代表进行或完成），但<strong>解析</strong>阶段则不一定：它在某些情况下可以在初始化阶段之后再开始，这是为了支持Java语言的<strong>运行时绑定</strong>（也称为动态绑定或晚期绑定）。</p>
+<hr>
+<p>转载请注明出处：<a href="http://www.yhang6.com/" target="_blank" rel="external">www.yhang6.com</a> </p>
+]]></content>
+      
+        <categories>
+            
+            <category> 原创 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> JVM </tag>
+            
+            <tag> 类加载 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[关于Java虚拟机的垃圾回收]]></title>
+      <url>/2017/09/05/%E5%85%B3%E4%BA%8EJava%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/</url>
+      <content type="html"><![CDATA[<h2 id="JVM的内存区域分配"><a href="#JVM的内存区域分配" class="headerlink" title="JVM的内存区域分配"></a>JVM的内存区域分配</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;要讲垃圾收集算法，首先需要分清楚JVM的内存区域分配：JVM的运行时数据区可以分为程序计数器（Program Counter Register）、虚拟机栈（VM Stack）、本地方法栈（Native Method Stack）、堆（Heap）、方法区（Method Area）五个部分。其中Sun HotSpot虚拟机将虚拟机栈和本地方法栈合二为一，并且方法区是堆的一个逻辑部分。而我们将要讲到的垃圾回收就是发生在堆中。<br><a id="more"></a><br>&nbsp;&nbsp;&nbsp;&nbsp;从垃圾收集的角度讲，HotSpot虚拟机将堆区分为GC堆和方法区，也有人将其分为永生代（方法区）、新生代、老年代，其中新生代和老年代属于GC堆，而新生代又可分为Eden空间、From Survivor空间、To Survivior空间。至此，堆区的内存分布大致已经讲清楚了，下面我们将介绍几种垃圾收集算法。</p>
+<hr>
+<h2 id="各垃圾收集算法的含义"><a href="#各垃圾收集算法的含义" class="headerlink" title="各垃圾收集算法的含义"></a>各垃圾收集算法的含义</h2><h3 id="标记-清除算法"><a href="#标记-清除算法" class="headerlink" title="标记-清除算法"></a>标记-清除算法</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;“标记-清除”算法是最基础的收集算法，它分为“标记”和“清除”两个阶段：首先标记出所有需要回收的对象，标记完成后，统一回收所有标记的对象。之所以说它是最基础的收集算法，是因为后续的收集算法都是基于这种思路并对其不足进而改进得到的。<br>&nbsp;&nbsp;&nbsp;&nbsp;该方法主要有两个不足：<br>&nbsp;&nbsp;&nbsp;&nbsp;1.效率问题，标记和清除两个过程的效率都不高<br>&nbsp;&nbsp;&nbsp;&nbsp;2.空间问题，该方法清除之后会产生大量零散的内存空间，若之后程序遇到需要分配较大对象而内存空间不足时，会提前触发下一次的垃圾收集动作。</p>
+<h3 id="标记-整理算法"><a href="#标记-整理算法" class="headerlink" title="标记-整理算法"></a>标记-整理算法</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;“标记-整理”算法过程与“标记-清理”算法一样，只是后续步骤不是直接对可回收对象进行清理，而是让所有存活的对象都向一端移动，然后直接清理掉存活端边界以外的内存。</p>
+<h3 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;“复制”算法将内存分为一块较大的Eden空间和两块较小的From Survivior和To Survivior空间，HotSpot虚拟机默认将三者的比例分为8:1:1，每次新生代的可用内存空间为整个新生代容量的90%(80%+10%)。当产生垃圾收集动作时，虚拟机会将存活的对象复制到To Survivior空间，然后把已使用过的内存空间一次清理掉，这样就不存在垃圾收集后空闲内存空间零散的情况；若回收后To Survivior空间没有足够的空间存放上一次新生代收集下来的存活对象，就需要依赖其他内存(这里指老年代)进行<strong>分配担保</strong>。</p>
+<hr>
+<h2 id="各区垃圾收集方式"><a href="#各区垃圾收集方式" class="headerlink" title="各区垃圾收集方式"></a>各区垃圾收集方式</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;几条最普遍的内存分配规则，虚拟机根据对象存活周期和大小会将对象分配到相应的“年代区”：对象会优先在Eden区分配，大对象直接进入老年代，长期存活的对象将进入老年代（默认值为15，即垃圾收集15次之后依然存活），另外，当Survivior空间不够时，存活对象时会通过分配担保机制进入老年代，class、常量等信息直接加载进永生代。<br>&nbsp;&nbsp;&nbsp;&nbsp;当前商业虚拟机的垃圾回收都采用<strong>“分代收集（Generational Collection）”算法</strong>，这种算法会根据各个年代的特点采用最适当的垃圾收集算法。在<strong>新生代</strong>中，每次垃圾收集时都发现有大批对象死去，只有少量存活，所以选用<strong>复制</strong>算法，只需要付出少量存活对象的复制成本就可以完成收集；而<strong>老年代</strong>因为对象存活率高、没有额外空间对它进行分配担保，就必须使用“<strong>标记-清理</strong>”或者“<strong>标记-整理</strong>”算法进行回收。</p>
+<hr>
+<p>转载请注明出处：<a href="http://www.yhang6.com/" target="_blank" rel="external">www.yhang6.com</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 原创 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> JVM </tag>
+            
+            <tag> 垃圾收集 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[浅谈GET,POST,PUT,DELETE含义及区别]]></title>
+      <url>/2017/08/18/%E6%B5%85%E8%B0%88GET-POST-PUT-DELETE%E7%9A%84%E5%90%AB%E4%B9%89%E4%B8%8E%E5%8C%BA%E5%88%AB/</url>
+      <content type="html"><![CDATA[<p>&nbsp;&nbsp;&nbsp;&nbsp; 近期在学习SpringMVC的有关知识，里面涉及到HTTP协议里的GET,POST,PUT和DELETE这四种与服务器交互的基本方法，感觉懵懵懂懂，不是很理解，于是上网查询相关资料。来做一下简单的总结，方便以后学习，有什么不对的地方欢迎指正。</p>
+<hr>
+<h2 id="含义"><a href="#含义" class="headerlink" title="含义"></a>含义</h2><p><strong>1.GET</strong><br> GET请求用于向服务器发出索取请求，从而获取相关信息，它的操作是幂等的、安全的（不管进行多少次操作，该资源的状态都不会改变）。其类似于我们请求数据库的select(R)操作，只用作查询数据，没有副作用。</p>
+<a id="more"></a>
+<p><strong>2.POST</strong><br> POST请求用于向服务器发送数据，从而改变信息，该操作既不安全也不幂等，比较常见的问题：当我们多次发送POST请求时，会创建多个资源。其类似于请求数据库的insert(C)操作，创建新的内容。目前几乎所有的提交操作都使用POST请求。</p>
+<p><strong>3.PUT</strong><br> PUT操作和POST请求类似，但是PUT操作是幂等的（不管进行多少次操作，结果是一样。如：修改了一篇文章，用PUT请求多次，该文章还是一样）。PUT操作类似于数据库的update(U)操作，修改相关类容。</p>
+<p><strong>4.DELETE</strong><br> 顾名思义，DELETE请求用于删除某个数据，和数据库的delete(D)操作一样。</p>
+<hr>
+<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><h3 id="PUT和POST的区别"><a href="#PUT和POST的区别" class="headerlink" title="PUT和POST的区别"></a>PUT和POST的区别</h3><p>&nbsp;&nbsp;&nbsp;&nbsp; 如上文所说，PUT和POST都是向服务器发送数据，如果服务端允许，那么创建操作既可以用POST，也可以使用PUT。两者的区别在于：PUT方法是幂等的，而POST不是；在请求时，PUT方法需要作用在一个具体的资源上（如：“<a href="http://hi.baidu.com/mianshiti?key1=value1”" target="_blank" rel="external">http://hi.baidu.com/mianshiti?key1=value1”</a> ），它会将提交的数据编码在url中，而url的长度又会因浏览器的长度限制而存在数据传输有限问题；POST方法会将提交的数据放在请求的body中，不会显示在url上（如：“<a href="http://hi.baidu.com/mianshiti”" target="_blank" rel="external">http://hi.baidu.com/mianshiti”</a> ），因此没有数据大小限制的问题。<br><br>&nbsp;&nbsp;&nbsp;&nbsp; 因为PUT方法把数据编码在url中，所以这些变量会显示在浏览器的地址栏上，也会被记录在服务器端的日志中，所以相比较之下，POST方法是更加安全的,此处的安全和GET提到的“安全”是不同概念，此处是真正意义上的Security。</p>
+<hr>
+<h3 id="GET和POST的区别"><a href="#GET和POST的区别" class="headerlink" title="GET和POST的区别"></a>GET和POST的区别</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;首先说原理区别：<br>&nbsp;&nbsp;&nbsp;&nbsp;一般在浏览器输入网站访问资源都是通过GET方式，在form提交中，可以通过method改变提交方式；正如上文所说，GET方式是幂等的、安全的(只限于非修改信息)，而POST方法是既不幂等、也不安全的。GET方法一般用于<strong>查询/获取</strong>信息，而POST方法一般用于<strong>更新/创建</strong>资源信息。<br><br>&nbsp;&nbsp;&nbsp;&nbsp; 上面说了原理性问题，但在实际操作的时候却没有多少人按照HTTP规范做，这也是导致GET和POST容易混淆的原因，导致这个问题的原因很多，比如说：<br>&nbsp;&nbsp;&nbsp;&nbsp;(1)很多人贪方便，更新资源时用了GET，POST方法要用form表单，麻烦一点。<br>&nbsp;&nbsp;&nbsp;&nbsp;(2)增删改查操作其实都可以用GET/POST方法完成。<br><br></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;表现形式区别：<br>&nbsp;&nbsp;&nbsp;&nbsp;跟PUT和POST一样，GET方法也需要将提交的数据在地址栏上显示出来，所以POST是更加安全的；传输数据大小也和PUT与POST一样，GET方法会有数据大小的限制，这里需要强调一点：HTTP协议没有对传输数据大小进行限制，对url的长度也没有限制，但特定的浏览器和服务器对url长度是有限制的。</p>
+<hr>
+<p>参考文章：<a href="http://blog.csdn.net/gideal_wang/article/details/4316691" target="_blank" rel="external">http://blog.csdn.net/gideal_wang/article/details/4316691</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 日志 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> GET </tag>
+            
+            <tag> POST </tag>
+            
+            <tag> PUT </tag>
+            
+            <tag> DELETE </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[谈谈感受吧]]></title>
+      <url>/2017/08/01/%E8%B0%88%E8%B0%88%E6%84%9F%E5%8F%97%E5%90%A7/</url>
+      <content type="html"><![CDATA[<h2 id="为什么要自己搭博客"><a href="#为什么要自己搭博客" class="headerlink" title="为什么要自己搭博客"></a>为什么要自己搭博客</h2><p>&#160;&#160;&#160;&#160;很久以前就有自己动手搭一个博客的想法，但是因为一个重度拖延症患者的种种原因，一直拖到了现在；最近买了一个域名，想着闲着也是闲着，就下定决心把这个博客搭了出来。一来域名也不用闲置下去，二来也算是了了自己的一个心愿，将来看到有意思的文章也可以上传上来。总之，把这个博客做出来还是很有成就感的~</p>
+<a id="more"></a>
+<hr>
+<h2 id="怎么搭的博客"><a href="#怎么搭的博客" class="headerlink" title="怎么搭的博客"></a>怎么搭的博客</h2><p>&#160;&#160;&#160;&#160;需要做的准备工作：一个github帐号，安装node.js、npm和git客户端；之后参考<a href="http://blog.liuxianan.com/build-blog-website-by-hexo-github.html" target="_blank" rel="external">liuxianan</a>和<a href="http://blog.csdn.net/gdutxiaoxu/article/details/53576018" target="_blank" rel="external">gdutxiaoxu</a>等博主的博文一点一点搭建；这个过程还是遇到了很多的问题，包括现在这个博客也不是很完美，还存在一些缺陷，之后会慢慢完善，将其他一些功能慢慢添加进来。自己动手的最大一个感触：百度、Google什么的是个好东西…</p>
+<hr>
+<h2 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h2><p>&#160;&#160;&#160;&#160;以后看到了一些有意思有帮助的文章会上传到这个博客，之前都是直接扔在浏览器收藏夹里面，显得很乱（这也是我想搭一个博客的原因），再然后等级别上去了，可能会自己写点小感触什么的，差不多就是这样。</p>
+<hr>
+<h2 id="最后吐槽两句"><a href="#最后吐槽两句" class="headerlink" title="最后吐槽两句"></a>最后吐槽两句</h2><p>&#160;&#160;&#160;&#160;搞这个东西硬生生坐了大概8、9个小时，整的脖子僵硬；有些问题花了很多时间还是没有解决，心态有点小崩…程序员是个恼火的职业 (ㄒoㄒ) 。最后谢谢大家能来看我的博客O(∩_∩)O！</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 日志 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 我 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Hello World]]></title>
+      <url>/2017/07/31/hello-world/</url>
+      <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+<a id="more"></a>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+]]></content>
+      
+        
+    </entry>
+    
+  
+  
+</search>
