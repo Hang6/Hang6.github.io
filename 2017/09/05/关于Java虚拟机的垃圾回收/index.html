@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="小Hang同学的博客">
 <meta property="og:description" content="JVM的内存区域分配&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;要讲垃圾收集算法，首先需要分清楚JVM的内存区域分配：JVM的运行时数据区可以分为程序计数器（Program Counter Register）、虚拟机栈（VM Stack）、本地方法栈（Native Method Stack）、堆（Heap）、方法区（Method Area）五个部分。其中Sun HotSpot虚拟机将虚拟机栈和">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-10-13T03:11:28.183Z">
+<meta property="og:updated_time" content="2017-10-17T08:38:11.892Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于Java虚拟机的垃圾回收">
 <meta name="twitter:description" content="JVM的内存区域分配&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;要讲垃圾收集算法，首先需要分清楚JVM的内存区域分配：JVM的运行时数据区可以分为程序计数器（Program Counter Register）、虚拟机栈（VM Stack）、本地方法栈（Native Method Stack）、堆（Heap）、方法区（Method Area）五个部分。其中Sun HotSpot虚拟机将虚拟机栈和">
@@ -207,7 +207,7 @@
             </nav>
         </header>                
     </div>
-    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
       <div class="body-wrap"><article id="post-关于Java虚拟机的垃圾回收" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -262,6 +262,12 @@
 <h3 id="标记-整理算法"><a href="#标记-整理算法" class="headerlink" title="标记-整理算法"></a>标记-整理算法</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;“标记-整理”算法过程与“标记-清理”算法一样，只是后续步骤不是直接对可回收对象进行清理，而是让所有存活的对象都向一端移动，然后直接清理掉存活端边界以外的内存。</p>
 <h3 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;“复制”算法将内存分为一块较大的Eden空间和两块较小的From Survivior和To Survivior空间，HotSpot虚拟机默认将三者的比例分为8:1:1，每次新生代的可用内存空间为整个新生代容量的90%(80%+10%)。当产生垃圾收集动作时，虚拟机会将存活的对象复制到To Survivior空间，然后把已使用过的内存空间一次清理掉，这样就不存在垃圾收集后空闲内存空间零散的情况；若回收后To Survivior空间没有足够的空间存放上一次新生代收集下来的存活对象，就需要依赖其他内存(这里指老年代)进行<strong>分配担保</strong>。</p>
 <hr>
+<h2 id="对象已死？"><a href="#对象已死？" class="headerlink" title="对象已死？"></a>对象已死？</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;在垃圾收集器对堆进行回收之前，第一件事情就是要确定这些对象之中哪些还“存活”，哪些已经“死去”（即不可能再被任何途径使用）。那么我们怎么判断对象是否“死去”了呢？</p>
+<h3 id="引用计数算法"><a href="#引用计数算法" class="headerlink" title="引用计数算法"></a>引用计数算法</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;该方法的实现原理是：给对象中添加一个引用计数器，每当一个地方引用它，计数器值加1；当引用失效时，计数器值减1；任何时刻计数器为0的对象就是不可能再被使用的。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;然而，这种方法有一个问题：它很难解决对象之间相互循环引用的状况。举个例子：这里有对象A和对象B，有赋值令A.instance = B 及 B.instance = A，除此之外，再无任何引用。实际上这两个对象都不可能再被访问，但是因为它们互相引用着对方，使得引用计数器不为0，于是无法通知GC收集器回收它们。</p>
+<h3 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;在主流的商用程序语言的主流实现中，都是称通过<strong>可达性分析</strong>（Reachability Analysis）来判断对象是否是存活的。<br>&nbsp;&nbsp;&nbsp;&nbsp;这个算法的基本思路就是通过一系列的称为“<strong>GC Roots</strong>”的对象作为起始点，从这些节点开始向下搜索，搜索所走过的路径称为<strong>引用链</strong>（Reference Chain），当一个对象没有任何引用链相连时，则证明此对象是不可用的。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;在Java语言中，课作为GC Roots的对象包括以下4种：<br><br>&nbsp;&nbsp;&nbsp;&nbsp;1.虚拟机栈中引用的对象。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;2.方法区中类静态属性引用的对象。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;3.方法区中常量引用的对象。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;4.本地方法栈中JNI（即一般的Native方法）引用的对象。<br></p>
+<hr>
 <h2 id="各区垃圾收集方式"><a href="#各区垃圾收集方式" class="headerlink" title="各区垃圾收集方式"></a>各区垃圾收集方式</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;几条最普遍的内存分配规则，虚拟机根据对象存活周期和大小会将对象分配到相应的“年代区”：对象会优先在Eden区分配，大对象直接进入老年代，长期存活的对象将进入老年代（默认值为15，即垃圾收集15次之后依然存活），另外，当Survivior空间不够时，存活对象时会通过分配担保机制进入老年代，class、常量等信息直接加载进永生代。<br>&nbsp;&nbsp;&nbsp;&nbsp;当前商业虚拟机的垃圾回收都采用<strong>“分代收集（Generational Collection）”算法</strong>，这种算法会根据各个年代的特点采用最适当的垃圾收集算法。在<strong>新生代</strong>中，每次垃圾收集时都发现有大批对象死去，只有少量存活，所以选用<strong>复制</strong>算法，只需要付出少量存活对象的复制成本就可以完成收集；而<strong>老年代</strong>因为对象存活率高、没有额外空间对它进行分配担保，就必须使用“<strong>标记-清理</strong>”或者“<strong>标记-整理</strong>”算法进行回收。</p>
 <hr>
 <p>转载请注明出处：<a href="http://www.yhang6.com/" target="_blank" rel="external">小Hang同学的博客</a></p>
@@ -273,17 +279,17 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/09/05/关于Java虚拟机的垃圾回收/">关于Java虚拟机的垃圾回收</a></p>
-        <p><span>文章作者:</span><a href="/" title="回到主页">小Hang同学</a></p>
-        <p><span>发布时间:</span>2017-09-05, 21:22:35</p>
-        <p><span>最后更新:</span>2017-10-13, 11:11:28</p>
+        <p><span>Title:</span><a href="/2017/09/05/关于Java虚拟机的垃圾回收/">关于Java虚拟机的垃圾回收</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage">小Hang同学</a></p>
+        <p><span>Created:</span>2017-09-05, 21:22:35</p>
+        <p><span>Updated:</span>2017-10-17, 16:38:11</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/09/05/关于Java虚拟机的垃圾回收/" title="关于Java虚拟机的垃圾回收">http://yoursite.com/2017/09/05/关于Java虚拟机的垃圾回收/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/09/05/关于Java虚拟机的垃圾回收/　　作者: 小Hang同学" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>Full URL:</span><a class="post-url" href="/2017/09/05/关于Java虚拟机的垃圾回收/" title="关于Java虚拟机的垃圾回收">http://yoursite.com/2017/09/05/关于Java虚拟机的垃圾回收/</a>
+            <span class="copy-path" data-clipboard-text="From http://yoursite.com/2017/09/05/关于Java虚拟机的垃圾回收/　　By 小Hang同学" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
-            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
         </p>
     </div>
 
@@ -310,9 +316,9 @@
 </article>
 
     <div id="toc" class="toc-article">
-        <strong class="toc-title">文章目录</strong>
+        <strong class="toc-title">Contents</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM的内存区域分配"><span class="toc-number">1.</span> <span class="toc-text">JVM的内存区域分配</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#各垃圾收集算法的含义"><span class="toc-number">2.</span> <span class="toc-text">各垃圾收集算法的含义</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#标记-清除算法"><span class="toc-number">2.1.</span> <span class="toc-text">标记-清除算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#标记-整理算法"><span class="toc-number">2.2.</span> <span class="toc-text">标记-整理算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#复制算法"><span class="toc-number">2.3.</span> <span class="toc-text">复制算法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#各区垃圾收集方式"><span class="toc-number">3.</span> <span class="toc-text">各区垃圾收集方式</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM的内存区域分配"><span class="toc-number">1.</span> <span class="toc-text">JVM的内存区域分配</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#各垃圾收集算法的含义"><span class="toc-number">2.</span> <span class="toc-text">各垃圾收集算法的含义</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#标记-清除算法"><span class="toc-number">2.1.</span> <span class="toc-text">标记-清除算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#标记-整理算法"><span class="toc-number">2.2.</span> <span class="toc-text">标记-整理算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#复制算法"><span class="toc-number">2.3.</span> <span class="toc-text">复制算法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对象已死？"><span class="toc-number">3.</span> <span class="toc-text">对象已死？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#引用计数算法"><span class="toc-number">3.1.</span> <span class="toc-text">引用计数算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可达性分析算法"><span class="toc-number">3.2.</span> <span class="toc-text">可达性分析算法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#各区垃圾收集方式"><span class="toc-number">4.</span> <span class="toc-text">各区垃圾收集方式</span></a></li></ol>
         
     </div>
     <style>
@@ -326,10 +332,10 @@
         }
     </style>
 
-    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
 
     <script>
-        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
     </script>
 
 
@@ -387,15 +393,15 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/09/08/虚拟机类加载机制/" title="上一篇: 虚拟机类加载机制">
+            <a href="/2017/09/08/虚拟机类加载机制/" title="Pre: 虚拟机类加载机制">
                 <i class="fa fa-angle-left"></i>
             </a>
         
 
-        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/08/18/浅谈GET-POST-PUT-DELETE的含义与区别/" title="下一篇: 浅谈GET,POST,PUT,DELETE含义及区别">
+            <a href="/2017/08/18/浅谈GET-POST-PUT-DELETE的含义与区别/" title="Next: 浅谈GET,POST,PUT,DELETE含义及区别">
                 <i class="fa fa-angle-right"></i>
             </a>
         
@@ -418,14 +424,14 @@
                 2016-2017 小Hang同学
             </div>
             <div class="footer-right">
-                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+                <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
             </div>
         </div>
         
             <div class="visit">
                 
                     <span id="busuanzi_container_site_pv" style='display:none'>
-                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
                         </span>
                     </span>
                 
@@ -434,7 +440,7 @@
                 
                 
                     <span id="busuanzi_container_page_pv" style='display:none'>
-                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
                         </span>
                     </span>
                 
@@ -467,9 +473,9 @@
 
 
 <div class="scroll" id="scroll">
-    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
-    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
-    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
 </div>
 <script>
     // Open in New Window
