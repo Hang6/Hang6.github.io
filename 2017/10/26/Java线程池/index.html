@@ -15,17 +15,18 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Java在JDK1.5之后加入了java.util.concurrent包，这包中有一个接口Executor，它是Java线程池的顶级接口。但在严格意义上讲它并不是一个线程池，而是一个执行线程的工具。真正的线程池接口是ExrcutorService。&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;那么我们为什么要使用线程池呢，我们都知道，每当我们创建">
+<meta name="keywords" content="Java,线程池">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2017/07/31/hello-world/index.html">
+<meta property="og:title" content="Java线程池">
+<meta property="og:url" content="http://yoursite.com/2017/10/26/Java线程池/index.html">
 <meta property="og:site_name" content="小Hang同学的博客">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Java在JDK1.5之后加入了java.util.concurrent包，这包中有一个接口Executor，它是Java线程池的顶级接口。但在严格意义上讲它并不是一个线程池，而是一个执行线程的工具。真正的线程池接口是ExrcutorService。&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;那么我们为什么要使用线程池呢，我们都知道，每当我们创建">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-09-06T02:37:05.571Z">
+<meta property="og:updated_time" content="2017-10-26T12:58:39.087Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="Java线程池">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Java在JDK1.5之后加入了java.util.concurrent包，这包中有一个接口Executor，它是Java线程池的顶级接口。但在严格意义上讲它并不是一个线程池，而是一个执行线程的工具。真正的线程池接口是ExrcutorService。&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;那么我们为什么要使用线程池呢，我们都知道，每当我们创建">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -57,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Hello World | 小Hang同学的博客</title>
+<title>Java线程池 | 小Hang同学的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -208,11 +209,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Java线程池" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/07/31/hello-world/" class="article-date">
-      <time datetime="2017-07-31T08:46:28.840Z" itemprop="datePublished">2017-07-31</time>
+      <a href="/2017/10/26/Java线程池/" class="article-date">
+      <time datetime="2017-10-26T10:54:01.000Z" itemprop="datePublished">2017-10-26</time>
 </a>
 
 
@@ -227,7 +228,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Hello World
+      Java线程池
     </h1>
   
 
@@ -235,8 +236,16 @@
       
       <div class="article-info article-info-post">
         
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/原创/">原创</a>
+    </div>
+
 
         
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/线程池/">线程池</a></li></ul>
+    </div>
+
         <div class="clearfix"></div>
       </div>
       
@@ -244,16 +253,31 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<a id="more"></a>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;Java在JDK1.5之后加入了java.util.concurrent包，这包中有一个接口Executor，它是Java线程池的顶级接口。但在严格意义上讲它并不是一个线程池，而是一个执行线程的工具。真正的线程池接口是ExrcutorService。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;那么我们为什么要使用线程池呢，我们都知道，每当我们创建一个线程的时候，都会耗费相应的时间和空间。而线程池的主要作用就是减少时间和空间的开销。<a id="more"></a>即：<br></p>
+<ul>
+<li><strong>减少创建和销毁线程的次数</strong>，每个工作线程都可以被重复利用，可执行多个任务。</li>
+<li>可以根据系统的承受能力，<strong>调整线程池中工作线程的数目，防止消耗过多的内存</strong>（JDk1.5以后以后每个线程堆栈大小为1MB）。</li>
+</ul>
+<p><br></p>
+<h1 id="创建线程池"><a href="#创建线程池" class="headerlink" title="创建线程池"></a>创建线程池</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;创建一个线程池比较复杂，Executor类里面提供了一些静态工厂，生成一些常用的线程池。<br></p>
+<ol>
+<li><strong>newSingleThreadExecutor</strong>：创建一个单线程的线程池。这个线程池只有一个线程在工作，也就是相当于单线程串行执行所有任务。如果这个唯一的线程因为异常结束，那么会有一个新的线程来替代它。此线程池保证所有任务的执行顺序按照任务的提交顺序执行。</li>
+<li><strong>newFixedThreadPool</strong>：创建固定大小的线程池。每次提交一个任务就创建一个线程，直到线程达到线程池的最大大小。线程池的大小一旦达到最大值就会保持不变，如果某个线程因为执行异常而结束，那么线程池会补充一个新线程。</li>
+<li><strong>newCachedThreadPool</strong>：创建一个可缓存的线程池。如果线程池的大小超过了处理任务所需要的线程，那么就会回收部分空闲（60秒不执行任务）的线程，当任务数增加时，此线程池又可以智能的添加新线程来处理任务。此线程池不会对线程池大小做限制，线程池大小完全依赖于操作系统（或者说JVM）能够创建的最大线程大小。</li>
+<li><strong>newScheduledThreadPool</strong>：创建一个大小无限的线程池。此线程池支持定时以及周期性执行任务的需求。</li>
+</ol>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<h1 id="ThreadPoolExecutor类"><a href="#ThreadPoolExecutor类" class="headerlink" title="ThreadPoolExecutor类"></a>ThreadPoolExecutor类</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;java.util.concurrent.ThreadPoolExecutor类是线程池中最核心的一个类，他是类ExecutorService的默认实现，想要更深的了解Java中的线程池，必须先了解这个类。<br></p>
+<hr>
+<h2 id="ThreadPoolExecutor类的主要参数"><a href="#ThreadPoolExecutor类的主要参数" class="headerlink" title="ThreadPoolExecutor类的主要参数"></a>ThreadPoolExecutor类的主要参数</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;在ThreadPoolExecutor类中，有几个极为重要的参数：<br></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>corePoolSize</strong>：线程池中保存的线程数，包括运行线程和空闲线程。当池中的线程达到corePoolSize的时候，就会把新到达的任务放在缓存队列当中。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>maximumPoolSize</strong>：线程池的最大线程数，他决定了线程池最多能创建多少个线程。当corePoolSize和maximumPoolSize相同时，将创建一个固定大小的线程池。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>keepAliveTime</strong>：表示空闲线程保留的最长时间，达到keepAliveTime时，线程则会终止。  在默认情况下，当线程池中的<strong>线程数量大于corePoolSize</strong>设置的值时，keepAliveTime才会起作用，直到线程池中线程数量不大于corePoolSize。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>unit</strong>：参数keepAliveTime的时间单位。有7种取值，在TimeUnit类中有7种静态属性，分别为：天（DAYS）、小时（HOURS）、分（MINUTES）、秒（SECONDS）、毫秒（MILLISECONDS）、微秒（MICROSECONDS）、纳秒（NANOSECONDS）。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>workQueue</strong>：一个阻塞队列，用来存储等待执行的任务。此队列仅保持由execute方法提交的Runnable任务。这里的阻塞队列有以下几种选择：ArrayBlockingQueue、LinkedBlockingQueue和SynchronousQueue。一般使用LinkedBlockingQueue和SynchronousQueue。如果使用无界queue，那么maximumPoolSize是没有意义的。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>threadFactory</strong>：线程工厂，主要用于创建新线程。<br></p>
+<h2 id="nbsp-nbsp-nbsp-nbsp-handler：由于超出线程范围和队列容量而使执行被阻塞时-所使用的处理程序。"><a href="#nbsp-nbsp-nbsp-nbsp-handler：由于超出线程范围和队列容量而使执行被阻塞时-所使用的处理程序。" class="headerlink" title="&nbsp;&nbsp;&nbsp;&nbsp;handler：由于超出线程范围和队列容量而使执行被阻塞时 所使用的处理程序。"></a>&nbsp;&nbsp;&nbsp;&nbsp;<strong>handler</strong>：由于超出线程范围和队列容量而使执行被阻塞时 所使用的处理程序。<br></h2><h2 id="ThreadPoolExecutor中的方法"><a href="#ThreadPoolExecutor中的方法" class="headerlink" title="ThreadPoolExecutor中的方法"></a>ThreadPoolExecutor中的方法</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;首先说说几个类的关系。在ThreadPoolExecutor的源码中，有：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">public class ThreadPoolExecutor extends AbstractExecutorService &#123;...&#125;</div></pre></td></tr></table></figure>
+<p>说明类ThreadPoolExecutor继承自类AbstractExecutorService，接下来，我们再看看类AbstractExecutorService：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">public abstract class AbstractExecutorService implements ExecutorService &#123;...&#125;</div></pre></td></tr></table></figure>
+<p>他实现了接口ExecutorService，而ExecutorService又继承自Execute。<strong>ThreadPoolExecutor类是Executor类的底层实现</strong>。自此，和ThreadPoolExecutor有关的几个类和接口的关系基本上清楚了。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;现在，说说类ThreadPoolExecutor中的几个核心方法：<br></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>execute</strong>：该方法实际上是Execute类中的方法，在ThreadPoolExecutor中进行了具体的实现。它是ThreadPoolExecutor的<strong>核心方法</strong>，通过这个方法向线程池提交一个任务，交由线程池去处理。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>submit</strong>：submit()方法是在ExecutorService中声明的方法，在AbstractExecutorService时就有了具体的实现。这个方法也是用来向线程池提交任务的，但是它与execute不同，它能返回任务执行的结果。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>shutdown</strong>和<strong>shutdownNow</strong>：根据jdk帮助文档：shutdown是启动有序关闭，先前提交的任务会被执行，但是不会接受新的任务。而shutdownNow是停止所有任务，并且返回正在等待执行的任务列表。从此方法返回时，这些任务将从任务列表中删除。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<br></p>
 
       
     </div>
@@ -262,13 +286,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/07/31/hello-world/">Hello World</a></p>
+        <p><span>本文标题:</span><a href="/2017/10/26/Java线程池/">Java线程池</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">小Hang同学</a></p>
-        <p><span>发布时间:</span>2017-07-31, 16:46:28</p>
-        <p><span>最后更新:</span>2017-09-06, 10:37:05</p>
+        <p><span>发布时间:</span>2017-10-26, 18:54:01</p>
+        <p><span>最后更新:</span>2017-10-26, 20:58:39</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/07/31/hello-world/" title="Hello World">http://yoursite.com/2017/07/31/hello-world/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/07/31/hello-world/　　作者: 小Hang同学" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/10/26/Java线程池/" title="Java线程池">http://yoursite.com/2017/10/26/Java线程池/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/10/26/Java线程池/　　作者: 小Hang同学" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -280,12 +304,12 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/08/01/谈谈感受吧/">
-                    谈谈感受吧
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/10/18/Collection、List、Set、Map关系图/">
+                    Collection、List、Set、Map关系图
                 </a>
             </div>
-        
         
     </nav>
 
@@ -295,7 +319,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#创建线程池"><span class="toc-number">1.</span> <span class="toc-text">创建线程池</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ThreadPoolExecutor类"><span class="toc-number">2.</span> <span class="toc-text">ThreadPoolExecutor类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ThreadPoolExecutor类的主要参数"><span class="toc-number">2.1.</span> <span class="toc-text">ThreadPoolExecutor类的主要参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nbsp-nbsp-nbsp-nbsp-handler：由于超出线程范围和队列容量而使执行被阻塞时-所使用的处理程序。"><span class="toc-number">2.2.</span> <span class="toc-text">    handler：由于超出线程范围和队列容量而使执行被阻塞时 所使用的处理程序。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ThreadPoolExecutor中的方法"><span class="toc-number">2.3.</span> <span class="toc-text">ThreadPoolExecutor中的方法</span></a></li></ol></li></ol>
         
     </div>
     <style>
@@ -331,7 +355,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Hello World　| 小Hang同学的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"Java线程池　| 小Hang同学的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -347,7 +371,7 @@
     
       <div class="duoshuo" id="comments">
     <div id="comment-box" ></div>
-    <div class="ds-thread" id="ds-thread" data-thread-key="2017/07/31/hello-world/" data-title="Hello World" data-url="http://yoursite.com/2017/07/31/hello-world/"></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2017/10/26/Java线程池/" data-title="Java线程池" data-url="http://yoursite.com/2017/10/26/Java线程池/"></div>
     <script>
         var duoshuoQuery = {short_name:""};
         var loadComment = function(){
@@ -370,15 +394,15 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/08/01/谈谈感受吧/" title="上一篇: 谈谈感受吧">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+            <a href="/2017/10/18/Collection、List、Set、Map关系图/" title="下一篇: Collection、List、Set、Map关系图">
+                <i class="fa fa-angle-right"></i>
+            </a>
         
     </div>
 
