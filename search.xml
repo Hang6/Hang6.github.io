@@ -3,6 +3,72 @@
   
     
     <entry>
+      <title><![CDATA[深入Web请求过程]]></title>
+      <url>/2017/10/31/%E6%B7%B1%E5%85%A5Web%E8%AF%B7%E6%B1%82%E8%BF%87%E7%A8%8B/</url>
+      <content type="html"><![CDATA[<h1 id="B-S网络架构概述"><a href="#B-S网络架构概述" class="headerlink" title="B/S网络架构概述"></a>B/S网络架构概述</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;B/S网络架构都基于统一的应用层协议HTTP来交互数据，HTTP是一种<strong>无状态的短链接</strong>通信。通常一次请求就完成了一次数据交互，然后这次通信链接就断开了。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;当一个用户在浏览器里输入一个URL并发送请求时，将会发生很多操作:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;首先会请求DNS把域名解析成对应的IP地址，然后根据IP地址在互联网上找到对应的服务器，向这个服务器发起一个Get请求，由这个服务器决定返回默认的数据资源给访问用户。<a id="more"></a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;在服务端还有很多复杂的业务逻辑：服务器可能有很多台，这是需要一个负载均衡设备来平均分配所有用户的请求；还有请求的数据存储在分布式缓存里的还是一个静态文件中，或是在数据库中；当数据返回浏览器时，浏览器解析数据发现还有一些静态资源（如CSS、JS或图片）时优惠发起另外一个HTTP请求，而这些请求很可能在CDN上，那么CDN服务器又会处理这个用户的请求。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;大体上一个用户请求会涉及这些操作，其中任何一个细节都会影响这个请求最终是否会成功。<br></p>
+<h1 id="DNS域名解析"><a href="#DNS域名解析" class="headerlink" title="DNS域名解析"></a>DNS域名解析</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;发起一个HTTP连接本质上就是建立一个Socket连接，只不过outputStream.write写的二进制字节数据格式要符合HTTP。</p>
+<h2 id="DNS域名解析过程"><a href="#DNS域名解析过程" class="headerlink" title="DNS域名解析过程"></a>DNS域名解析过程</h2><p>当一个用户在浏览器输入一个域名后，DNS解析将会有将近10个步骤，过程大体如下：</p>
+<ol>
+<li>浏览器会检查<strong>浏览器的缓存</strong>中有没有这个域名对应的解析过的IP地址，如果缓存中有，那么这个域名的解析过程就将结束。</li>
+<li>如果浏览器的缓存中没有IP地址，浏览器就会查找<strong>操作系统缓存</strong>中是否有这个域名的DNS解析结果。以上两个步骤都是在本机中完成，还没有涉及真正的域名解析服务器。</li>
+<li>如果在本机中无法完成域名的解析，就会真正请求域名服务器来解析这个域名。在我们的网络配置中有“DNS服务器地址”这一项，当在本机中无法完成解析的时候，操作系统会把这个域名发送给网络配置中设置的<strong>LDNS</strong>，也就是本地区的域名服务器。大约80%的域名解析都带这里就可以完成了，所以LDNS承担了主要的域名解析工作。</li>
+<li>如果LDNS仍然没有命中，就直接到<strong>Root Server域名服务器</strong>请求解析。</li>
+<li>根域名服务器返回给本地域名服务器一个查询域的<strong>主域名服务器</strong>（gTLD Server）地址。gTLD是国级顶级域名服务器，如 .com、.cn等。</li>
+<li>本地域名服务器（LDNS）再向上一步返回的gTLD服务器发送请求。</li>
+<li>接受请求的gTLD服务器查找并返回此域名对应的<strong>Name Derver域名服务器</strong>的地址，这个Name Server通常就是自己注册的域名服务器。例如在某个域名服务提供商申请的域名，那么这个域名解析任务就由这个域名提供商的服务器来完成。</li>
+<li>Name Server域名服务器会查询存储的域名和IP的映射关系表，在正常情况下都根据域名得到目标IP记录，连同一个TTL值返回给DNS Server域名服务器。</li>
+<li>返回该域名对应的IP和TTL值，LDNS会缓存这个域名和IP的对应关系，缓存时间由TTL值控制。</li>
+<li>将解析结果返回给用户，用户根据TTL值缓存在本地系统缓存中，域名解析过程结束。</li>
+</ol>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;浏览器、操作系统和本地域名服务器的域名缓存<strong>时间和大小</strong>都是有的限制，主要是时间限制，一般为几分钟到几小时不等，一般缓存空间不是影响域名失效的主要因素。</p>
+<h2 id="域名解析方式"><a href="#域名解析方式" class="headerlink" title="域名解析方式"></a>域名解析方式</h2><ul>
+<li><strong>A记录</strong>：A代表的是Address，用来指定域名对应的IP地址。A记录可以将多个域名解析到一个IP地址，但不能将一个域名解析到多个IP地址。</li>
+<li><strong>MX记录</strong>：表示的是Mail Exchange，就是将某个域名下的邮件服务器指向自己的Mail Server。</li>
+<li><strong>CNAME记录</strong>：全程是Canonical Name（别名解析）。所谓的别名解析就是可以为一个域名设置一个或多个别名。如将 Hang6.github.io解析到 yhang6.com。其中后者是前者的别名。</li>
+<li><strong>NS记录</strong>：为某个域名指定DNS解析服务器，也就是这个域名有指定的IP地址的DNS服务器去解析。</li>
+<li><strong>TXT记录</strong>：为某个主机名或域名设置说明，如可以为 yhang6.com设置TXT记录为“小Hang同学的博客”这样的说明。</li>
+</ul>
+<h1 id="CDN工作机制"><a href="#CDN工作机制" class="headerlink" title="CDN工作机制"></a>CDN工作机制</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;CDN就是内容分布网络（Content Delivery Network），是构筑在现有Internet上的一种先进的流量分配网络。其<strong>目的</strong>是通过在现有的Internet中增加一层新的网络架构，将网站的内容发步到最接近用户的网络“边缘”，提高用户访问网站的响应速度。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;CDN有别于镜像，它比镜像更加智能，可以有这样一个比喻：<strong>CDN=镜像+缓存+整体负载均衡（GSLB）</strong>。因此，CDN可以明显提高Internet中信息流动的效率。目前CDN都<strong>以缓存网站中的静态数据为主</strong>。用户在从主站服务器请求到动态数据之后，再从CDN上下载静态数据，从未加速网页数据内容的下载速度。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;通常CDN要达到以下几个目标：</p>
+<ul>
+<li>可扩展。分为性能可扩展性和成本可扩展性。</li>
+<li>安全性。强调提供物理设备、网络、软件、数据和服务过程的安全性。</li>
+<li>可靠性、响应和执行。服务可用性能能够处理可能的故障和用户体验下降的问题，通过负载均衡及时提供网络的容错机制。</li>
+</ul>
+<h2 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;负载均衡（Load Balance）是对工作任务进行平衡、分摊到多个操作单元上执行，如图片服务器、应用服务器等，共同完成工作任务。它可以提高服务器响应速度及利用效率，避免软件或者硬件模块出现单点失效，解决网络拥塞问题，实现地理位置无关性，为用户提供较一致的访问质量。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;通常有三种负载均衡架构，分别是<strong>链路负载均衡、集群负载均衡、操作系统负载均衡</strong>。</p>
+<ul>
+<li>链路负载均衡就是通过DNS解析成不同的IP，然后根据IP访问不同的目标服务器实现的。这种方式的优点就是用户会直接访问目标服务器，速度会很快。但缺点是DNS都有缓存，一旦某台Web Server挂掉，就很难及时更新用户的域名解析结构。</li>
+<li>集群负载均衡一般分为硬件负载均衡和软件负载均衡。<strong>硬件负载均衡</strong>一般使用一台专门的硬件设备来转发请求，，这台设备性能非常好，但是非常昂贵；<strong>软件负载均衡</strong>是使用最普遍的一种负载方式，特点是成本很低，但是一般一次访问请求要经过多次代理服务器，会增加网络延时。</li>
+<li>操作系统负载均衡就是利用操作系统级别的软中断或者硬件中断来达到负载均衡，如可以设置多队列网卡等来实现。</li>
+</ul>
+<hr>
+<p>参考自：《深入分析Java Web技术内幕》——许令波</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 日志 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Web </tag>
+            
+            <tag> DNS </tag>
+            
+            <tag> CDN </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Java线程池]]></title>
       <url>/2017/10/26/Java%E7%BA%BF%E7%A8%8B%E6%B1%A0/</url>
       <content type="html"><![CDATA[<p>&nbsp;&nbsp;&nbsp;&nbsp;Java在JDK1.5之后加入了java.util.concurrent包，这包中有一个接口Executor，它是Java线程池的顶级接口。但在严格意义上讲它并不是一个线程池，而是一个执行线程的工具。真正的线程池接口是ExrcutorService。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;那么我们为什么要使用线程池呢，我们都知道，每当我们创建一个线程的时候，都会耗费相应的时间和空间。而线程池的主要作用就是减少时间和空间的开销。<a id="more"></a>即：<br></p>
@@ -45,6 +111,8 @@
             <tag> Java </tag>
             
             <tag> 线程池 </tag>
+            
+            <tag> ThreadPoolExecutor </tag>
             
         </tags>
         
