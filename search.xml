@@ -17,7 +17,7 @@
 <li>如果LDNS仍然没有命中，就直接到<strong>Root Server域名服务器</strong>请求解析。</li>
 <li>根域名服务器返回给本地域名服务器一个查询域的<strong>主域名服务器</strong>（gTLD Server）地址。gTLD是国级顶级域名服务器，如 .com、.cn等。</li>
 <li>本地域名服务器（LDNS）再向上一步返回的gTLD服务器发送请求。</li>
-<li>接受请求的gTLD服务器查找并返回此域名对应的<strong>Name Derver域名服务器</strong>的地址，这个Name Server通常就是自己注册的域名服务器。例如在某个域名服务提供商申请的域名，那么这个域名解析任务就由这个域名提供商的服务器来完成。</li>
+<li>接受请求的gTLD服务器查找并返回此域名对应的<strong>Name Server域名服务器</strong>的地址，这个Name Server通常就是自己注册的域名服务器。例如在某个域名服务提供商申请的域名，那么这个域名解析任务就由这个域名提供商的服务器来完成。</li>
 <li>Name Server域名服务器会查询存储的域名和IP的映射关系表，在正常情况下都根据域名得到目标IP记录，连同一个TTL值返回给DNS Server域名服务器。</li>
 <li>返回该域名对应的IP和TTL值，LDNS会缓存这个域名和IP的对应关系，缓存时间由TTL值控制。</li>
 <li>将解析结果返回给用户，用户根据TTL值缓存在本地系统缓存中，域名解析过程结束。</li>
