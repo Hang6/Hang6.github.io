@@ -119,33 +119,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[Collection、List、Set、Map关系图]]></title>
-      <url>/2017/10/18/Collection%E3%80%81List%E3%80%81Set%E3%80%81Map%E5%85%B3%E7%B3%BB%E5%9B%BE/</url>
-      <content type="html"><![CDATA[<p><img src="http://www.itnose.net/img/20150125/10213867.png" alt="image"></p>
-]]></content>
-      
-        <categories>
-            
-            <category> 日志 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> List </tag>
-            
-            <tag> Set </tag>
-            
-            <tag> Map </tag>
-            
-            <tag> Collection </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[Java多线程（4）——Lock]]></title>
       <url>/2017/09/18/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%884%EF%BC%89%E2%80%94%E2%80%94Lock/</url>
       <content type="html"><![CDATA[<p>&nbsp;&nbsp;&nbsp;&nbsp;java的多线程有两种方式，我们先前面学习了基础的synchronized方式，大家忘记了建议先去回忆一下再来看这部分。Lock其实对应着synchronized的方式加锁，但是更加灵活，本节讲的时候会对照着synchronized相关的知识来说。</p>
