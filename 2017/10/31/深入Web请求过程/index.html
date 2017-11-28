@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="小Hang同学的博客">
 <meta property="og:description" content="B/S网络架构概述&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;B/S网络架构都基于统一的应用层协议HTTP来交互数据，HTTP是一种无状态的短链接通信。通常一次请求就完成了一次数据交互，然后这次通信链接就断开了。&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;当一个用户在浏览器里输入一个URL并发送请求时，将会发生很多操作: &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;首先会请求DNS把域">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-11-16T13:25:15.305Z">
+<meta property="og:updated_time" content="2017-11-22T10:43:22.869Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入Web请求过程">
 <meta name="twitter:description" content="B/S网络架构概述&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;B/S网络架构都基于统一的应用层协议HTTP来交互数据，HTTP是一种无状态的短链接通信。通常一次请求就完成了一次数据交互，然后这次通信链接就断开了。&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;当一个用户在浏览器里输入一个URL并发送请求时，将会发生很多操作: &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;首先会请求DNS把域">
@@ -279,7 +279,7 @@
 <li><strong>TXT记录</strong>：为某个主机名或域名设置说明，如可以为 yhang6.com设置TXT记录为“小Hang同学的博客”这样的说明。</li>
 </ul>
 <h1 id="CDN工作机制"><a href="#CDN工作机制" class="headerlink" title="CDN工作机制"></a>CDN工作机制</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;CDN就是内容分布网络（Content Delivery Network），是构筑在现有Internet上的一种先进的流量分配网络。其<strong>目的</strong>是通过在现有的Internet中增加一层新的网络架构，将网站的内容发步到最接近用户的网络“边缘”，提高用户访问网站的响应速度。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;CDN有别于镜像，它比镜像更加智能，可以有这样一个比喻：<strong>CDN=镜像+缓存+整体负载均衡（GSLB）</strong>。因此，CDN可以明显提高Internet中信息流动的效率。目前CDN都<strong>以缓存网站中的静态数据为主</strong>。用户在从主站服务器请求到动态数据之后，再从CDN上下载静态数据，从未加速网页数据内容的下载速度。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;CDN有别于镜像，它比镜像更加智能，可以有这样一个比喻：<strong>CDN=镜像+缓存+整体负载均衡（GSLB）</strong>。因此，CDN可以明显提高Internet中信息流动的效率。目前CDN都<strong>以缓存网站中的静态数据为主</strong>。用户在从主站服务器请求到动态数据之后，再从CDN上下载静态数据，从而加速网页数据内容的下载速度。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;通常CDN要达到以下几个目标：</p>
 <ul>
 <li>可扩展。分为性能可扩展性和成本可扩展性。</li>
@@ -290,7 +290,7 @@
 <p>&nbsp;&nbsp;&nbsp;&nbsp;通常有三种负载均衡架构，分别是<strong>链路负载均衡、集群负载均衡、操作系统负载均衡</strong>。</p>
 <ul>
 <li>链路负载均衡就是通过DNS解析成不同的IP，然后根据IP访问不同的目标服务器实现的。这种方式的优点就是用户会直接访问目标服务器，速度会很快。但缺点是DNS都有缓存，一旦某台Web Server挂掉，就很难及时更新用户的域名解析结构。</li>
-<li>集群负载均衡一般分为硬件负载均衡和软件负载均衡。<strong>硬件负载均衡</strong>一般使用一台专门的硬件设备来转发请求，，这台设备性能非常好，但是非常昂贵；<strong>软件负载均衡</strong>是使用最普遍的一种负载方式，特点是成本很低，但是一般一次访问请求要经过多次代理服务器，会增加网络延时。</li>
+<li>集群负载均衡一般分为硬件负载均衡和软件负载均衡。<strong>硬件负载均衡</strong>一般使用一台专门的硬件设备来转发请求，这台设备性能非常好，但是非常昂贵；<strong>软件负载均衡</strong>是使用最普遍的一种负载方式，特点是成本很低，但是一般一次访问请求要经过多次代理服务器，会增加网络延时。</li>
 <li>操作系统负载均衡就是利用操作系统级别的软中断或者硬件中断来达到负载均衡，如可以设置多队列网卡等来实现。</li>
 </ul>
 <hr>
@@ -306,7 +306,7 @@
         <p><span>本文标题:</span><a href="/2017/10/31/深入Web请求过程/">深入Web请求过程</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">小Hang同学</a></p>
         <p><span>发布时间:</span>2017-10-31, 15:18:25</p>
-        <p><span>最后更新:</span>2017-11-16, 21:25:15</p>
+        <p><span>最后更新:</span>2017-11-22, 18:43:22</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/10/31/深入Web请求过程/" title="深入Web请求过程">http://yoursite.com/2017/10/31/深入Web请求过程/</a>
             <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/10/31/深入Web请求过程/　　作者: 小Hang同学" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
