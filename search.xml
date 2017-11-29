@@ -35,7 +35,7 @@
 <h1 id="IoC容器的依赖注入"><a href="#IoC容器的依赖注入" class="headerlink" title="IoC容器的依赖注入"></a>IoC容器的依赖注入</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;依赖注入的过程是在用户<strong>第一次</strong>向IoC容器索要Bean时触发的；但是我们可以在BeanDefinition信息中通过<strong>lazy-init属</strong>性来让容器完成对BeanDefinition的<strong>预实例化</strong>，让依赖注入在初始化的过程中完成。getBean()就是依赖注入发生的入口。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;与依赖注入关系特别密切的方法有<strong>createBeanInstance</strong>和<strong>populateBean</strong>。createBeanInstance中生成了Bean所包含的Java对象，这个对象可以通过工厂方法生成，也可以通过容器的autowired特性生成。populateBean对依赖关系进行了处理（对Bean对象的属性的处理）。</p>
 <hr>
-<p>参考自：《Spring技术内幕》——许文柯<br>整理不易，转载请注明出处：<a href="http://www.yhang6.com/" target="_blank" rel="external">小Hang同学的博客</a></p>
+<p>参考自：《Spring技术内幕》——许文柯<br>整理不易，转载请注明出处：<a href="http://www.yhang6.com/">小Hang同学的博客</a></p>
 ]]></content>
       
         <categories>
@@ -101,7 +101,7 @@
 <li>操作系统负载均衡就是利用操作系统级别的软中断或者硬件中断来达到负载均衡，如可以设置多队列网卡等来实现。</li>
 </ul>
 <hr>
-<p>参考自：《深入分析Java Web技术内幕》——许令波<br>整理不易，转载请注明出处：<a href="http://www.yhang6.com/" target="_blank" rel="external">小Hang同学的博客</a></p>
+<p>参考自：《深入分析Java Web技术内幕》——许令波<br>整理不易，转载请注明出处：<a href="http://www.yhang6.com/">小Hang同学的博客</a></p>
 ]]></content>
       
         <categories>
@@ -151,7 +151,7 @@
 <p>&nbsp;&nbsp;&nbsp;&nbsp;现在，说说类ThreadPoolExecutor中的几个核心方法：<br></p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>execute</strong>：该方法实际上是Execute类中的方法，在ThreadPoolExecutor中进行了具体的实现。它是ThreadPoolExecutor的<strong>核心方法</strong>，通过这个方法向线程池提交一个任务，交由线程池去处理。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>submit</strong>：submit()方法是在ExecutorService中声明的方法，在AbstractExecutorService时就有了具体的实现。这个方法也是用来向线程池提交任务的，但是它与execute不同，它能返回任务执行的结果。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>shutdown</strong>和<strong>shutdownNow</strong>：根据jdk帮助文档：shutdown是启动有序关闭，先前提交的任务会被执行，但是不会接受新的任务。而shutdownNow是停止所有任务，并且返回正在等待执行的任务列表。从此方法返回时，这些任务将从任务列表中删除。<br></p>
 <hr>
-<p>转载请注明出处：<a href="http://www.yhang6.com/" target="_blank" rel="external">小Hang同学的博客</a></p>
+<p>转载请注明出处：<a href="http://www.yhang6.com/">小Hang同学的博客</a></p>
 ]]></content>
       
         <categories>
@@ -468,7 +468,7 @@
 <p>&nbsp;&nbsp;&nbsp;&nbsp;·<strong>传递性（Transitivity</strong>）：如果A操作先行发生于B操作，B操作先行发生于C操作，那么A操作先行发生于C操作。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>注意</strong>：时间先后顺序与先行发生原则之间基本没有太大的关系，所以我们<strong>衡量并发安全</strong>问题的时候不要受到时间顺序的干扰，<strong>一切必须以先行发生原则为准</strong>。</p>
 <hr>
-<p>转载请注明出处：<a href="http://www.yhang6.com/" target="_blank" rel="external">小Hang同学的博客</a> </p>
+<p>转载请注明出处：<a href="http://www.yhang6.com/">小Hang同学的博客</a> </p>
 ]]></content>
       
         <categories>
@@ -530,7 +530,7 @@
 <h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;Java虚拟机规范中并没有对 什么时候开始类加载过程的<strong>加载阶段</strong> 进行强制约束，这点可以交给虚拟机的具体实现来自由把握。但是对于<strong>初始化阶段</strong>，虚拟机规范则是严格规定了有且只有上文提到的5种情况。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;类的整个生命周期包括：加载、验证、准备、解析、初始化、使用、卸载7个阶段；其中加载、验证、准备、初始化、卸载这5个阶段的顺序是确定的，类的加载过程必须按照这种顺序按部就班的<strong>开始</strong>（不代表进行或完成），但<strong>解析</strong>阶段则不一定：它在某些情况下可以在初始化阶段之后再开始，这是为了支持Java语言的<strong>运行时绑定</strong>（也称为动态绑定或晚期绑定）。</p>
 <hr>
-<p>转载请注明出处：<a href="http://www.yhang6.com/" target="_blank" rel="external">小Hang同学的博客</a> </p>
+<p>转载请注明出处：<a href="http://www.yhang6.com/">小Hang同学的博客</a> </p>
 ]]></content>
       
         <categories>
@@ -576,7 +576,7 @@
 <hr>
 <h1 id="各区垃圾收集方式"><a href="#各区垃圾收集方式" class="headerlink" title="各区垃圾收集方式"></a>各区垃圾收集方式</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;几条最普遍的内存分配规则，虚拟机根据对象存活周期和大小会将对象分配到相应的“年代区”：对象会优先在Eden区分配，大对象直接进入老年代，长期存活的对象将进入老年代（默认值为15，即垃圾收集15次之后依然存活），另外，当Survivior空间不够时，存活对象时会通过分配担保机制进入老年代，class、常量等信息直接加载进永生代。<br>&nbsp;&nbsp;&nbsp;&nbsp;当前商业虚拟机的垃圾回收都采用<strong>“分代收集（Generational Collection）”算法</strong>，这种算法会根据各个年代的特点采用最适当的垃圾收集算法。在<strong>新生代</strong>中，每次垃圾收集时都发现有大批对象死去，只有少量存活，所以选用<strong>复制</strong>算法，只需要付出少量存活对象的复制成本就可以完成收集；而<strong>老年代</strong>因为对象存活率高、没有额外空间对它进行分配担保，就必须使用“<strong>标记-清理</strong>”或者“<strong>标记-整理</strong>”算法进行回收。</p>
 <hr>
-<p>转载请注明出处：<a href="http://www.yhang6.com/" target="_blank" rel="external">小Hang同学的博客</a></p>
+<p>转载请注明出处：<a href="http://www.yhang6.com/">小Hang同学的博客</a></p>
 ]]></content>
       
         <categories>
