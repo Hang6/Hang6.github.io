@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="小Hang同学的博客">
 <meta property="og:description" content="Spring IoC容器的设计BeanFactory的应用场景&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;BeanFactory提供的是最基本的Ioc容器的功能。BeanFactory只是一个接口类，而DefaultListableBeanFactory、XmlBeanFactory、ApplicationContext等都可以是容器附加了某种功能的具体实现。 &amp;nbsp;&amp;nbsp;&amp;nbs">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-11-16T13:30:51.105Z">
+<meta property="og:updated_time" content="2017-11-29T02:50:20.820Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring FrameWork核心：IoC容器的实现">
 <meta name="twitter:description" content="Spring IoC容器的设计BeanFactory的应用场景&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;BeanFactory提供的是最基本的Ioc容器的功能。BeanFactory只是一个接口类，而DefaultListableBeanFactory、XmlBeanFactory、ApplicationContext等都可以是容器附加了某种功能的具体实现。 &amp;nbsp;&amp;nbsp;&amp;nbs">
@@ -237,7 +237,7 @@
       <div class="article-info article-info-post">
         
     <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/日志/">日志</a>
+    <a class="article-category-link" href="/categories/原创/">原创</a>
     </div>
 
 
@@ -283,7 +283,7 @@
 <h1 id="IoC容器的依赖注入"><a href="#IoC容器的依赖注入" class="headerlink" title="IoC容器的依赖注入"></a>IoC容器的依赖注入</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;依赖注入的过程是在用户<strong>第一次</strong>向IoC容器索要Bean时触发的；但是我们可以在BeanDefinition信息中通过<strong>lazy-init属</strong>性来让容器完成对BeanDefinition的<strong>预实例化</strong>，让依赖注入在初始化的过程中完成。getBean()就是依赖注入发生的入口。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;与依赖注入关系特别密切的方法有<strong>createBeanInstance</strong>和<strong>populateBean</strong>。createBeanInstance中生成了Bean所包含的Java对象，这个对象可以通过工厂方法生成，也可以通过容器的autowired特性生成。populateBean对依赖关系进行了处理（对Bean对象的属性的处理）。</p>
 <hr>
-<p>参考自：《Spring技术内幕》——许文柯<br>整理不易，转载请注明出处：<a href="http://www.yhang6.com/">小Hang同学的博客</a></p>
+<p>参考：《Spring技术内幕》——许文柯<br>转载请注明出处：<a href="http://www.yhang6.com/">小Hang同学的博客</a></p>
 
       
     </div>
@@ -295,7 +295,7 @@
         <p><span>本文标题:</span><a href="/2017/11/16/Spring-FrameWork核心：IoC容器的实现/">Spring FrameWork核心：IoC容器的实现</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">小Hang同学</a></p>
         <p><span>发布时间:</span>2017-11-16, 21:21:37</p>
-        <p><span>最后更新:</span>2017-11-16, 21:30:51</p>
+        <p><span>最后更新:</span>2017-11-29, 10:50:20</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/11/16/Spring-FrameWork核心：IoC容器的实现/" title="Spring FrameWork核心：IoC容器的实现">http://www.yhang6.com/2017/11/16/Spring-FrameWork核心：IoC容器的实现/</a>
             <span class="copy-path" data-clipboard-text="原文: http://www.yhang6.com/2017/11/16/Spring-FrameWork核心：IoC容器的实现/　　作者: 小Hang同学" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
