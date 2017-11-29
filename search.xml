@@ -3,9 +3,57 @@
   
     
     <entry>
+      <title><![CDATA[Spring MVC的请求流程]]></title>
+      <url>/2017/11/29/Spring-MVC%E7%9A%84%E8%AF%B7%E6%B1%82%E6%B5%81%E7%A8%8B/</url>
+      <content type="html"><![CDATA[<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;Spring MVC是建立在IoC容器的基础上的，Spring IoC是一个独立的模块，它并不是直接在Web容器中发挥作用，要想在Web容器中使用IoC容器，需要Spring<strong>为IoC设计一个启动过程</strong>，把IoC容器导入，并<strong>在Web容器中建立</strong>起来。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;这个过程是和Web容器的启动过程<strong>集成</strong>在一起的。这个过程中，一方面处理Web容器的启动，另一方面通过设计特定的<strong>Web容器拦截器</strong>，<strong>将IoC容器载入</strong>到Web环境中来，并将其<strong>初始化</strong>。<a id="more"></a><br>以Tomcat作为Web容器为例，其中，web.xml是应用的部署描述文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&lt;servlet&gt;</div><div class="line">    &lt;servlet-name&gt;springDispatcherServlet&lt;/servlet-name&gt;</div><div class="line">    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;</div><div class="line">    &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;</div><div class="line">&lt;/servlet&gt;</div><div class="line">&lt;servlet-mapping&gt;</div><div class="line">    &lt;servlet-name&gt;springDispatcherServlet&lt;/servlet-name&gt;</div><div class="line">    &lt;url-pattern&gt;/&lt;/url-pattern&gt;</div><div class="line">&lt;/servlet-mapping&gt;</div><div class="line">&lt;context-param&gt;</div><div class="line">    &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;</div><div class="line">    &lt;param-value&gt;/WEB-INF/applicationContext.xml&lt;/param-value&gt;</div><div class="line">&lt;/context-param&gt;</div><div class="line">&lt;listener&gt;</div><div class="line">    &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;</div><div class="line">&lt;/listener&gt;</div></pre></td></tr></table></figure>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;上述代码中有一个MVC中非常重要的类：<strong>DispatcherServlet</strong>，它起着<strong>分发请求</strong>的作用；<strong>context-param参数</strong>的配置用来<strong>指定</strong>Spring IoC容器读取<strong>Bean定义的XML文件的路径</strong>；<strong>ContextLoaderListener</strong>是一个监听器，他的生命周期与Web服务器相关联，这个监听器<strong>负责完成IoC容器在Web环境中的启动工作</strong>。</p>
+<hr>
+<p><br></p>
+<h1 id="上下文在Web容器中的启动"><a href="#上下文在Web容器中的启动" class="headerlink" title="上下文在Web容器中的启动"></a>上下文在Web容器中的启动</h1><h2 id="IoC容器启动的基本过程"><a href="#IoC容器启动的基本过程" class="headerlink" title="IoC容器启动的基本过程"></a>IoC容器启动的基本过程</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;IoC容器的启动过程就是<strong>建立上下文</strong>的过程，由ContextLoaderListener启动的上下文为<strong>根上下文</strong>。在根上下文的基础上，还有一个与Web MVC相关的上下文来<strong>保存控制器（DispatcherServlet）需要的MVC对象</strong>，它是根上下文的<strong>子上下文</strong>。这两者构成一个层次化的上下文体系，这个体系是由<strong>ContextLoader</strong>来完成。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;在ContextLoader中，完成了<strong>两个IoC容器</strong>建立的基本过程，一个是在Web容器中建立起双亲IoC容器（根上下文），另一个是生成相应的WebApplicationContext（子上下文）并将其初始化。<br><br></p>
+<h2 id="ContextLoader的设计与实现"><a href="#ContextLoader的设计与实现" class="headerlink" title="ContextLoader的设计与实现"></a>ContextLoader的设计与实现</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;ContextLoaderListener通过使用<strong>ContextLoader</strong>来完成实际的WebApplicationContext，也就是<strong>IoC容器的初始化工作</strong>。它就像Spring应用程序在Web容器中的启动器。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;ContextLoader在监听器的ServletContextListener接口实现类的初始化回调中创建，同时会利用创建出来的ContextLoader来完成IoC容器的初始化。<strong>初始化过程</strong>中，完成了<strong>根上下文</strong>在Web容器中的创建，创建成功后，根上下文会被存到Web容器的<strong>ServletContext</strong>中去，这样就建立了一个<strong>全局的关于整个应用的上下文</strong> 。</p>
+<hr>
+<p><br></p>
+<h1 id="Spring-MVC的设计与实现"><a href="#Spring-MVC的设计与实现" class="headerlink" title="Spring MVC的设计与实现"></a>Spring MVC的设计与实现</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;在上文的代码中，可以看到DispatcherServlet也进行了配置，它是一个<strong>前端控制器</strong>，所有的Web请求都要通过它来处理，进行转发、匹配、数据处理后，并转由页面进行展现。因此这<strong>个DispatcherServlet</strong>可以看成是Spring MVC实现中<strong>最为核心的部分</strong>。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;除了这条主线，在Spring MVC中，对于不同的Web请求的<strong>映射需求</strong>，Spring MVC提供了不同的<strong>HandlerMapping</strong>的实现。另外，不同Controller的实现也对应了不同的控制器使用场景，这些Controller控制器需要实现<strong>handleRequest接口</strong>方法，并返回<strong>ModelAndView</strong>对象。</p>
+<h2 id="Spring-MVC设计概述"><a href="#Spring-MVC设计概述" class="headerlink" title="Spring MVC设计概述"></a>Spring MVC设计概述</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;在完成ContextLoaderListener的初始化后，Web容器开始初始化DispatcherServlet。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;DispatcherServlet会<strong>建立自己的上下文</strong>来持有Spring MVC的Bean对象，在建立自己持有的IoC容器时，会从ServletContext中<strong>得到根上下文作为</strong>DIspatcherServlet持有上下文的<strong>双亲上下文</strong>。有了这个根上下文，再对自己持有的上下文进行初始化，然后保存到ServletContext中，供以后检索和使用。DispatcherServlet的启动过程就是Spring MVC的启动过程。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;DispatcherServlet的工作大致可以分为两部分：</p>
+<ol>
+<li><strong>初始化</strong>，由initServletBean()启动，通过initWebApplicationContext()方法最终调用DispatcherServlet的<strong>initStrategies方法</strong>，在这个方法里，DispatcherServlet对MVC其他部分进行了初始化，比如<strong>handlerMapping和ViewResolver</strong>等。</li>
+<li><strong>对Http请求进行响应</strong>，调用doService()方法，在这个方法调用里封装了doDispatch()方法，它是实现MVC模式的主要部分。<br><br></li>
+</ol>
+<h2 id="MVC处理HTTP分发请求"><a href="#MVC处理HTTP分发请求" class="headerlink" title="MVC处理HTTP分发请求"></a>MVC处理HTTP分发请求</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;在DispatcherServlet初始化完成时，在上下文环境中定义的所有HandlerMapping都已经被加载了。HandlerMapping接口中定义了一个<strong>getHandler方法</strong>，它可以<strong>获得HTTP请求对应的HandlerExecutionChain</strong>；这个Chain持有一个<strong>Interceptor链</strong>和一个<strong>handler对象</strong>，<strong>handler对象其实就是HTTP请求对应的Controller</strong>，而HTTP请求和handler的映射关系是通过一个<strong>HashMap来保存</strong>的。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;在接受到HTTP请求之后，DispatcherServlet调用<strong>doService()方法对HTTP请求参数进行快照处理</strong>，在doService方法中，封装了doDispatcher()方法，而<strong>对请求的处理</strong>过程实际上是<strong>由doDispatcher()方法来完成</strong>的：通过getHandler获得HandlerExecutionChain（HandlerAdapter对handler进行合法判断）对请求进行处理后，<strong>处理结果会封装到ModelAndView对象</strong>中，为视图提供展现数据。<br><br></p>
+<h2 id="Spring-MVC视图的呈现"><a href="#Spring-MVC视图的呈现" class="headerlink" title="Spring MVC视图的呈现"></a>Spring MVC视图的呈现</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;将处理结果封装到ModelAndView对象中后，为了对视图进行呈现，会从ModelAndView对象中取得<strong>视图对象</strong>，然后调用视图对象的<strong>render()方法</strong>，由这个视图对象来完成特定的视图呈现工作。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;在render()方法中，有一个<strong>resolveViewName()方法</strong>，这个方法会<strong>寻找视图对象的逻辑名</strong>，如果在ModelAndView中设置了视图对象的名称，就调<strong>用ViewResolver方法进行解析</strong>，具体实现为：直接到上下文中通过名称的对应关系取到作为View对象的Bean。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;如果ModelAndView中已经有了最终完成视图呈现的视图对象，就直接使用该对象。</p>
+<hr>
+<p>参考：《Spring技术内幕》——许文柯<br>转载请注明出处：<a href="http://www.yhang6.com/">小Hang同学的博客</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 原创 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Spring MVC </tag>
+            
+            <tag> DispatcherServlet </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Spring FrameWork核心：IoC容器的实现]]></title>
       <url>/2017/11/16/Spring-FrameWork%E6%A0%B8%E5%BF%83%EF%BC%9AIoC%E5%AE%B9%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
-      <content type="html"><![CDATA[<h1 id="Spring-IoC容器的设计"><a href="#Spring-IoC容器的设计" class="headerlink" title="Spring IoC容器的设计"></a>Spring IoC容器的设计</h1><h2 id="BeanFactory的应用场景"><a href="#BeanFactory的应用场景" class="headerlink" title="BeanFactory的应用场景"></a>BeanFactory的应用场景</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;BeanFactory提供的是最基本的Ioc容器的功能。<strong>BeanFactory只是一个接口类</strong>，而DefaultListableBeanFactory、XmlBeanFactory、ApplicationContext等都可以是容器附加了某种功能的具体实现。<br><br></p>
+      <content type="html"><![CDATA[<h1 id="Spring-IoC容器的设计"><a href="#Spring-IoC容器的设计" class="headerlink" title="Spring IoC容器的设计"></a>Spring IoC容器的设计</h1><h2 id="BeanFactory的应用场景"><a href="#BeanFactory的应用场景" class="headerlink" title="BeanFactory的应用场景"></a>BeanFactory的应用场景</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;BeanFactory提供的是最基本的Ioc容器的功能。<strong>BeanFactory只是一个接口类</strong>，而DefaultListableBeanFactory、XmlBeanFactory、ApplicationContext等都可以是容器附加了某种功能的具体实现。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>BeanFactory和FactoryBean</strong>：在Spring中，所有的Bean都是由<strong>BeanFactory</strong>（也就是Ioc容器）来进行<strong>管理</strong>的。而FactoryBean，他是一个能产生或者修饰对象生成的<strong>工厂Bean</strong>，他的实现与<a id="more"></a>设计模式中的工厂模式和修饰器模式类似。<br><br></p>
 <h2 id="BeanFactory容器的设计原理"><a href="#BeanFactory容器的设计原理" class="headerlink" title="BeanFactory容器的设计原理"></a>BeanFactory容器的设计原理</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;直接的BeanFactory实现是Ioc容器的<strong>基本形式</strong>，而各种ApplicationContext的实现是Ioc容器的<strong>高级表现</strong>形式。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>DefaultListableBeanFactory</strong>是非常重要的一个类，这个类实际上包含了基本Ioc容器所具有的重要功能，XMLBeanFactory继承自他，设计应用上下文ApplicationContext时也会用到它。<br><br></p>
@@ -24,6 +72,7 @@
 <li>当容器关闭时，调用Bean的销毁方法</li>
 </ol>
 <hr>
+<p><br></p>
 <h1 id="IoC容器的初始化过程"><a href="#IoC容器的初始化过程" class="headerlink" title="IoC容器的初始化过程"></a>IoC容器的初始化过程</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;IoC容器的初始化是由<strong>refresh()方法</strong>来启动的，这个方法标志着IoC容器的正式启动。这个启动包括BeanDefinition的<strong>Resource定位、载入和注册</strong>三个基本过程。Spring是把这三个过程分开，并使用不同的模块来完成的。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;IoC容器的初始化过程完成的主要工作就是在IoC容器中<strong>建立BeanDefinition</strong>的<strong>数据映射</strong>。<br><br></p>
 <h2 id="BeanDefinition的Resource定位"><a href="#BeanDefinition的Resource定位" class="headerlink" title="BeanDefinition的Resource定位"></a>BeanDefinition的Resource定位</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;这个Resource定位指的是BeanDefinition的<strong>资源定位</strong>，它是由ResourceLoader的<strong>通过统一的Resource接口</strong>来完成的。<br><br></p>
@@ -32,6 +81,7 @@
 <h2 id="BeanDefinition在IoC容器中的注册"><a href="#BeanDefinition在IoC容器中的注册" class="headerlink" title="BeanDefinition在IoC容器中的注册"></a>BeanDefinition在IoC容器中的注册</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;在BeanDefinition完成载入和解析之后，用户定义的BeanDefinition信息已经在IoC容器内建立起了自己的数据结构以及相应的数据表示，但是这些数据还<strong>不能直接提供给IoC容器</strong>使用，需要在IoC容器中对这些BeanDefinition数据进行注册。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;注册过程是通过调用BeanDefinitionRegistry接口来实现完成的。这个注册就是在IoC容器内部将BeanDefinition注入到一个HashMap中去，<strong>IoC容器</strong>就是<strong>通过这个HashMap</strong>来<strong>持有这些BeanDefinition数据</strong>的。HashMap的key是beanName，value是beanDefinition。</p>
 <hr>
+<p><br></p>
 <h1 id="IoC容器的依赖注入"><a href="#IoC容器的依赖注入" class="headerlink" title="IoC容器的依赖注入"></a>IoC容器的依赖注入</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;依赖注入的过程是在用户<strong>第一次</strong>向IoC容器索要Bean时触发的；但是我们可以在BeanDefinition信息中通过<strong>lazy-init属</strong>性来让容器完成对BeanDefinition的<strong>预实例化</strong>，让依赖注入在初始化的过程中完成。getBean()就是依赖注入发生的入口。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;与依赖注入关系特别密切的方法有<strong>createBeanInstance</strong>和<strong>populateBean</strong>。createBeanInstance中生成了Bean所包含的Java对象，这个对象可以通过工厂方法生成，也可以通过容器的autowired特性生成。populateBean对依赖关系进行了处理（对Bean对象的属性的处理）。</p>
 <hr>
@@ -62,7 +112,9 @@
       <url>/2017/10/31/%E6%B7%B1%E5%85%A5Web%E8%AF%B7%E6%B1%82%E8%BF%87%E7%A8%8B/</url>
       <content type="html"><![CDATA[<h1 id="B-S网络架构概述"><a href="#B-S网络架构概述" class="headerlink" title="B/S网络架构概述"></a>B/S网络架构概述</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;B/S网络架构都基于统一的应用层协议HTTP来交互数据，HTTP是一种<strong>无状态的短链接</strong>通信。通常一次请求就完成了一次数据交互，然后这次通信链接就断开了。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;当一个用户在浏览器里输入一个URL并发送请求时，将会发生很多操作:</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;首先会请求DNS把域名解析成对应的IP地址，然后根据IP地址在互联网上找到对应的服务器，向这个服务器发起一个Get请求，由这个服务器决定返回默认的数据资源给访问用户。<a id="more"></a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;在服务端还有很多复杂的业务逻辑：服务器可能有很多台，这是需要一个负载均衡设备来平均分配所有用户的请求；还有请求的数据存储在分布式缓存里的还是一个静态文件中，或是在数据库中；当数据返回浏览器时，浏览器解析数据发现还有一些静态资源（如CSS、JS或图片）时优惠发起另外一个HTTP请求，而这些请求很可能在CDN上，那么CDN服务器又会处理这个用户的请求。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;大体上一个用户请求会涉及这些操作，其中任何一个细节都会影响这个请求最终是否会成功。<br></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;大体上一个用户请求会涉及这些操作，其中任何一个细节都会影响这个请求最终是否会成功。</p>
+<hr>
+<p><br></p>
 <h1 id="DNS域名解析"><a href="#DNS域名解析" class="headerlink" title="DNS域名解析"></a>DNS域名解析</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;发起一个HTTP连接本质上就是建立一个Socket连接，只不过outputStream.write写的二进制字节数据格式要符合HTTP。</p>
 <h2 id="DNS域名解析过程"><a href="#DNS域名解析过程" class="headerlink" title="DNS域名解析过程"></a>DNS域名解析过程</h2><p>当一个用户在浏览器输入一个域名后，DNS解析将会有将近10个步骤，过程大体如下：</p>
 <ol>
@@ -77,7 +129,7 @@
 <li>返回该域名对应的IP和TTL值，LDNS会缓存这个域名和IP的对应关系，缓存时间由TTL值控制。</li>
 <li>将解析结果返回给用户，用户根据TTL值缓存在本地系统缓存中，域名解析过程结束。</li>
 </ol>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;浏览器、操作系统和本地域名服务器的域名缓存<strong>时间和大小</strong>都是有的限制，主要是时间限制，一般为几分钟到几小时不等，一般缓存空间不是影响域名失效的主要因素。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;浏览器、操作系统和本地域名服务器的域名缓存<strong>时间和大小</strong>都是有的限制，主要是时间限制，一般为几分钟到几小时不等，一般缓存空间不是影响域名失效的主要因素。<br><br></p>
 <h2 id="域名解析方式"><a href="#域名解析方式" class="headerlink" title="域名解析方式"></a>域名解析方式</h2><ul>
 <li><strong>A记录</strong>：A代表的是Address，用来指定域名对应的IP地址。A记录可以将多个域名解析到一个IP地址，但不能将一个域名解析到多个IP地址。</li>
 <li><strong>MX记录</strong>：表示的是Mail Exchange，就是将某个域名下的邮件服务器指向自己的Mail Server。</li>
@@ -85,13 +137,15 @@
 <li><strong>NS记录</strong>：为某个域名指定DNS解析服务器，也就是这个域名有指定的IP地址的DNS服务器去解析。</li>
 <li><strong>TXT记录</strong>：为某个主机名或域名设置说明，如可以为 yhang6.com设置TXT记录为“小Hang同学的博客”这样的说明。</li>
 </ul>
+<hr>
+<p><br></p>
 <h1 id="CDN工作机制"><a href="#CDN工作机制" class="headerlink" title="CDN工作机制"></a>CDN工作机制</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;CDN就是内容分布网络（Content Delivery Network），是构筑在现有Internet上的一种先进的流量分配网络。其<strong>目的</strong>是通过在现有的Internet中增加一层新的网络架构，将网站的内容发步到最接近用户的网络“边缘”，提高用户访问网站的响应速度。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;CDN有别于镜像，它比镜像更加智能，可以有这样一个比喻：<strong>CDN=镜像+缓存+整体负载均衡（GSLB）</strong>。因此，CDN可以明显提高Internet中信息流动的效率。目前CDN都<strong>以缓存网站中的静态数据为主</strong>。用户在从主站服务器请求到动态数据之后，再从CDN上下载静态数据，从而加速网页数据内容的下载速度。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;通常CDN要达到以下几个目标：</p>
 <ul>
 <li>可扩展。分为性能可扩展性和成本可扩展性。</li>
 <li>安全性。强调提供物理设备、网络、软件、数据和服务过程的安全性。</li>
-<li>可靠性、响应和执行。服务可用性能能够处理可能的故障和用户体验下降的问题，通过负载均衡及时提供网络的容错机制。</li>
+<li>可靠性、响应和执行。服务可用性能能够处理可能的故障和用户体验下降的问题，通过负载均衡及时提供网络的容错机制。<br><br></li>
 </ul>
 <h2 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;负载均衡（Load Balance）是对工作任务进行平衡、分摊到多个操作单元上执行，如图片服务器、应用服务器等，共同完成工作任务。它可以提高服务器响应速度及利用效率，避免软件或者硬件模块出现单点失效，解决网络拥塞问题，实现地理位置无关性，为用户提供较一致的访问质量。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;通常有三种负载均衡架构，分别是<strong>链路负载均衡、集群负载均衡、操作系统负载均衡</strong>。</p>
