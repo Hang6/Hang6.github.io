@@ -15,18 +15,18 @@
 
 
 
-<meta name="description" content="B/S网络架构概述&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;B/S网络架构都基于统一的应用层协议HTTP来交互数据，HTTP是一种无状态的短链接通信。通常一次请求就完成了一次数据交互，然后这次通信链接就断开了。&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;当一个用户在浏览器里输入一个URL并发送请求时，将会发生很多操作: &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;首先会请求DNS把域">
-<meta name="keywords" content="Web,DNS,CDN">
+<meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;当我们想要查询Mysql数据库里面的索引的时候，我们可以使用Explain语句来查看具体的索引信息，例如：explain  select * from user  ，它将会显示如何使用索引来处理select语句以及连接表，并帮助我们选择更好的索引和写出更优化的查询语句。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;下面将会讲解几个主要的参数以及它">
+<meta name="keywords" content="Mysql,Explain">
 <meta property="og:type" content="article">
-<meta property="og:title" content="深入Web请求过程">
-<meta property="og:url" content="http://www.yhang6.com/2017/10/31/深入Web请求过程/index.html">
+<meta property="og:title" content="Explain参数解析">
+<meta property="og:url" content="http://www.yhang6.com/2017/11/30/Explain参数解析/index.html">
 <meta property="og:site_name" content="小Hang同学的博客">
-<meta property="og:description" content="B/S网络架构概述&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;B/S网络架构都基于统一的应用层协议HTTP来交互数据，HTTP是一种无状态的短链接通信。通常一次请求就完成了一次数据交互，然后这次通信链接就断开了。&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;当一个用户在浏览器里输入一个URL并发送请求时，将会发生很多操作: &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;首先会请求DNS把域">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;当我们想要查询Mysql数据库里面的索引的时候，我们可以使用Explain语句来查看具体的索引信息，例如：explain  select * from user  ，它将会显示如何使用索引来处理select语句以及连接表，并帮助我们选择更好的索引和写出更优化的查询语句。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;下面将会讲解几个主要的参数以及它">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-11-29T11:35:37.636Z">
+<meta property="og:updated_time" content="2017-11-30T12:01:08.690Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="深入Web请求过程">
-<meta name="twitter:description" content="B/S网络架构概述&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;B/S网络架构都基于统一的应用层协议HTTP来交互数据，HTTP是一种无状态的短链接通信。通常一次请求就完成了一次数据交互，然后这次通信链接就断开了。&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;当一个用户在浏览器里输入一个URL并发送请求时，将会发生很多操作: &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;首先会请求DNS把域">
+<meta name="twitter:title" content="Explain参数解析">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;当我们想要查询Mysql数据库里面的索引的时候，我们可以使用Explain语句来查看具体的索引信息，例如：explain  select * from user  ，它将会显示如何使用索引来处理select语句以及连接表，并帮助我们选择更好的索引和写出更优化的查询语句。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;下面将会讲解几个主要的参数以及它">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>深入Web请求过程 | 小Hang同学的博客</title>
+<title>Explain参数解析 | 小Hang同学的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -209,11 +209,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-深入Web请求过程" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Explain参数解析" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/10/31/深入Web请求过程/" class="article-date">
-      <time datetime="2017-10-31T07:18:25.000Z" itemprop="datePublished">2017-10-31</time>
+      <a href="/2017/11/30/Explain参数解析/" class="article-date">
+      <time datetime="2017-11-30T11:58:09.000Z" itemprop="datePublished">2017-11-30</time>
 </a>
 
 
@@ -228,7 +228,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      深入Web请求过程
+      Explain参数解析
     </h1>
   
 
@@ -237,13 +237,13 @@
       <div class="article-info article-info-post">
         
     <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/原创/">原创</a>
+    <a class="article-category-link" href="/categories/日志/">日志</a>
     </div>
 
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CDN/">CDN</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DNS/">DNS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web/">Web</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Explain/">Explain</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mysql/">Mysql</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -253,52 +253,48 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <h1 id="B-S网络架构概述"><a href="#B-S网络架构概述" class="headerlink" title="B/S网络架构概述"></a>B/S网络架构概述</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;B/S网络架构都基于统一的应用层协议HTTP来交互数据，HTTP是一种<strong>无状态的短链接</strong>通信。通常一次请求就完成了一次数据交互，然后这次通信链接就断开了。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;当一个用户在浏览器里输入一个URL并发送请求时，将会发生很多操作:</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;首先会请求DNS把域名解析成对应的IP地址，然后根据IP地址在互联网上找到对应的服务器，向这个服务器发起一个Get请求，由这个服务器决定返回默认的数据资源给访问用户。<a id="more"></a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;在服务端还有很多复杂的业务逻辑：服务器可能有很多台，这是需要一个负载均衡设备来平均分配所有用户的请求；还有请求的数据存储在分布式缓存里的还是一个静态文件中，或是在数据库中；当数据返回浏览器时，浏览器解析数据发现还有一些静态资源（如CSS、JS或图片）时优惠发起另外一个HTTP请求，而这些请求很可能在CDN上，那么CDN服务器又会处理这个用户的请求。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;大体上一个用户请求会涉及这些操作，其中任何一个细节都会影响这个请求最终是否会成功。</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;当我们想要查询Mysql数据库里面的索引的时候，我们可以使用Explain语句来查看具体的索引信息，例如：explain  select * from user  ，它将会显示如何使用索引来处理select语句以及连接表，并帮助我们选择更好的索引和写出更优化的查询语句。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;下面将会讲解几个主要的参数以及它们的值的具体含义。</p>
 <hr>
-<p><br></p>
-<h1 id="DNS域名解析"><a href="#DNS域名解析" class="headerlink" title="DNS域名解析"></a>DNS域名解析</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;发起一个HTTP连接本质上就是建立一个Socket连接，只不过outputStream.write写的二进制字节数据格式要符合HTTP。</p>
-<h2 id="DNS域名解析过程"><a href="#DNS域名解析过程" class="headerlink" title="DNS域名解析过程"></a>DNS域名解析过程</h2><p>当一个用户在浏览器输入一个域名后，DNS解析将会有将近10个步骤，过程大体如下：</p>
-<ol>
-<li>浏览器会检查<strong>浏览器的缓存</strong>中有没有这个域名对应的解析过的IP地址，如果缓存中有，那么这个域名的解析过程就将结束。</li>
-<li>如果浏览器的缓存中没有IP地址，浏览器就会查找<strong>操作系统缓存</strong>中是否有这个域名的DNS解析结果。以上两个步骤都是在本机中完成，还没有涉及真正的域名解析服务器。</li>
-<li>如果在本机中无法完成域名的解析，就会真正请求域名服务器来解析这个域名。在我们的网络配置中有“DNS服务器地址”这一项，当在本机中无法完成解析的时候，操作系统会把这个域名发送给网络配置中设置的<strong>LDNS</strong>，也就是本地区的域名服务器。大约80%的域名解析都带这里就可以完成了，所以LDNS承担了主要的域名解析工作。</li>
-<li>如果LDNS仍然没有命中，就直接到<strong>Root Server域名服务器</strong>请求解析。</li>
-<li>根域名服务器返回给本地域名服务器一个查询域的<strong>主域名服务器</strong>（gTLD Server）地址。gTLD是国级顶级域名服务器，如 .com、.cn等。</li>
-<li>本地域名服务器（LDNS）再向上一步返回的gTLD服务器发送请求。</li>
-<li>接受请求的gTLD服务器查找并返回此域名对应的<strong>Name Server域名服务器</strong>的地址，这个Name Server通常就是自己注册的域名服务器。例如在某个域名服务提供商申请的域名，那么这个域名解析任务就由这个域名提供商的服务器来完成。</li>
-<li>Name Server域名服务器会查询存储的域名和IP的映射关系表，在正常情况下都根据域名得到目标IP记录，连同一个TTL值返回给DNS Server域名服务器。</li>
-<li>返回该域名对应的IP和TTL值，LDNS会缓存这个域名和IP的对应关系，缓存时间由TTL值控制。</li>
-<li>将解析结果返回给用户，用户根据TTL值缓存在本地系统缓存中，域名解析过程结束。</li>
-</ol>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;浏览器、操作系统和本地域名服务器的域名缓存<strong>时间和大小</strong>都是有的限制，主要是时间限制，一般为几分钟到几小时不等，一般缓存空间不是影响域名失效的主要因素。<br><br></p>
-<h2 id="域名解析方式"><a href="#域名解析方式" class="headerlink" title="域名解析方式"></a>域名解析方式</h2><ul>
-<li><strong>A记录</strong>：A代表的是Address，用来指定域名对应的IP地址。A记录可以将多个域名解析到一个IP地址，但不能将一个域名解析到多个IP地址。</li>
-<li><strong>MX记录</strong>：表示的是Mail Exchange，就是将某个域名下的邮件服务器指向自己的Mail Server。</li>
-<li><strong>CNAME记录</strong>：全程是Canonical Name（别名解析）。所谓的别名解析就是可以为一个域名设置一个或多个别名。如将 Hang6.github.io解析到 yhang6.com。其中后者是前者的别名。</li>
-<li><strong>NS记录</strong>：为某个域名指定DNS解析服务器，也就是这个域名有指定的IP地址的DNS服务器去解析。</li>
-<li><strong>TXT记录</strong>：为某个主机名或域名设置说明，如可以为 yhang6.com设置TXT记录为“小Hang同学的博客”这样的说明。</li>
-</ul>
-<hr>
-<p><br></p>
-<h1 id="CDN工作机制"><a href="#CDN工作机制" class="headerlink" title="CDN工作机制"></a>CDN工作机制</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;CDN就是内容分布网络（Content Delivery Network），是构筑在现有Internet上的一种先进的流量分配网络。其<strong>目的</strong>是通过在现有的Internet中增加一层新的网络架构，将网站的内容发步到最接近用户的网络“边缘”，提高用户访问网站的响应速度。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;CDN有别于镜像，它比镜像更加智能，可以有这样一个比喻：<strong>CDN=镜像+缓存+整体负载均衡（GSLB）</strong>。因此，CDN可以明显提高Internet中信息流动的效率。目前CDN都<strong>以缓存网站中的静态数据为主</strong>。用户在从主站服务器请求到动态数据之后，再从CDN上下载静态数据，从而加速网页数据内容的下载速度。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;通常CDN要达到以下几个目标：</p>
+<h2 id="select-type"><a href="#select-type" class="headerlink" title="select_type"></a>select_type</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;select的具体类型，它有以下几种值：<a id="more"></a></p>
 <ul>
-<li>可扩展。分为性能可扩展性和成本可扩展性。</li>
-<li>安全性。强调提供物理设备、网络、软件、数据和服务过程的安全性。</li>
-<li>可靠性、响应和执行。服务可用性能能够处理可能的故障和用户体验下降的问题，通过负载均衡及时提供网络的容错机制。<br><br></li>
+<li><strong>simple</strong>：简单的select查询，没有union或者子查询</li>
+<li><strong>primary</strong>：最外面的select，在有子查询的语句中，最外面的select查询就是primary</li>
+<li><strong>union</strong>：union语句的第二个或者后面那一个select语句</li>
+<li><strong>dependent union</strong>：union中的第二个或者后面的select语句，取决于外面的查询</li>
+<li><strong>union result</strong>：union的结果</li>
 </ul>
-<h2 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;负载均衡（Load Balance）是对工作任务进行平衡、分摊到多个操作单元上执行，如图片服务器、应用服务器等，共同完成工作任务。它可以提高服务器响应速度及利用效率，避免软件或者硬件模块出现单点失效，解决网络拥塞问题，实现地理位置无关性，为用户提供较一致的访问质量。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;通常有三种负载均衡架构，分别是<strong>链路负载均衡、集群负载均衡、操作系统负载均衡</strong>。</p>
+<h2 id="type"><a href="#type" class="headerlink" title="type"></a>type</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;联接类型。有多个参数，从最佳类型到最差类型进行排列：</p>
 <ul>
-<li>链路负载均衡就是通过DNS解析成不同的IP，然后根据IP访问不同的目标服务器实现的。这种方式的优点就是用户会直接访问目标服务器，速度会很快。但缺点是DNS都有缓存，一旦某台Web Server挂掉，就很难及时更新用户的域名解析结构。</li>
-<li>集群负载均衡一般分为硬件负载均衡和软件负载均衡。<strong>硬件负载均衡</strong>一般使用一台专门的硬件设备来转发请求，这台设备性能非常好，但是非常昂贵；<strong>软件负载均衡</strong>是使用最普遍的一种负载方式，特点是成本很低，但是一般一次访问请求要经过多次代理服务器，会增加网络延时。</li>
-<li>操作系统负载均衡就是利用操作系统级别的软中断或者硬件中断来达到负载均衡，如可以设置多队列网卡等来实现。</li>
+<li><strong>system</strong>：表仅有一行。这是const联接类型的一个特例，平时不会出现</li>
+<li><strong>const</strong>：表最多有一个匹配行，因为只匹配一行数据，所以很快。一定要primary_key或者unique，并且只检索出两条数据的情况下才会是const</li>
+<li><strong>eq_ref</strong>：对于每个来自于前面的表的行组合，从该表中读取一行。这可能是最好的联接类型，除了const类型。它用在一个索引的所有部分被联接使用并且索引是UNIQUE或PRIMARY KEY时</li>
+<li><strong>ref</strong>：对于每个来自于前面的表的行组合，所有有匹配索引值的行将从这张表中读取。如果联接只使用键的最左边的前缀，或如果键不是UNIQUE或PRIMARY KEY（换句话说，如果联接不能基于关键字选择单个行的话），则使用ref</li>
+<li><strong>ref_or_null</strong>：该联接类型如同ref，但是添加了MySQL可以专门搜索包含NULL值的行</li>
+<li><strong>index_merge</strong>：该联接类型表示使用了索引合并优化方法。在这种情况下，key列包含了使用的索引的清单，key_len包含了使用的索引的最长的关键元素</li>
+<li><strong>unique_subquery</strong></li>
+<li><strong>index_subquery</strong></li>
+<li><strong>range</strong>： 给定范围内的检索，使用一个索引来检查行</li>
+<li><strong>index</strong>：该联接类型与ALL相同，除了只有索引树被扫描。这通常比ALL快，因为索引文件通常比数据文件小（index从索引中读取，all从硬盘中读取）</li>
+<li><strong>all</strong>：对于每个来自于先前的表的行组合，进行完整的表扫描</li>
 </ul>
-<hr>
-<p>参考：《深入分析Java Web技术内幕》——许令波<br>转载请注明出处：<a href="http://www.yhang6.com/">小Hang同学的博客</a></p>
+<h2 id="possible-keys"><a href="#possible-keys" class="headerlink" title="possible_keys"></a>possible_keys</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;提示使用哪个索引会在该表中找到行</p>
+<h2 id="keys"><a href="#keys" class="headerlink" title="keys"></a>keys</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;Mysql在查询中实际使用的索引，若没有使用索引，则为null</p>
+<h2 id="key——len"><a href="#key——len" class="headerlink" title="key——len"></a>key——len</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;Mysql使用的索引的长度，如果索引为null，则长度为null</p>
+<h2 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;显示使用哪个列或常数与key一起从表中选择行</p>
+<h2 id="rows"><a href="#rows" class="headerlink" title="rows"></a>rows</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;显示Mysql执行查询的行数，数值越大越不好，说明没有用好索引</p>
+<h2 id="Extra"><a href="#Extra" class="headerlink" title="Extra"></a>Extra</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;该列包含了Mysql解决查询的详细信息：</p>
+<ul>
+<li><strong>Distinct</strong>：Mysql发现匹配行后，停止为当前的行组合搜索更多的行</li>
+<li><strong>Not exists</strong>：MySQL能够对查询进行LEFT JOIN优化,发现1个匹配LEFT JOIN标准的行后,不再为前面的的行组合在该表内检查更多的行</li>
+<li><strong>range checked for each record</strong>：没有找到合适的索引</li>
+<li><strong>using filesort</strong>：MySQL需要额外的一次传递，以找出如何按排序顺序检索行。通过根据联接类型浏览所有行并为所有匹配WHERE子句的行保存排序关键字和行的指针来完成排序。然后关键字被排序，并按排序顺序检索行</li>
+<li><strong>using index</strong>（覆盖索引）：只是用索引树中的信息而不需要进一步搜索读取实际的行来检索表中的信息。</li>
+<li><strong>using temporary</strong>：为了解决查询，MySQL需要创建一个临时表来容纳结果</li>
+<li><strong>using where</strong>：WHERE子句用于限制哪一个行匹配下一个表或发送到客户。</li>
+<li><strong>Using sort_union(…), Using union(…), Using intersect(…)</strong>：这些函数说明如何为index_merge联接类型合并索引扫描</li>
+<li><strong>Using index for group-by</strong>：表示MySQL发现了一个索引，可以用来查询GROUP BY或DISTINCT查询的所有列，而不要额外搜索硬盘访问实际的表</li>
+</ul>
 
       
     </div>
@@ -307,13 +303,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/10/31/深入Web请求过程/">深入Web请求过程</a></p>
+        <p><span>本文标题:</span><a href="/2017/11/30/Explain参数解析/">Explain参数解析</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">小Hang同学</a></p>
-        <p><span>发布时间:</span>2017-10-31, 15:18:25</p>
-        <p><span>最后更新:</span>2017-11-29, 19:35:37</p>
+        <p><span>发布时间:</span>2017-11-30, 19:58:09</p>
+        <p><span>最后更新:</span>2017-11-30, 20:01:08</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/10/31/深入Web请求过程/" title="深入Web请求过程">http://www.yhang6.com/2017/10/31/深入Web请求过程/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://www.yhang6.com/2017/10/31/深入Web请求过程/　　作者: 小Hang同学" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/11/30/Explain参数解析/" title="Explain参数解析">http://www.yhang6.com/2017/11/30/Explain参数解析/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://www.yhang6.com/2017/11/30/Explain参数解析/　　作者: 小Hang同学" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -325,16 +321,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/11/16/Spring-FrameWork核心：IoC容器的实现/">
-                    Spring FrameWork核心：IoC容器的实现
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/10/26/Java线程池/">
-                    Java线程池
+                <a href="/2017/11/29/Spring-MVC的请求流程/">
+                    Spring MVC的请求流程
                 </a>
             </div>
         
@@ -346,7 +336,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#B-S网络架构概述"><span class="toc-number">1.</span> <span class="toc-text">B/S网络架构概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DNS域名解析"><span class="toc-number">2.</span> <span class="toc-text">DNS域名解析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#DNS域名解析过程"><span class="toc-number">2.1.</span> <span class="toc-text">DNS域名解析过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#域名解析方式"><span class="toc-number">2.2.</span> <span class="toc-text">域名解析方式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CDN工作机制"><span class="toc-number">3.</span> <span class="toc-text">CDN工作机制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#负载均衡"><span class="toc-number">3.1.</span> <span class="toc-text">负载均衡</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#select-type"><span class="toc-number">1.</span> <span class="toc-text">select_type</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#type"><span class="toc-number">2.</span> <span class="toc-text">type</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#possible-keys"><span class="toc-number">3.</span> <span class="toc-text">possible_keys</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#keys"><span class="toc-number">4.</span> <span class="toc-text">keys</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#key——len"><span class="toc-number">5.</span> <span class="toc-text">key——len</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ref"><span class="toc-number">6.</span> <span class="toc-text">ref</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rows"><span class="toc-number">7.</span> <span class="toc-text">rows</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Extra"><span class="toc-number">8.</span> <span class="toc-text">Extra</span></a></li></ol>
         
     </div>
     <style>
@@ -382,7 +372,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"深入Web请求过程　| 小Hang同学的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"Explain参数解析　| 小Hang同学的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -398,7 +388,7 @@
     
       <div class="duoshuo" id="comments">
     <div id="comment-box" ></div>
-    <div class="ds-thread" id="ds-thread" data-thread-key="2017/10/31/深入Web请求过程/" data-title="深入Web请求过程" data-url="http://www.yhang6.com/2017/10/31/深入Web请求过程/"></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2017/11/30/Explain参数解析/" data-title="Explain参数解析" data-url="http://www.yhang6.com/2017/11/30/Explain参数解析/"></div>
     <script>
         var duoshuoQuery = {short_name:""};
         var loadComment = function(){
@@ -421,15 +411,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/11/16/Spring-FrameWork核心：IoC容器的实现/" title="上一篇: Spring FrameWork核心：IoC容器的实现">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/10/26/Java线程池/" title="下一篇: Java线程池">
+            <a href="/2017/11/29/Spring-MVC的请求流程/" title="下一篇: Spring MVC的请求流程">
                 <i class="fa fa-angle-right"></i>
             </a>
         
