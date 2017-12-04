@@ -218,6 +218,14 @@
 <li>集群负载均衡一般分为硬件负载均衡和软件负载均衡。<strong>硬件负载均衡</strong>一般使用一台专门的硬件设备来转发请求，这台设备性能非常好，但是非常昂贵；<strong>软件负载均衡</strong>是使用最普遍的一种负载方式，特点是成本很低，但是一般一次访问请求要经过多次代理服务器，会增加网络延时。</li>
 <li>操作系统负载均衡就是利用操作系统级别的软中断或者硬件中断来达到负载均衡，如可以设置多队列网卡等来实现。</li>
 </ul>
+<h2 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;四次挥手指的是断开TCP连接时（关闭浏览器），需要客户端和服务器发送4个包确认连接的断开。由于TCP连接时<strong>全双工</strong>的，因此每个方向都必须进行单独关闭。<strong>首先进行关闭的一方执行主动关闭，另一方执行被动关闭</strong>。</p>
+<ul>
+<li><strong>第一次挥手</strong>：主动关闭方发送FIN包进入<strong>FIN_WAIT1</strong>状态。</li>
+<li><strong>第二次挥手</strong>：被动关闭方收到主动方的FIN并返回一个ACK包，此时被动方进入<strong>CLOSE_WAIT</strong>状态，表示接收到主动方的关闭请求；主动方接收到被动方的ACK包后，进入到<strong>FIN_WAIT2</strong>状态。</li>
+<li><strong>第三次挥手</strong>：当被动方发送完以前请求的数据包后，向主动方发送FIN包并进入<strong>LAST_ACK</strong>状态。</li>
+<li><strong>第四次挥手</strong>：主动方接收到FIN包并返回一个ACK包，此时主动方进入<strong>TIME_WAIT</strong>状态，2MSL时间后关闭连接；被动方接收到ACK包后关闭连接。</li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;注意：<br><br>&nbsp;&nbsp;&nbsp;&nbsp;FIN报文只表示此方不再发送数据，但是可以接受数据。当客户端发送FIN报文时，说明客户端已经没有要发送的数据，但此时服务器可能还有未返回的请求结果，所以需要服务器发送FIN报文来确认所有数据以传输完成。这是全双工模式的体现，也是为什么需要四次挥手的原因。</p>
 <hr>
 <p>参考：《深入分析Java Web技术内幕》——许令波<br>转载请注明出处：<a href="http://www.yhang6.com/">小Hang同学的博客</a></p>
 ]]></content>
