@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="小Hang同学的博客">
 <meta property="og:description" content="B/S网络架构概述&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;B/S网络架构都基于统一的应用层协议HTTP来交互数据，HTTP是一种无状态的短链接通信。通常一次请求就完成了一次数据交互，然后这次通信链接就断开了。&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;当一个用户在浏览器里输入一个URL并发送请求时，将会发生很多操作: &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;首先会请求DNS把域">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-12-04T13:10:55.864Z">
+<meta property="og:updated_time" content="2017-12-04T13:13:37.759Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入Web请求过程">
 <meta name="twitter:description" content="B/S网络架构概述&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;B/S网络架构都基于统一的应用层协议HTTP来交互数据，HTTP是一种无状态的短链接通信。通常一次请求就完成了一次数据交互，然后这次通信链接就断开了。&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;当一个用户在浏览器里输入一个URL并发送请求时，将会发生很多操作: &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;首先会请求DNS把域">
@@ -207,7 +207,7 @@
             </nav>
         </header>                
     </div>
-    <link class="menu-list" tags="標籤" friends="友情鏈接" about="關於我"/>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
       <div class="body-wrap"><article id="post-深入Web请求过程" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -295,8 +295,15 @@
 <ul>
 <li>链路负载均衡就是通过DNS解析成不同的IP，然后根据IP访问不同的目标服务器实现的。这种方式的优点就是用户会直接访问目标服务器，速度会很快。但缺点是DNS都有缓存，一旦某台Web Server挂掉，就很难及时更新用户的域名解析结构。</li>
 <li>集群负载均衡一般分为硬件负载均衡和软件负载均衡。<strong>硬件负载均衡</strong>一般使用一台专门的硬件设备来转发请求，这台设备性能非常好，但是非常昂贵；<strong>软件负载均衡</strong>是使用最普遍的一种负载方式，特点是成本很低，但是一般一次访问请求要经过多次代理服务器，会增加网络延时。</li>
-<li>操作系统负载均衡就是利用操作系统级别的软中断或者硬件中断来达到负载均衡，如可以设置多队列网卡等来实现。</li>
+<li>操作系统负载均衡就是利用操作系统级别的软中断或者硬件中断来达到负载均衡，如可以设置多队列网卡等来实现。<br><br></li>
 </ul>
+<h1 id="三次握手，四次挥手"><a href="#三次握手，四次挥手" class="headerlink" title="三次握手，四次挥手"></a>三次握手，四次挥手</h1><h2 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;当客户端找到了服务端的IP地址之后，为了准确无误的将数据送达目标出，TCP协议采用三次握手策略建立起连接。用TCP协议将数据包送出去后，TCP一定会向对方确认是否成功送达。</p>
+<ul>
+<li><strong>第一次握手</strong>：建立连接时，客户端发送syn包（syn=j）到服务器，并进入<strong>SYN_SEND</strong>状态，等待服务器确认。</li>
+<li><strong>第二次握手</strong>：服务器收到syn包，必须确认客户的SYN（ack=j+1），同时自己发送一个syn包（syn=k）。即发送SYN+ACK包，此时服务器进入<strong>SYN_RECV</strong>状态。</li>
+<li><strong>第三次握手</strong>：客户端收到服务器的SYN+ACK包，向服务器发送确认包（ack=k+1），此包发送完毕时，客户端和服务器进入<strong>ESTABLISHED</strong>状态，完成三次握手。</li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;完成三次握手后，客户端与服务器开始传送数据。</p>
 <h2 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;四次挥手指的是断开TCP连接时（关闭浏览器），需要客户端和服务器发送4个包确认连接的断开。由于TCP连接时<strong>全双工</strong>的，因此每个方向都必须进行单独关闭。<strong>首先进行关闭的一方执行主动关闭，另一方执行被动关闭</strong>。</p>
 <ul>
 <li><strong>第一次挥手</strong>：主动关闭方发送FIN包进入<strong>FIN_WAIT1</strong>状态。</li>
@@ -315,17 +322,17 @@
   
     
     <div class="copyright">
-        <p><span>本文標題:</span><a href="/2017/10/31/深入Web请求过程/">深入Web请求过程</a></p>
-        <p><span>文章作者:</span><a href="/" title="回到主頁">小Hang同学</a></p>
-        <p><span>發布時間:</span>2017-10-31, 15:18:25</p>
-        <p><span>最後更新:</span>2017-12-04, 21:10:55</p>
+        <p><span>本文标题:</span><a href="/2017/10/31/深入Web请求过程/">深入Web请求过程</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">小Hang同学</a></p>
+        <p><span>发布时间:</span>2017-10-31, 15:18:25</p>
+        <p><span>最后更新:</span>2017-12-04, 21:13:37</p>
         <p>
-            <span>原始鏈接:</span><a class="post-url" href="/2017/10/31/深入Web请求过程/" title="深入Web请求过程">http://www.yhang6.com/2017/10/31/深入Web请求过程/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://www.yhang6.com/2017/10/31/深入Web请求过程/　　作者: 小Hang同学" title="點擊複製文章鏈接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/10/31/深入Web请求过程/" title="深入Web请求过程">http://www.yhang6.com/2017/10/31/深入Web请求过程/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://www.yhang6.com/2017/10/31/深入Web请求过程/　　作者: 小Hang同学" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
-            <span>許可協議:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"姓名標示-非商業性-相同方式分享 4.0 國際"</a> 轉載請保留原文鏈接及作者。
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
         </p>
     </div>
 
@@ -352,9 +359,9 @@
 </article>
 
     <div id="toc" class="toc-article">
-        <strong class="toc-title">文章目錄</strong>
+        <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#B-S网络架构概述"><span class="toc-number">1.</span> <span class="toc-text">B/S网络架构概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DNS域名解析"><span class="toc-number">2.</span> <span class="toc-text">DNS域名解析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#DNS域名解析过程"><span class="toc-number">2.1.</span> <span class="toc-text">DNS域名解析过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#域名解析方式"><span class="toc-number">2.2.</span> <span class="toc-text">域名解析方式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CDN工作机制"><span class="toc-number">3.</span> <span class="toc-text">CDN工作机制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#负载均衡"><span class="toc-number">3.1.</span> <span class="toc-text">负载均衡</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四次挥手"><span class="toc-number">3.2.</span> <span class="toc-text">四次挥手</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#B-S网络架构概述"><span class="toc-number">1.</span> <span class="toc-text">B/S网络架构概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DNS域名解析"><span class="toc-number">2.</span> <span class="toc-text">DNS域名解析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#DNS域名解析过程"><span class="toc-number">2.1.</span> <span class="toc-text">DNS域名解析过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#域名解析方式"><span class="toc-number">2.2.</span> <span class="toc-text">域名解析方式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CDN工作机制"><span class="toc-number">3.</span> <span class="toc-text">CDN工作机制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#负载均衡"><span class="toc-number">3.1.</span> <span class="toc-text">负载均衡</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#三次握手，四次挥手"><span class="toc-number">4.</span> <span class="toc-text">三次握手，四次挥手</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#三次握手"><span class="toc-number">4.1.</span> <span class="toc-text">三次握手</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四次挥手"><span class="toc-number">4.2.</span> <span class="toc-text">四次挥手</span></a></li></ol></li></ol>
         
     </div>
     <style>
@@ -368,10 +375,10 @@
         }
     </style>
 
-    <input type="button" id="tocButton" value="隱藏目錄"  title="點擊按鈕隱藏或者顯示文章目錄">
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
 
     <script>
-        yiliaConfig.toc = ["隱藏目錄", "顯示目錄", !!"false"];
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
     </script>
 
 
@@ -460,14 +467,14 @@
                 2016-2017 小Hang同学
             </div>
             <div class="footer-right">
-                <a href="http://hexo.io/" target="_blank" title="快速、簡單且強大的網誌框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="簡而不減 Hexo 雙欄網誌主題  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
             </div>
         </div>
         
             <div class="visit">
                 
                     <span id="busuanzi_container_site_pv" style='display:none'>
-                        <span id="site-visit" title="本站到訪數"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
                         </span>
                     </span>
                 
@@ -476,7 +483,7 @@
                 
                 
                     <span id="busuanzi_container_page_pv" style='display:none'>
-                        <span id="page-visit"  title="本頁閱讀量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
                         </span>
                     </span>
                 
@@ -509,9 +516,9 @@
 
 
 <div class="scroll" id="scroll">
-    <a href="#" title="返回頂部"><i class="fa fa-arrow-up"></i></a>
-    <a href="#comments" onclick="load$hide();" title="查看評論"><i class="fa fa-comments-o"></i></a>
-    <a href="#footer" title="轉到底部"><i class="fa fa-arrow-down"></i></a>
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
 </div>
 <script>
     // Open in New Window
