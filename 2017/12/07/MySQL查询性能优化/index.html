@@ -15,18 +15,18 @@
 
 
 
-<meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Java在JDK1.5之后加入了java.util.concurrent包，这包中有一个接口Executor，它是Java线程池的顶级接口。但在严格意义上讲它并不是一个线程池，而是一个执行线程的工具。真正的线程池接口是ExrcutorService。&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;那么我们为什么要使用线程池呢，我们都知道，每当我们创建">
-<meta name="keywords" content="Java,线程池,ThreadPoolExecutor">
+<meta name="description" content="慢查询基础：优化数据访问&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;查询性能低下最基本的原因是访问的数据太多，大部分性能低下的查询都可以通过减少访问的数据量的方式进行优化。对于低效的查询，通过下列两个步骤来分析总是很有效：  确认应用程序是否在检索大量超过需要的数据 确认MySQL服务器层是否在分析大量超过需要的数据行。  向数据库请求了不需要的数据&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbs">
+<meta name="keywords" content="MySQL,性能优化">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java线程池">
-<meta property="og:url" content="http://www.yhang6.com/2017/10/26/Java线程池/index.html">
+<meta property="og:title" content="MySQL查询性能优化">
+<meta property="og:url" content="http://www.yhang6.com/2017/12/07/MySQL查询性能优化/index.html">
 <meta property="og:site_name" content="小Hang同学的博客">
-<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Java在JDK1.5之后加入了java.util.concurrent包，这包中有一个接口Executor，它是Java线程池的顶级接口。但在严格意义上讲它并不是一个线程池，而是一个执行线程的工具。真正的线程池接口是ExrcutorService。&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;那么我们为什么要使用线程池呢，我们都知道，每当我们创建">
+<meta property="og:description" content="慢查询基础：优化数据访问&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;查询性能低下最基本的原因是访问的数据太多，大部分性能低下的查询都可以通过减少访问的数据量的方式进行优化。对于低效的查询，通过下列两个步骤来分析总是很有效：  确认应用程序是否在检索大量超过需要的数据 确认MySQL服务器层是否在分析大量超过需要的数据行。  向数据库请求了不需要的数据&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbs">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-11-02T09:17:14.966Z">
+<meta property="og:updated_time" content="2017-12-07T12:27:25.841Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java线程池">
-<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Java在JDK1.5之后加入了java.util.concurrent包，这包中有一个接口Executor，它是Java线程池的顶级接口。但在严格意义上讲它并不是一个线程池，而是一个执行线程的工具。真正的线程池接口是ExrcutorService。&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;那么我们为什么要使用线程池呢，我们都知道，每当我们创建">
+<meta name="twitter:title" content="MySQL查询性能优化">
+<meta name="twitter:description" content="慢查询基础：优化数据访问&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;查询性能低下最基本的原因是访问的数据太多，大部分性能低下的查询都可以通过减少访问的数据量的方式进行优化。对于低效的查询，通过下列两个步骤来分析总是很有效：  确认应用程序是否在检索大量超过需要的数据 确认MySQL服务器层是否在分析大量超过需要的数据行。  向数据库请求了不需要的数据&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbs">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Java线程池 | 小Hang同学的博客</title>
+<title>MySQL查询性能优化 | 小Hang同学的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -209,11 +209,11 @@
     </div>
     <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
-      <div class="body-wrap"><article id="post-Java线程池" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-MySQL查询性能优化" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/10/26/Java线程池/" class="article-date">
-      <time datetime="2017-10-26T10:54:01.000Z" itemprop="datePublished">2017-10-26</time>
+      <a href="/2017/12/07/MySQL查询性能优化/" class="article-date">
+      <time datetime="2017-12-07T12:23:29.000Z" itemprop="datePublished">2017-12-07</time>
 </a>
 
 
@@ -228,7 +228,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Java线程池
+      MySQL查询性能优化
     </h1>
   
 
@@ -243,7 +243,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ThreadPoolExecutor/">ThreadPoolExecutor</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/线程池/">线程池</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/性能优化/">性能优化</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -253,32 +253,77 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;Java在JDK1.5之后加入了java.util.concurrent包，这包中有一个接口Executor，它是Java线程池的顶级接口。但在严格意义上讲它并不是一个线程池，而是一个执行线程的工具。真正的线程池接口是ExrcutorService。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;那么我们为什么要使用线程池呢，我们都知道，每当我们创建一个线程的时候，都会耗费相应的时间和空间。而线程池的主要作用就是减少时间和空间的开销。<a id="more"></a>即：<br></p>
-<ul>
-<li><strong>减少创建和销毁线程的次数</strong>，每个工作线程都可以被重复利用，可执行多个任务。</li>
-<li>可以根据系统的承受能力，<strong>调整线程池中工作线程的数目，防止消耗过多的内存</strong>（JDk1.5以后每个线程堆栈大小为1MB）。</li>
-</ul>
-<p><br></p>
-<h1 id="创建线程池"><a href="#创建线程池" class="headerlink" title="创建线程池"></a>创建线程池</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;创建一个线程池比较复杂，Executor类里面提供了一些静态工厂，生成一些常用的线程池。<br></p>
+        <h1 id="慢查询基础：优化数据访问"><a href="#慢查询基础：优化数据访问" class="headerlink" title="慢查询基础：优化数据访问"></a>慢查询基础：优化数据访问</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;查询性能低下最基本的原因是访问的数据太多，大部分性能低下的查询都可以通过减少访问的数据量的方式进行优化。对于低效的查询，通过下列两个步骤来分析总是很有效：</p>
 <ol>
-<li><strong>newSingleThreadExecutor</strong>：创建一个单线程的线程池。这个线程池只有一个线程在工作，也就是相当于单线程串行执行所有任务。如果这个唯一的线程因为异常结束，那么会有一个新的线程来替代它。此线程池保证所有任务的执行顺序按照任务的提交顺序执行。使用LinkedBlockingQueue（无界队列）。</li>
-<li><strong>newFixedThreadPool</strong>：创建固定大小的线程池。每次提交一个任务就创建一个线程，直到线程达到线程池的最大大小。线程池的大小一旦达到最大值就会保持不变，如果某个线程因为执行异常而结束，那么线程池会补充一个新线程。使用LinkedBlockingQueue（无界队列）。</li>
-<li><strong>newCachedThreadPool</strong>：创建一个可缓存的线程池。如果线程池的大小超过了处理任务所需要的线程，那么就会回收部分空闲（60秒不执行任务）的线程，当任务数增加时，此线程池又可以智能的添加新线程来处理任务。此线程池不会对线程池大小做限制，线程池大小完全依赖于操作系统（或者说JVM）能够创建的最大线程大小。使用SynchronousQueue。</li>
-<li><strong>newScheduledThreadPool</strong>：创建一个大小无限的线程池。此线程池支持定时以及周期性执行任务的需求。</li>
+<li>确认应用程序是否在检索大量超过需要的数据</li>
+<li>确认MySQL服务器层是否在分析大量超过需要的数据行。</li>
 </ol>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
-<h1 id="ThreadPoolExecutor类"><a href="#ThreadPoolExecutor类" class="headerlink" title="ThreadPoolExecutor类"></a>ThreadPoolExecutor类</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;java.util.concurrent.ThreadPoolExecutor类是线程池中最核心的一个类，他是类ExecutorService的默认实现，想要更深的了解Java中的线程池，必须先了解这个类。<br><br></p>
-<h2 id="ThreadPoolExecutor类的主要参数"><a href="#ThreadPoolExecutor类的主要参数" class="headerlink" title="ThreadPoolExecutor类的主要参数"></a>ThreadPoolExecutor类的主要参数</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;在ThreadPoolExecutor类中，有几个极为重要的参数：<br></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>corePoolSize</strong>：线程池中保存的线程数，包括运行线程和空闲线程。当池中的线程达到corePoolSize的时候，就会把新到达的任务放在缓存队列当中。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>maximumPoolSize</strong>：线程池的最大线程数，他决定了线程池最多能创建多少个线程。当corePoolSize和maximumPoolSize相同时，将创建一个固定大小的线程池。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>keepAliveTime</strong>：表示空闲线程保留的最长时间，达到keepAliveTime时，线程则会终止。  在默认情况下，当线程池中的<strong>线程数量大于corePoolSize</strong>设置的值时，keepAliveTime才会起作用，直到线程池中线程数量不大于corePoolSize。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>unit</strong>：参数keepAliveTime的时间单位。有7种取值，在TimeUnit类中有7种静态属性，分别为：天（DAYS）、小时（HOURS）、分（MINUTES）、秒（SECONDS）、毫秒（MILLISECONDS）、微秒（MICROSECONDS）、纳秒（NANOSECONDS）。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>workQueue</strong>：一个阻塞队列，用来存储等待执行的任务。此队列仅保持由execute方法提交的Runnable任务。这里的阻塞队列有以下几种选择：ArrayBlockingQueue、LinkedBlockingQueue和SynchronousQueue。一般使用LinkedBlockingQueue和SynchronousQueue。如果使用无界queue，那么maximumPoolSize是没有意义的。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>threadFactory</strong>：线程工厂，主要用于创建新线程。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>handler</strong>：由于超出线程范围和队列容量而使执行被阻塞时 所使用的处理程序。<br><br><br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>注意</strong>：<br>&nbsp;&nbsp;&nbsp;&nbsp;如果运行的线程少于corePoolSize，则Executor首选添加新的线程，而不选择排队。也就是说，当运行线程数小于corePoolSize，新的线程直接开始运行，不会存放到workQueue队列中。<br>&nbsp;&nbsp;&nbsp;&nbsp;如果运行的线程多于corePoolSize，则Executor首选将请求添加进队列，<strong>不添加新的线程</strong>。<br>&nbsp;&nbsp;&nbsp;&nbsp;如果无法添加进队列（队列已满），则创建新的线程。若创建此线程将超出maximumPoolSize，则交由handler处理，handler一般有4种处理方法，分别为：<br>&nbsp;&nbsp;&nbsp;&nbsp;1、直接抛出异常，这是默认策略；<br>&nbsp;&nbsp;&nbsp;&nbsp;2、用调用者所在的线程来执行任务；<br>&nbsp;&nbsp;&nbsp;&nbsp;3、忽略该任务，直接丢弃；<br>&nbsp;&nbsp;&nbsp;&nbsp;4、删除阻塞队列中最靠前的任务，并将此任务添加进阻塞队列。<br><br></p>
-<h2 id="ThreadPoolExecutor中的方法"><a href="#ThreadPoolExecutor中的方法" class="headerlink" title="ThreadPoolExecutor中的方法"></a>ThreadPoolExecutor中的方法</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;首先说说几个类的关系。在ThreadPoolExecutor的源码中，有：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">public class ThreadPoolExecutor extends AbstractExecutorService &#123;...&#125;</div></pre></td></tr></table></figure>
-<p>说明类ThreadPoolExecutor继承自类AbstractExecutorService，接下来，我们再看看类AbstractExecutorService：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">public abstract class AbstractExecutorService implements ExecutorService &#123;...&#125;</div></pre></td></tr></table></figure>
-<p>他实现了接口ExecutorService，而ExecutorService又继承自Execute。<strong>ThreadPoolExecutor类是Executor类的底层实现</strong>。自此，和ThreadPoolExecutor有关的几个类和接口的关系基本上清楚了。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;现在，说说类ThreadPoolExecutor中的几个核心方法：<br></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>execute</strong>：该方法实际上是Execute类中的方法，在ThreadPoolExecutor中进行了具体的实现。它是ThreadPoolExecutor的<strong>核心方法</strong>，通过这个方法向线程池提交一个任务，交由线程池去处理。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>submit</strong>：submit()方法是在ExecutorService中声明的方法，在AbstractExecutorService时就有了具体的实现。这个方法也是用来向线程池提交任务的，但是它与execute不同，它能返回任务执行的结果。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>shutdown</strong>和<strong>shutdownNow</strong>：根据jdk帮助文档：shutdown是启动有序关闭，先前提交的任务会被执行，但是不会接受新的任务。而shutdownNow是停止所有任务，并且返回正在等待执行的任务列表。从此方法返回时，这些任务将从任务列表中删除。<br></p>
+<h2 id="向数据库请求了不需要的数据"><a href="#向数据库请求了不需要的数据" class="headerlink" title="向数据库请求了不需要的数据"></a>向数据库请求了不需要的数据</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;下面是一些典型的案例：<a id="more"></a></p>
+<ul>
+<li>查询不需要的记录</li>
+<li>多表关联时返回全部列</li>
+<li>总是取出全部列</li>
+<li>重复查询相同的数据</li>
+</ul>
+<h2 id="扫描额外的记录"><a href="#扫描额外的记录" class="headerlink" title="扫描额外的记录"></a>扫描额外的记录</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;衡量查询开销的三个指标：</p>
+<ul>
+<li>响应时间</li>
+<li>扫描的行数</li>
+<li>返回的行数</li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;如果发现查询需要扫描大量的行数但只返回少数的行，那么通常使用下面的技巧去优化：</p>
+<ul>
+<li>使用索引覆盖扫描。把所有需要用的列都放到索引中，这样存储引擎无须回表获取对应行就可以返回结果</li>
+<li>改变库表结构。</li>
+<li>重写复杂的查询，让MySQL优化器能够以更优化的方式执行这个查询</li>
+</ul>
 <hr>
-<p>转载请注明出处：<a href="http://www.yhang6.com/">小Hang同学的博客</a></p>
+<p><br></p>
+<h1 id="重构查询的方式"><a href="#重构查询的方式" class="headerlink" title="重构查询的方式"></a>重构查询的方式</h1><ol>
+<li>是否需要将一个复杂的查询分成多个简单的查询，这是设计查询时需要考虑的重要问题</li>
+<li>切分查询。将大查询切分成小查询，完成的功能一样，但将其拆分为几个次，每次完成一小部分任务</li>
+<li>分解关联查询。将一条查询分解为多条查询，但返回同样的结果。</li>
+</ol>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;用<strong>分解关联查询</strong>的方式重构查询有如下优势：</p>
+<ul>
+<li>让缓存的效率更高</li>
+<li>将查询分解后，执行单个查询可以减少锁竞争</li>
+<li>在应用层做关联，可以更容易对数据库进行拆分，更容易做到高性能和可扩展</li>
+<li>查询本身效率可能有所提升</li>
+<li>减少冗余记录的查询</li>
+</ul>
+<hr>
+<p><br></p>
+<h1 id="查询执行基础"><a href="#查询执行基础" class="headerlink" title="查询执行基础"></a>查询执行基础</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;MySQL查询执行路径：</p>
+<ol>
+<li>客户端发送一条查询给服务器</li>
+<li>服务器先检查查询缓存，如果命中缓存，则立即返回查询结果；如果未命中，进入下一阶段</li>
+<li>服务器进行SQL解析、预处理，再由优化器生成对应的执行计划</li>
+<li>MySQL根据优化器生成的执行计划，调用存储引擎的API来执行查询</li>
+<li>将结果返回给客户端</li>
+</ol>
+<h2 id="查询优化器"><a href="#查询优化器" class="headerlink" title="查询优化器"></a>查询优化器</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;一条查询可以有很多种执行方式，最后返回的结果都相同。优化器的作用就是找到其中最好的执行计划，但是由于多种原因，优化器选择的执行计划也并不总是最优的。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;查询优化器有很多优化策略来生成一个最优的执行计划。优化策略可以分为两种，一种是静态优化，另一种是动态优化。</p>
+<ul>
+<li><strong>静态优化</strong>：静态优化可以直接对解析树进行分析，并完成优化。静态优化不依赖于特别的数值，它在第一次完成后就一直有效，即使使用不同的参数重复执行查询也不会发生变化。可以认为这是一种“编译时优化”。</li>
+<li><strong>动态优化</strong>：动态优化和上下文有关，也可其他很多因素有关。它需要在每次查询的时候重新评估，可以认为这是“运行时优化”。</li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>MySQL能够处理的一些优化类型</strong>：</p>
+<ul>
+<li>重新定义关联表的顺序</li>
+<li>将外连接转化成内连接</li>
+<li>使用等价变换规则</li>
+<li>优化COUNT()、MIN()和MAX()</li>
+<li>预估并转化为常数表达式</li>
+<li>覆盖索引扫描</li>
+<li>子优化查询</li>
+<li>提前终止查询</li>
+<li>等值传播</li>
+<li>列表IN()的比较</li>
+</ul>
+<hr>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;想要获得高性能的查询效果，<strong>查询优化、索引优化、库表结构优化</strong>需要齐头并进，一个不落。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;当一个查询性能很低下时，可以<strong>查询慢日志</strong>，检查程序是否检索了大量超过需要的数据，MySQL服务器层是否分析大量超过需要的数据行；还可以用<strong>Explain检查查询</strong>是否建立索引或者没有使用索引。然后通过发现的问题进行性能改进。</p>
 
       
     </div>
@@ -287,13 +332,13 @@
   
     
     <div class="copyright">
-        <p><span>Title:</span><a href="/2017/10/26/Java线程池/">Java线程池</a></p>
+        <p><span>Title:</span><a href="/2017/12/07/MySQL查询性能优化/">MySQL查询性能优化</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage">小Hang同学</a></p>
-        <p><span>Created:</span>2017-10-26, 18:54:01</p>
-        <p><span>Updated:</span>2017-11-02, 17:17:14</p>
+        <p><span>Created:</span>2017-12-07, 20:23:29</p>
+        <p><span>Updated:</span>2017-12-07, 20:27:25</p>
         <p>
-            <span>Full URL:</span><a class="post-url" href="/2017/10/26/Java线程池/" title="Java线程池">http://www.yhang6.com/2017/10/26/Java线程池/</a>
-            <span class="copy-path" data-clipboard-text="From http://www.yhang6.com/2017/10/26/Java线程池/　　By 小Hang同学" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <span>Full URL:</span><a class="post-url" href="/2017/12/07/MySQL查询性能优化/" title="MySQL查询性能优化">http://www.yhang6.com/2017/12/07/MySQL查询性能优化/</a>
+            <span class="copy-path" data-clipboard-text="From http://www.yhang6.com/2017/12/07/MySQL查询性能优化/　　By 小Hang同学" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -305,16 +350,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/10/31/深入Web请求过程/">
-                    深入Web请求过程
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/09/18/Java多线程（4）——Lock/">
-                    Java多线程（4）——Lock
+                <a href="/2017/11/30/Explain参数解析/">
+                    Explain参数解析
                 </a>
             </div>
         
@@ -326,7 +365,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#创建线程池"><span class="toc-number">1.</span> <span class="toc-text">创建线程池</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ThreadPoolExecutor类"><span class="toc-number">2.</span> <span class="toc-text">ThreadPoolExecutor类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ThreadPoolExecutor类的主要参数"><span class="toc-number">2.1.</span> <span class="toc-text">ThreadPoolExecutor类的主要参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ThreadPoolExecutor中的方法"><span class="toc-number">2.2.</span> <span class="toc-text">ThreadPoolExecutor中的方法</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#慢查询基础：优化数据访问"><span class="toc-number">1.</span> <span class="toc-text">慢查询基础：优化数据访问</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#向数据库请求了不需要的数据"><span class="toc-number">1.1.</span> <span class="toc-text">向数据库请求了不需要的数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#扫描额外的记录"><span class="toc-number">1.2.</span> <span class="toc-text">扫描额外的记录</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#重构查询的方式"><span class="toc-number">2.</span> <span class="toc-text">重构查询的方式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#查询执行基础"><span class="toc-number">3.</span> <span class="toc-text">查询执行基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#查询优化器"><span class="toc-number">3.1.</span> <span class="toc-text">查询优化器</span></a></li></ol></li></ol>
         
     </div>
     <style>
@@ -362,7 +401,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Java线程池　| 小Hang同学的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"MySQL查询性能优化　| 小Hang同学的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -378,7 +417,7 @@
     
       <div class="duoshuo" id="comments">
     <div id="comment-box" ></div>
-    <div class="ds-thread" id="ds-thread" data-thread-key="2017/10/26/Java线程池/" data-title="Java线程池" data-url="http://www.yhang6.com/2017/10/26/Java线程池/"></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2017/12/07/MySQL查询性能优化/" data-title="MySQL查询性能优化" data-url="http://www.yhang6.com/2017/12/07/MySQL查询性能优化/"></div>
     <script>
         var duoshuoQuery = {short_name:""};
         var loadComment = function(){
@@ -401,15 +440,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/10/31/深入Web请求过程/" title="Pre: 深入Web请求过程">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="Back to Homepage"><i class="fa fa-home"></i></a>
         
 
         <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/09/18/Java多线程（4）——Lock/" title="Next: Java多线程（4）——Lock">
+            <a href="/2017/11/30/Explain参数解析/" title="Next: Explain参数解析">
                 <i class="fa fa-angle-right"></i>
             </a>
         
