@@ -15,18 +15,18 @@
 
 
 
-<meta name="description" content="概述&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Spring MVC是建立在IoC容器的基础上的，Spring IoC是一个独立的模块，它并不是直接在Web容器中发挥作用，要想在Web容器中使用IoC容器，需要Spring为IoC设计一个启动过程，把IoC容器导入，并在Web容器中建立起来。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;这个过程是和Web容器的启动过程集成在一起的。这个过程">
-<meta name="keywords" content="Spring MVC,DispatcherServlet">
+<meta name="description" content="Synchronized&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;当它用来修饰一个方法或者一个代码块的时候，能够保证在同一时刻最多只有一个线程执行该段代码，它是在 软件层面依赖JVM实现同步。synchronized方法或语句的使用提供了对与每个对象相关的隐式监视器锁的访问，但却强制所有锁获取和释放均要出现在一个块结构">
+<meta name="keywords" content="Synchronized,ReentrantLock">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring MVC的请求流程">
-<meta property="og:url" content="http://www.yhang6.com/2017/11/29/Spring-MVC的请求流程/index.html">
+<meta property="og:title" content="浅析Synchronized和ReentrantLock的区别">
+<meta property="og:url" content="http://www.yhang6.com/2017/12/08/浅析Synchronized和ReentrantLock的区别/index.html">
 <meta property="og:site_name" content="小Hang同学的博客">
-<meta property="og:description" content="概述&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Spring MVC是建立在IoC容器的基础上的，Spring IoC是一个独立的模块，它并不是直接在Web容器中发挥作用，要想在Web容器中使用IoC容器，需要Spring为IoC设计一个启动过程，把IoC容器导入，并在Web容器中建立起来。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;这个过程是和Web容器的启动过程集成在一起的。这个过程">
+<meta property="og:description" content="Synchronized&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;当它用来修饰一个方法或者一个代码块的时候，能够保证在同一时刻最多只有一个线程执行该段代码，它是在 软件层面依赖JVM实现同步。synchronized方法或语句的使用提供了对与每个对象相关的隐式监视器锁的访问，但却强制所有锁获取和释放均要出现在一个块结构">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-12-08T08:37:15.964Z">
+<meta property="og:updated_time" content="2017-12-08T08:43:56.442Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring MVC的请求流程">
-<meta name="twitter:description" content="概述&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Spring MVC是建立在IoC容器的基础上的，Spring IoC是一个独立的模块，它并不是直接在Web容器中发挥作用，要想在Web容器中使用IoC容器，需要Spring为IoC设计一个启动过程，把IoC容器导入，并在Web容器中建立起来。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;这个过程是和Web容器的启动过程集成在一起的。这个过程">
+<meta name="twitter:title" content="浅析Synchronized和ReentrantLock的区别">
+<meta name="twitter:description" content="Synchronized&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;当它用来修饰一个方法或者一个代码块的时候，能够保证在同一时刻最多只有一个线程执行该段代码，它是在 软件层面依赖JVM实现同步。synchronized方法或语句的使用提供了对与每个对象相关的隐式监视器锁的访问，但却强制所有锁获取和释放均要出现在一个块结构">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Spring MVC的请求流程 | 小Hang同学的博客</title>
+<title>浅析Synchronized和ReentrantLock的区别 | 小Hang同学的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -209,11 +209,11 @@
     </div>
     <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
-      <div class="body-wrap"><article id="post-Spring-MVC的请求流程" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-浅析Synchronized和ReentrantLock的区别" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/11/29/Spring-MVC的请求流程/" class="article-date">
-      <time datetime="2017-11-29T11:25:08.000Z" itemprop="datePublished">2017-11-29</time>
+      <a href="/2017/12/08/浅析Synchronized和ReentrantLock的区别/" class="article-date">
+      <time datetime="2017-12-08T02:30:37.000Z" itemprop="datePublished">2017-12-08</time>
 </a>
 
 
@@ -228,7 +228,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Spring MVC的请求流程
+      浅析Synchronized和ReentrantLock的区别
     </h1>
   
 
@@ -237,13 +237,13 @@
       <div class="article-info article-info-post">
         
     <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/原创/">原创</a>
+    <a class="article-category-link" href="/categories/日志/">日志</a>
     </div>
 
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DispatcherServlet/">DispatcherServlet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring-MVC/">Spring MVC</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReentrantLock/">ReentrantLock</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Synchronized/">Synchronized</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -253,32 +253,32 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;Spring MVC是建立在IoC容器的基础上的，Spring IoC是一个独立的模块，它并不是直接在Web容器中发挥作用，要想在Web容器中使用IoC容器，需要Spring<strong>为IoC设计一个启动过程</strong>，把IoC容器导入，并<strong>在Web容器中建立</strong>起来。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;这个过程是和Web容器的启动过程<strong>集成</strong>在一起的。这个过程中，一方面处理Web容器的启动，另一方面通过设计特定的<strong>Web容器拦截器</strong>，<strong>将IoC容器载入</strong>到Web环境中来，并将其<strong>初始化</strong>。<a id="more"></a><br>以Tomcat作为Web容器为例，其中，web.xml是应用的部署描述文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&lt;servlet&gt;</div><div class="line">    &lt;servlet-name&gt;springDispatcherServlet&lt;/servlet-name&gt;</div><div class="line">    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;</div><div class="line">    &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;</div><div class="line">&lt;/servlet&gt;</div><div class="line">&lt;servlet-mapping&gt;</div><div class="line">    &lt;servlet-name&gt;springDispatcherServlet&lt;/servlet-name&gt;</div><div class="line">    &lt;url-pattern&gt;/&lt;/url-pattern&gt;</div><div class="line">&lt;/servlet-mapping&gt;</div><div class="line">&lt;context-param&gt;</div><div class="line">    &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;</div><div class="line">    &lt;param-value&gt;/WEB-INF/applicationContext.xml&lt;/param-value&gt;</div><div class="line">&lt;/context-param&gt;</div><div class="line">&lt;listener&gt;</div><div class="line">    &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;</div><div class="line">&lt;/listener&gt;</div></pre></td></tr></table></figure>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;上述代码中有一个MVC中非常重要的类：<strong>DispatcherServlet</strong>，它起着<strong>分发请求</strong>的作用；<strong>context-param参数</strong>的配置用来<strong>指定</strong>Spring IoC容器读取<strong>Bean定义的XML文件的路径</strong>；<strong>ContextLoaderListener</strong>是一个监听器，他的生命周期与Web服务器相关联，这个监听器<strong>负责完成IoC容器在Web环境中的启动工作</strong>。</p>
+        <h1 id="Synchronized"><a href="#Synchronized" class="headerlink" title="Synchronized"></a>Synchronized</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;当它用来修饰一个方法或者一个代码块的时候，能够保证在同一时刻最多只有一个线程执行该段代码，它是在 软件层面依赖JVM实现同步。synchronized方法或语句的使用提供了对与每个对象相关的隐式监视器锁的访问，但却强制所有锁获取和释放均要出现在一个块结构<a id="more"></a>中：<strong>当获取了多个锁时，它们必须以相反的顺序释放，且必须在与所有锁被获取时相同的词法范围内释放所有锁</strong>。<br></p>
 <hr>
-<p><br></p>
-<h1 id="上下文在Web容器中的启动"><a href="#上下文在Web容器中的启动" class="headerlink" title="上下文在Web容器中的启动"></a>上下文在Web容器中的启动</h1><h2 id="IoC容器启动的基本过程"><a href="#IoC容器启动的基本过程" class="headerlink" title="IoC容器启动的基本过程"></a>IoC容器启动的基本过程</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;IoC容器的启动过程就是<strong>建立上下文</strong>的过程，由ContextLoaderListener启动的上下文为<strong>根上下文</strong>。在根上下文的基础上，还有一个与Web MVC相关的上下文来<strong>保存控制器（DispatcherServlet）需要的MVC对象</strong>，它是根上下文的<strong>子上下文</strong>。这两者构成一个层次化的上下文体系，这个体系是由<strong>ContextLoader</strong>来完成。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;在ContextLoader中，完成了<strong>两个IoC容器</strong>建立的基本过程，一个是在Web容器中建立起双亲IoC容器（根上下文），另一个是生成相应的WebApplicationContext（子上下文）并将其初始化。<br><br></p>
-<h2 id="ContextLoader的设计与实现"><a href="#ContextLoader的设计与实现" class="headerlink" title="ContextLoader的设计与实现"></a>ContextLoader的设计与实现</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;ContextLoaderListener通过使用<strong>ContextLoader</strong>来完成实际的WebApplicationContext，也就是<strong>IoC容器的初始化工作</strong>。它就像Spring应用程序在Web容器中的启动器。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;ContextLoader在监听器的ServletContextListener接口实现类的初始化回调中创建，同时会利用创建出来的ContextLoader来完成IoC容器的初始化。<strong>初始化过程</strong>中，完成了<strong>根上下文</strong>在Web容器中的创建，创建成功后，根上下文会被存到Web容器的<strong>ServletContext</strong>中去，这样就建立了一个<strong>全局的关于整个应用的上下文</strong> 。</p>
-<hr>
-<p><br></p>
-<h1 id="Spring-MVC的设计与实现"><a href="#Spring-MVC的设计与实现" class="headerlink" title="Spring MVC的设计与实现"></a>Spring MVC的设计与实现</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;在上文的代码中，可以看到DispatcherServlet也进行了配置，它是一个<strong>前端控制器</strong>，所有的Web请求都要通过它来处理，进行转发、匹配、数据处理后，并转由页面进行展现。因此这<strong>个DispatcherServlet</strong>可以看成是Spring MVC实现中<strong>最为核心的部分</strong>。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;除了这条主线，在Spring MVC中，对于不同的Web请求的<strong>映射需求</strong>，Spring MVC提供了不同的<strong>HandlerMapping</strong>的实现。另外，不同Controller的实现也对应了不同的控制器使用场景，这些Controller控制器需要实现<strong>handleRequest接口</strong>方法，并返回<strong>ModelAndView</strong>对象。<br><br></p>
-<h2 id="Spring-MVC设计概述"><a href="#Spring-MVC设计概述" class="headerlink" title="Spring MVC设计概述"></a>Spring MVC设计概述</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;在完成ContextLoaderListener的初始化后，Web容器开始初始化DispatcherServlet。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;DispatcherServlet会<strong>建立自己的上下文</strong>来持有Spring MVC的Bean对象，在建立自己持有的IoC容器时，会从ServletContext中<strong>得到根上下文作为</strong>DIspatcherServlet持有上下文的<strong>双亲上下文</strong>。有了这个根上下文，再对自己持有的上下文进行初始化，然后保存到ServletContext中，供以后检索和使用。DispatcherServlet的启动过程就是Spring MVC的启动过程。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;DispatcherServlet的工作大致可以分为两部分：</p>
+<h1 id="ReentrantLock"><a href="#ReentrantLock" class="headerlink" title="ReentrantLock"></a>ReentrantLock</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;Lock接口实现提供了比使用synchronized方法和语句可获得的更广泛的锁定操作。此实现允许更灵活的结构，可以具有差别很大的属性，可以支持多个相关的Condition对象。在硬件层面依赖特殊的CPU指令实现同步更加灵活。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;ReentrantLock是一个可重入的互斥锁Lock，它具有与使用synchronized方法和语句所访问的隐式监视器锁相同的一些基本行为和语义，但功能更强大。 </p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;ReentrantLock相对于synchronized对了三个高级功能：<br></p>
 <ol>
-<li><strong>初始化</strong>，由initServletBean()启动，通过initWebApplicationContext()方法最终调用DispatcherServlet的<strong>initStrategies方法</strong>，在这个方法里，DispatcherServlet对MVC其他部分进行了初始化，比如<strong>handlerMapping和ViewResolver</strong>等。</li>
-<li><strong>对Http请求进行响应</strong>，调用doService()方法，在这个方法调用里封装了doDispatch()方法，它是实现MVC模式的主要部分。<br><br></li>
+<li>等待可中断</li>
+<li>公平锁</li>
+<li>绑定多个Condition</li>
 </ol>
-<h2 id="MVC处理HTTP分发请求"><a href="#MVC处理HTTP分发请求" class="headerlink" title="MVC处理HTTP分发请求"></a>MVC处理HTTP分发请求</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;在DispatcherServlet初始化完成时，在上下文环境中定义的所有HandlerMapping都已经被加载了。HandlerMapping接口中定义了一个<strong>getHandler方法</strong>，它可以<strong>获得HTTP请求对应的HandlerExecutionChain</strong>；这个Chain持有一个<strong>Interceptor链</strong>和一个<strong>handler对象</strong>，<strong>handler对象其实就是HTTP请求对应的Controller</strong>，而HTTP请求和handler的映射关系是通过一个<strong>handlerMap（HashMap）来保存</strong>的。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;在接受到HTTP请求之后，DispatcherServlet调用<strong>doService()方法对HTTP请求参数进行快照处理</strong>，在doService方法中，封装了doDispatcher()方法，而<strong>对请求的处理</strong>过程实际上是<strong>由doDispatcher()方法来完成</strong>的：通过getHandler获得HandlerExecutionChain（HandlerAdapter对handler进行合法判断）对请求进行处理后，<strong>处理结果会封装到ModelAndView对象</strong>中，为视图提供展现数据。<br><br></p>
-<h2 id="Spring-MVC视图的呈现"><a href="#Spring-MVC视图的呈现" class="headerlink" title="Spring MVC视图的呈现"></a>Spring MVC视图的呈现</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;将处理结果封装到ModelAndView对象中后，为了对视图进行呈现，会从ModelAndView对象中取得<strong>视图对象</strong>，然后调用视图对象的<strong>render()方法</strong>，由这个视图对象来完成特定的视图呈现工作。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;在render()方法中，有一个<strong>resolveViewName()方法</strong>，这个方法会<strong>寻找视图对象的逻辑名</strong>，如果在ModelAndView中设置了视图对象的名称，就调<strong>用ViewResolver方法进行解析</strong>，具体实现为：直接到上下文中通过名称的对应关系取到作为View对象的Bean。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;如果ModelAndView中已经有了最终完成视图呈现的视图对象，就直接使用该对象。</p>
 <hr>
-<p>参考：《Spring技术内幕》——计文柯<br>转载请注明出处：<a href="http://www.yhang6.com/">小Hang同学的博客</a></p>
+<h1 id="Synchronized与ReentrantLock的用法和区别"><a href="#Synchronized与ReentrantLock的用法和区别" class="headerlink" title="Synchronized与ReentrantLock的用法和区别"></a>Synchronized与ReentrantLock的用法和区别</h1><ol>
+<li>synchronized是托管给<strong>JVM</strong>执行的，而Lock是Java写的控制锁的代码。 </li>
+<li>synchronized原始采用的是CPU<strong>悲观锁机制</strong>，即线程获得的是独占锁。独占锁意味着其他线程只能依靠阻塞来等待线程释放锁。而在CPU转换线程阻塞时会引起线程上下文切换，当有很多线程竞争锁的时候，会引起CPU频繁的上下文切换导致效率很低。</li>
+<li>ReentrantLock用的是<strong>乐观锁</strong>方式。每次不加锁而是假设没有冲突而去完成某项操作，如果因为冲突失败就重试，直到成功为止。</li>
+<li>ReentrantLock必须在finally中释放锁，否则后果很严重，编码角度来说使用synchronized更加简单，不容易遗漏或者出错。 </li>
+<li>ReentrantLock提供了可轮询的锁请求，他可以尝试的去取得锁，如果取得成功则继续处理，取得不成功，可以等下次运行的时候处理，所以不容易产生死锁，而synchronized则一旦进入锁请求要么成功，要么一直阻塞，所以更容易产生死锁。 </li>
+<li>synchronized的话，锁的范围是整个方法或synchronized块部分；而Lock因为是方法调用，可以跨方法，灵活性更大</li>
+</ol>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>注意</strong>:Synchronized是Java的关键字，因此是Java的内置特性，是基于<strong>JVM层面</strong>实现的；而Lock是一个Java的接口，所以ReentrantLock是基于<strong>JDK层面</strong>实现的。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;一般情况下都是用synchronized原语实现同步，除非下列情况使用ReentrantLock:</p>
+<ul>
+<li>某个线程在等待一个锁的控制权的这段时间需要中断 </li>
+<li>需要分开处理一些wait-notify，ReentrantLock里面的Condition应用，能够控制notify哪个线程 </li>
+<li>具有公平锁功能，每个到来的线程都将排队等候</li>
+</ul>
+<p><br><br><br></p>
 
       
     </div>
@@ -287,13 +287,13 @@
   
     
     <div class="copyright">
-        <p><span>Title:</span><a href="/2017/11/29/Spring-MVC的请求流程/">Spring MVC的请求流程</a></p>
+        <p><span>Title:</span><a href="/2017/12/08/浅析Synchronized和ReentrantLock的区别/">浅析Synchronized和ReentrantLock的区别</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage">小Hang同学</a></p>
-        <p><span>Created:</span>2017-11-29, 19:25:08</p>
-        <p><span>Updated:</span>2017-12-08, 16:37:15</p>
+        <p><span>Created:</span>2017-12-08, 10:30:37</p>
+        <p><span>Updated:</span>2017-12-08, 16:43:56</p>
         <p>
-            <span>Full URL:</span><a class="post-url" href="/2017/11/29/Spring-MVC的请求流程/" title="Spring MVC的请求流程">http://www.yhang6.com/2017/11/29/Spring-MVC的请求流程/</a>
-            <span class="copy-path" data-clipboard-text="From http://www.yhang6.com/2017/11/29/Spring-MVC的请求流程/　　By 小Hang同学" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <span>Full URL:</span><a class="post-url" href="/2017/12/08/浅析Synchronized和ReentrantLock的区别/" title="浅析Synchronized和ReentrantLock的区别">http://www.yhang6.com/2017/12/08/浅析Synchronized和ReentrantLock的区别/</a>
+            <span class="copy-path" data-clipboard-text="From http://www.yhang6.com/2017/12/08/浅析Synchronized和ReentrantLock的区别/　　By 小Hang同学" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -306,15 +306,15 @@
     <nav id="article-nav">
         
             <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/11/30/Explain参数解析/">
-                    Explain参数解析
+                <a href="/2017/12/08/Spring事务处理/">
+                    Spring事务处理
                 </a>
             </div>
         
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/11/16/Spring-FrameWork核心：IoC容器的实现/">
-                    Spring 框架的核心：IoC容器的实现
+                <a href="/2017/12/07/MySQL查询性能优化/">
+                    MySQL查询性能优化
                 </a>
             </div>
         
@@ -326,7 +326,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#概述"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#上下文在Web容器中的启动"><span class="toc-number">2.</span> <span class="toc-text">上下文在Web容器中的启动</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#IoC容器启动的基本过程"><span class="toc-number">2.1.</span> <span class="toc-text">IoC容器启动的基本过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ContextLoader的设计与实现"><span class="toc-number">2.2.</span> <span class="toc-text">ContextLoader的设计与实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-MVC的设计与实现"><span class="toc-number">3.</span> <span class="toc-text">Spring MVC的设计与实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring-MVC设计概述"><span class="toc-number">3.1.</span> <span class="toc-text">Spring MVC设计概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MVC处理HTTP分发请求"><span class="toc-number">3.2.</span> <span class="toc-text">MVC处理HTTP分发请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring-MVC视图的呈现"><span class="toc-number">3.3.</span> <span class="toc-text">Spring MVC视图的呈现</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Synchronized"><span class="toc-number">1.</span> <span class="toc-text">Synchronized</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ReentrantLock"><span class="toc-number">2.</span> <span class="toc-text">ReentrantLock</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Synchronized与ReentrantLock的用法和区别"><span class="toc-number">3.</span> <span class="toc-text">Synchronized与ReentrantLock的用法和区别</span></a></li></ol>
         
     </div>
     <style>
@@ -362,7 +362,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Spring MVC的请求流程　| 小Hang同学的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"浅析Synchronized和ReentrantLock的区别　| 小Hang同学的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -378,7 +378,7 @@
     
       <div class="duoshuo" id="comments">
     <div id="comment-box" ></div>
-    <div class="ds-thread" id="ds-thread" data-thread-key="2017/11/29/Spring-MVC的请求流程/" data-title="Spring MVC的请求流程" data-url="http://www.yhang6.com/2017/11/29/Spring-MVC的请求流程/"></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2017/12/08/浅析Synchronized和ReentrantLock的区别/" data-title="浅析Synchronized和ReentrantLock的区别" data-url="http://www.yhang6.com/2017/12/08/浅析Synchronized和ReentrantLock的区别/"></div>
     <script>
         var duoshuoQuery = {short_name:""};
         var loadComment = function(){
@@ -401,7 +401,7 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/11/30/Explain参数解析/" title="Pre: Explain参数解析">
+            <a href="/2017/12/08/Spring事务处理/" title="Pre: Spring事务处理">
                 <i class="fa fa-angle-left"></i>
             </a>
         
@@ -409,7 +409,7 @@
         <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/11/16/Spring-FrameWork核心：IoC容器的实现/" title="Next: Spring 框架的核心：IoC容器的实现">
+            <a href="/2017/12/07/MySQL查询性能优化/" title="Next: MySQL查询性能优化">
                 <i class="fa fa-angle-right"></i>
             </a>
         

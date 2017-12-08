@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="小Hang同学的博客">
 <meta property="og:description" content="B/S网络架构概述&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;B/S网络架构都基于统一的应用层协议HTTP来交互数据，HTTP是一种无状态的短链接通信。通常一次请求就完成了一次数据交互，然后这次通信链接就断开了。&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;当一个用户在浏览器里输入一个URL并发送请求时，将会发生很多操作: &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;首先会请求DNS把域">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-12-04T13:14:56.654Z">
+<meta property="og:updated_time" content="2017-12-08T02:29:03.730Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入Web请求过程">
 <meta name="twitter:description" content="B/S网络架构概述&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;B/S网络架构都基于统一的应用层协议HTTP来交互数据，HTTP是一种无状态的短链接通信。通常一次请求就完成了一次数据交互，然后这次通信链接就断开了。&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;当一个用户在浏览器里输入一个URL并发送请求时，将会发生很多操作: &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;首先会请求DNS把域">
@@ -254,7 +254,7 @@
       
           
         <h1 id="B-S网络架构概述"><a href="#B-S网络架构概述" class="headerlink" title="B/S网络架构概述"></a>B/S网络架构概述</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;B/S网络架构都基于统一的应用层协议HTTP来交互数据，HTTP是一种<strong>无状态的短链接</strong>通信。通常一次请求就完成了一次数据交互，然后这次通信链接就断开了。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;当一个用户在浏览器里输入一个URL并发送请求时，将会发生很多操作:</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;首先会请求DNS把域名解析成对应的IP地址，然后根据IP地址在互联网上找到对应的服务器，向这个服务器发起一个Get请求，由这个服务器决定返回默认的数据资源给访问用户。<a id="more"></a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;在服务端还有很多复杂的业务逻辑：服务器可能有很多台，这是需要一个负载均衡设备来平均分配所有用户的请求；还有请求的数据存储在分布式缓存里的还是一个静态文件中，或是在数据库中；当数据返回浏览器时，浏览器解析数据发现还有一些静态资源（如CSS、JS或图片）时优惠发起另外一个HTTP请求，而这些请求很可能在CDN上，那么CDN服务器又会处理这个用户的请求。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;首先会请求DNS把域名解析成对应的IP地址，然后根据IP地址在互联网上找到对应的服务器，向这个服务器发起一个Get请求，由这个服务器决定返回默认的数据资源给访问用户。<a id="more"></a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;在服务端还有很多复杂的业务逻辑：服务器可能有很多台，这是需要一个负载均衡设备来平均分配所有用户的请求；还有请求的数据存储在分布式缓存里的还是一个静态文件中，或是在数据库中；当数据返回浏览器时，浏览器解析数据发现还有一些静态资源（如CSS、JS或图片）时又会发起另外一个HTTP请求，而这些请求很可能在CDN上，那么CDN服务器又会处理这个用户的请求。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;大体上一个用户请求会涉及这些操作，其中任何一个细节都会影响这个请求最终是否会成功。</p>
 <hr>
 <p><br></p>
@@ -299,10 +299,10 @@
 </ul>
 <hr>
 <p><br></p>
-<h1 id="三次握手，四次挥手"><a href="#三次握手，四次挥手" class="headerlink" title="三次握手，四次挥手"></a>三次握手，四次挥手</h1><h2 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;当客户端找到了服务端的IP地址之后，为了准确无误的将数据送达目标出，TCP协议采用三次握手策略建立起连接。用TCP协议将数据包送出去后，TCP一定会向对方确认是否成功送达。</p>
+<h1 id="三次握手，四次挥手"><a href="#三次握手，四次挥手" class="headerlink" title="三次握手，四次挥手"></a>三次握手，四次挥手</h1><h2 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;当客户端找到了服务端的IP地址之后，为了准确无误的将数据送达目标处，TCP协议采用三次握手策略建立起连接。用TCP协议将数据包送出去后，TCP一定会向对方确认是否成功送达。</p>
 <ul>
 <li><strong>第一次握手</strong>：建立连接时，客户端发送syn包（syn=j）到服务器，并进入<strong>SYN_SEND</strong>状态，等待服务器确认。</li>
-<li><strong>第二次握手</strong>：服务器收到syn包，必须确认客户的SYN（ack=j+1），同时自己发送一个syn包（syn=k）。即发送SYN+ACK包，此时服务器进入<strong>SYN_RECV</strong>状态。</li>
+<li><strong>第二次握手</strong>：服务器收到syn包，必须确认客户的SYN（返回ACK包，ack=j+1），同时自己发送一个syn包（syn=k）。即发送SYN+ACK包，此时服务器进入<strong>SYN_RECV</strong>状态。</li>
 <li><strong>第三次握手</strong>：客户端收到服务器的SYN+ACK包，向服务器发送确认包（ack=k+1），此包发送完毕时，客户端和服务器进入<strong>ESTABLISHED</strong>状态，完成三次握手。</li>
 </ul>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;完成三次握手后，客户端与服务器开始传送数据。</p>
@@ -327,7 +327,7 @@
         <p><span>Title:</span><a href="/2017/10/31/深入Web请求过程/">深入Web请求过程</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage">小Hang同学</a></p>
         <p><span>Created:</span>2017-10-31, 15:18:25</p>
-        <p><span>Updated:</span>2017-12-04, 21:14:56</p>
+        <p><span>Updated:</span>2017-12-08, 10:29:03</p>
         <p>
             <span>Full URL:</span><a class="post-url" href="/2017/10/31/深入Web请求过程/" title="深入Web请求过程">http://www.yhang6.com/2017/10/31/深入Web请求过程/</a>
             <span class="copy-path" data-clipboard-text="From http://www.yhang6.com/2017/10/31/深入Web请求过程/　　By 小Hang同学" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
@@ -344,7 +344,7 @@
         
             <div id="article-nav-newer" class="article-nav-title">
                 <a href="/2017/11/16/Spring-FrameWork核心：IoC容器的实现/">
-                    Spring FrameWork核心：IoC容器的实现
+                    Spring 框架的核心：IoC容器的实现
                 </a>
             </div>
         
@@ -438,7 +438,7 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/11/16/Spring-FrameWork核心：IoC容器的实现/" title="Pre: Spring FrameWork核心：IoC容器的实现">
+            <a href="/2017/11/16/Spring-FrameWork核心：IoC容器的实现/" title="Pre: Spring 框架的核心：IoC容器的实现">
                 <i class="fa fa-angle-left"></i>
             </a>
         
@@ -452,7 +452,7 @@
         
     </div>
 
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/12/07/MySQL查询性能优化/">MySQL查询性能优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/30/Explain参数解析/">Explain参数解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/29/Spring-MVC的请求流程/">Spring MVC的请求流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/16/Spring-FrameWork核心：IoC容器的实现/">Spring FrameWork核心：IoC容器的实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/31/深入Web请求过程/">深入Web请求过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/26/Java线程池/">Java线程池</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/18/Java多线程（4）——Lock/">Java多线程（4）——Lock</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/18/Java多线程（3）——线程间通信/">Java多线程（3）——线程间通信</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/18/Java多线程（2）——并发访问控制/">Java多线程（2）——并发访问控制</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/18/Java多线程（1）——基础/">Java多线程（1）——基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/12/Java内存模型/">Java内存模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/08/虚拟机类加载机制/">虚拟机类加载机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/05/关于Java虚拟机的垃圾回收/">关于Java虚拟机的垃圾回收</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/18/浅谈GET-POST-PUT-DELETE的含义与区别/">浅谈GET,POST,PUT,DELETE含义及区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/01/谈谈感受吧/">谈谈感受吧</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/31/hello-world/">Hello World</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/12/08/Spring事务处理/">Spring事务处理</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/08/浅析Synchronized和ReentrantLock的区别/">浅析Synchronized和ReentrantLock的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/07/MySQL查询性能优化/">MySQL查询性能优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/30/Explain参数解析/">Explain参数解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/29/Spring-MVC的请求流程/">Spring MVC的请求流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/16/Spring-FrameWork核心：IoC容器的实现/">Spring 框架的核心：IoC容器的实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/31/深入Web请求过程/">深入Web请求过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/26/Java线程池/">Java线程池</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/18/Java多线程（4）——Lock/">Java多线程（4）——Lock</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/18/Java多线程（3）——线程间通信/">Java多线程（3）——线程间通信</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/18/Java多线程（2）——并发访问控制/">Java多线程（2）——并发访问控制</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/18/Java多线程（1）——基础/">Java多线程（1）——基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/12/Java内存模型/">Java内存模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/08/虚拟机类加载机制/">虚拟机类加载机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/05/关于Java虚拟机的垃圾回收/">关于Java虚拟机的垃圾回收</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/18/浅谈GET-POST-PUT-DELETE的含义与区别/">浅谈GET,POST,PUT,DELETE含义及区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/01/谈谈感受吧/">谈谈感受吧</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/31/hello-world/">Hello World</a></li></ul>
 
 
 

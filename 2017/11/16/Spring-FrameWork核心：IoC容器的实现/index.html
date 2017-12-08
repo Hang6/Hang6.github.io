@@ -18,14 +18,14 @@
 <meta name="description" content="Spring IoC容器的设计BeanFactory的应用场景&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;BeanFactory提供的是最基本的Ioc容器的功能。BeanFactory只是一个接口类，而DefaultListableBeanFactory、XmlBeanFactory、ApplicationContext等都可以是容器附加了某种功能的具体实现。 &amp;nbsp;&amp;nbsp;&amp;nbs">
 <meta name="keywords" content="Spring,IoC容器,依赖注入">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring FrameWork核心：IoC容器的实现">
+<meta property="og:title" content="Spring 框架的核心：IoC容器的实现">
 <meta property="og:url" content="http://www.yhang6.com/2017/11/16/Spring-FrameWork核心：IoC容器的实现/index.html">
 <meta property="og:site_name" content="小Hang同学的博客">
 <meta property="og:description" content="Spring IoC容器的设计BeanFactory的应用场景&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;BeanFactory提供的是最基本的Ioc容器的功能。BeanFactory只是一个接口类，而DefaultListableBeanFactory、XmlBeanFactory、ApplicationContext等都可以是容器附加了某种功能的具体实现。 &amp;nbsp;&amp;nbsp;&amp;nbs">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-11-29T12:07:39.867Z">
+<meta property="og:updated_time" content="2017-12-08T08:45:20.898Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring FrameWork核心：IoC容器的实现">
+<meta name="twitter:title" content="Spring 框架的核心：IoC容器的实现">
 <meta name="twitter:description" content="Spring IoC容器的设计BeanFactory的应用场景&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;BeanFactory提供的是最基本的Ioc容器的功能。BeanFactory只是一个接口类，而DefaultListableBeanFactory、XmlBeanFactory、ApplicationContext等都可以是容器附加了某种功能的具体实现。 &amp;nbsp;&amp;nbsp;&amp;nbs">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
@@ -58,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Spring FrameWork核心：IoC容器的实现 | 小Hang同学的博客</title>
+<title>Spring 框架的核心：IoC容器的实现 | 小Hang同学的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -228,7 +228,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Spring FrameWork核心：IoC容器的实现
+      Spring 框架的核心：IoC容器的实现
     </h1>
   
 
@@ -254,7 +254,7 @@
       
           
         <h1 id="Spring-IoC容器的设计"><a href="#Spring-IoC容器的设计" class="headerlink" title="Spring IoC容器的设计"></a>Spring IoC容器的设计</h1><h2 id="BeanFactory的应用场景"><a href="#BeanFactory的应用场景" class="headerlink" title="BeanFactory的应用场景"></a>BeanFactory的应用场景</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;BeanFactory提供的是最基本的Ioc容器的功能。<strong>BeanFactory只是一个接口类</strong>，而DefaultListableBeanFactory、XmlBeanFactory、ApplicationContext等都可以是容器附加了某种功能的具体实现。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>BeanFactory和FactoryBean</strong>：在Spring中，所有的Bean都是由<strong>BeanFactory</strong>（也就是Ioc容器）来进行<strong>管理</strong>的。而FactoryBean，他是一个能产生或者修饰对象生成的<strong>工厂Bean</strong>，他的实现与<a id="more"></a>设计模式中的工厂模式和修饰器模式类似。<br><br></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>BeanFactory和FactoryBean</strong>：在Spring中，所有的Bean都是由<strong>BeanFactory</strong>（也就是Ioc容器）来进行<strong>管理</strong>的。而FactoryBean，他是一个能<a id="more"></a>产生或者修饰对象生成的<strong>工厂Bean</strong>，他的实现与设计模式中的工厂模式和修饰器模式类似。<br><br></p>
 <h2 id="BeanFactory容器的设计原理"><a href="#BeanFactory容器的设计原理" class="headerlink" title="BeanFactory容器的设计原理"></a>BeanFactory容器的设计原理</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;直接的BeanFactory实现是Ioc容器的<strong>基本形式</strong>，而各种ApplicationContext的实现是Ioc容器的<strong>高级表现</strong>形式。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>DefaultListableBeanFactory</strong>是非常重要的一个类，这个类实际上包含了基本Ioc容器所具有的重要功能，XMLBeanFactory继承自他，设计应用上下文ApplicationContext时也会用到它。<br><br></p>
 <h2 id="ApplicationContext的应用场景"><a href="#ApplicationContext的应用场景" class="headerlink" title="ApplicationContext的应用场景"></a>ApplicationContext的应用场景</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;ApplicationContext是一个高级形态的Ioc容器，他在BeanFactory的基础上添加了附加功能，这些功能为ApplicationContext提供了以下BeanFactory所不具备的新特性：</p>
@@ -285,7 +285,7 @@
 <h1 id="IoC容器的依赖注入"><a href="#IoC容器的依赖注入" class="headerlink" title="IoC容器的依赖注入"></a>IoC容器的依赖注入</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;依赖注入的过程是在用户<strong>第一次</strong>向IoC容器索要Bean时触发的；但是我们可以在BeanDefinition信息中通过<strong>lazy-init属</strong>性来让容器完成对BeanDefinition的<strong>预实例化</strong>，让依赖注入在初始化的过程中完成。getBean()就是依赖注入发生的入口。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;与依赖注入关系特别密切的方法有<strong>createBeanInstance</strong>和<strong>populateBean</strong>。createBeanInstance中生成了Bean所包含的Java对象，这个对象可以通过工厂方法生成，也可以通过容器的autowired特性生成。populateBean对依赖关系进行了处理（对Bean对象的属性的处理）。</p>
 <hr>
-<p>参考：《Spring技术内幕》——许文柯<br>转载请注明出处：<a href="http://www.yhang6.com/">小Hang同学的博客</a></p>
+<p>参考：《Spring技术内幕》——计文柯<br>转载请注明出处：<a href="http://www.yhang6.com/">小Hang同学的博客</a></p>
 
       
     </div>
@@ -294,12 +294,12 @@
   
     
     <div class="copyright">
-        <p><span>Title:</span><a href="/2017/11/16/Spring-FrameWork核心：IoC容器的实现/">Spring FrameWork核心：IoC容器的实现</a></p>
+        <p><span>Title:</span><a href="/2017/11/16/Spring-FrameWork核心：IoC容器的实现/">Spring 框架的核心：IoC容器的实现</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage">小Hang同学</a></p>
         <p><span>Created:</span>2017-11-16, 21:21:37</p>
-        <p><span>Updated:</span>2017-11-29, 20:07:39</p>
+        <p><span>Updated:</span>2017-12-08, 16:45:20</p>
         <p>
-            <span>Full URL:</span><a class="post-url" href="/2017/11/16/Spring-FrameWork核心：IoC容器的实现/" title="Spring FrameWork核心：IoC容器的实现">http://www.yhang6.com/2017/11/16/Spring-FrameWork核心：IoC容器的实现/</a>
+            <span>Full URL:</span><a class="post-url" href="/2017/11/16/Spring-FrameWork核心：IoC容器的实现/" title="Spring 框架的核心：IoC容器的实现">http://www.yhang6.com/2017/11/16/Spring-FrameWork核心：IoC容器的实现/</a>
             <span class="copy-path" data-clipboard-text="From http://www.yhang6.com/2017/11/16/Spring-FrameWork核心：IoC容器的实现/　　By 小Hang同学" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
@@ -369,7 +369,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Spring FrameWork核心：IoC容器的实现　| 小Hang同学的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"Spring 框架的核心：IoC容器的实现　| 小Hang同学的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -385,7 +385,7 @@
     
       <div class="duoshuo" id="comments">
     <div id="comment-box" ></div>
-    <div class="ds-thread" id="ds-thread" data-thread-key="2017/11/16/Spring-FrameWork核心：IoC容器的实现/" data-title="Spring FrameWork核心：IoC容器的实现" data-url="http://www.yhang6.com/2017/11/16/Spring-FrameWork核心：IoC容器的实现/"></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2017/11/16/Spring-FrameWork核心：IoC容器的实现/" data-title="Spring 框架的核心：IoC容器的实现" data-url="http://www.yhang6.com/2017/11/16/Spring-FrameWork核心：IoC容器的实现/"></div>
     <script>
         var duoshuoQuery = {short_name:""};
         var loadComment = function(){
@@ -422,7 +422,7 @@
         
     </div>
 
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/12/07/MySQL查询性能优化/">MySQL查询性能优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/30/Explain参数解析/">Explain参数解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/29/Spring-MVC的请求流程/">Spring MVC的请求流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/16/Spring-FrameWork核心：IoC容器的实现/">Spring FrameWork核心：IoC容器的实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/31/深入Web请求过程/">深入Web请求过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/26/Java线程池/">Java线程池</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/18/Java多线程（4）——Lock/">Java多线程（4）——Lock</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/18/Java多线程（3）——线程间通信/">Java多线程（3）——线程间通信</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/18/Java多线程（2）——并发访问控制/">Java多线程（2）——并发访问控制</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/18/Java多线程（1）——基础/">Java多线程（1）——基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/12/Java内存模型/">Java内存模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/08/虚拟机类加载机制/">虚拟机类加载机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/05/关于Java虚拟机的垃圾回收/">关于Java虚拟机的垃圾回收</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/18/浅谈GET-POST-PUT-DELETE的含义与区别/">浅谈GET,POST,PUT,DELETE含义及区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/01/谈谈感受吧/">谈谈感受吧</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/31/hello-world/">Hello World</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/12/08/Spring事务处理/">Spring事务处理</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/08/浅析Synchronized和ReentrantLock的区别/">浅析Synchronized和ReentrantLock的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/07/MySQL查询性能优化/">MySQL查询性能优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/30/Explain参数解析/">Explain参数解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/29/Spring-MVC的请求流程/">Spring MVC的请求流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/16/Spring-FrameWork核心：IoC容器的实现/">Spring 框架的核心：IoC容器的实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/31/深入Web请求过程/">深入Web请求过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/26/Java线程池/">Java线程池</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/18/Java多线程（4）——Lock/">Java多线程（4）——Lock</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/18/Java多线程（3）——线程间通信/">Java多线程（3）——线程间通信</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/18/Java多线程（2）——并发访问控制/">Java多线程（2）——并发访问控制</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/18/Java多线程（1）——基础/">Java多线程（1）——基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/12/Java内存模型/">Java内存模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/08/虚拟机类加载机制/">虚拟机类加载机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/05/关于Java虚拟机的垃圾回收/">关于Java虚拟机的垃圾回收</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/18/浅谈GET-POST-PUT-DELETE的含义与区别/">浅谈GET,POST,PUT,DELETE含义及区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/01/谈谈感受吧/">谈谈感受吧</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/31/hello-world/">Hello World</a></li></ul>
 
 
 

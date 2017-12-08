@@ -211,6 +211,146 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Java多线程（4）——Lock" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/18/Java多线程（4）——Lock/" class="article-date">
+      <time datetime="2017-09-18T02:59:41.000Z" itemprop="datePublished">2017-09-18</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/18/Java多线程（4）——Lock/">Java多线程（4）——Lock</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;java的多线程有两种方式，我们先前面学习了基础的synchronized方式，大家忘记了建议先去回忆一下再来看这部分。Lock其实对应着synchronized的方式加锁，但是更加灵活，本节讲的时候会对照着synchronized相关的知识来说。</p>
+<hr>
+<h1 id="ReentrantLock类"><a href="#ReentrantLock类" class="headerlink" title="ReentrantLock类"></a>ReentrantLock类</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;Java中实现并发控制锁的一个关键类。我们可以使用synchronized关键字来实现线程间的同步互斥
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/转载/">转载</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多线程/">多线程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/性能/">性能</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2017/09/18/Java多线程（4）——Lock/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Java多线程（3）——线程间通信" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/18/Java多线程（3）——线程间通信/" class="article-date">
+      <time datetime="2017-09-18T02:34:14.000Z" itemprop="datePublished">2017-09-18</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/18/Java多线程（3）——线程间通信/">Java多线程（3）——线程间通信</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;本文主要学习线程间相互通信的内容。线程见需要通信，才能协同完成工作，虽然这增加的这里的复杂度，也很容易出错，但是线程间通信是很重要也很不可缺少的功能。</p>
+<hr>
+<h1 id="等待与通知"><a href="#等待与通知" class="headerlink" title="等待与通知"></a>等待与通知</h1><h2 id="wait、notify介绍"><a href="#wait、notify介绍" class="headerlink" title="wait、notify介绍"></a>wait、notify介绍</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;如果看一眼java最基础的一个类Object的源码的话，会发现Object类有两个方法，wait、notify。所有的类都是默认继承Object类的，所以我们创建的所有的类都有这两个方法。<br>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/转载/">转载</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多线程/">多线程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/性能/">性能</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2017/09/18/Java多线程（3）——线程间通信/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-Java多线程（2）——并发访问控制" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -624,139 +764,9 @@
 
 
   
-    <article id="[layout]-谈谈感受吧" class="article article-type-[layout]" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/08/01/谈谈感受吧/" class="article-date">
-      <time datetime="2017-08-01T03:07:48.000Z" itemprop="datePublished">2017-08-01</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/01/谈谈感受吧/">谈谈感受吧</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <h2 id="为什么要自己搭博客"><a href="#为什么要自己搭博客" class="headerlink" title="为什么要自己搭博客"></a>为什么要自己搭博客</h2><p>&#160;&#160;&#160;&#160;很久以前就有自己动手搭一个博客的想法，但是因为一个重度拖延症患者的种种原因，一直拖到了现在；最近买了一个域名，想着闲着也是闲着，就下定决心把这个博客搭了出来。一来域名也不用闲置下去，二来也算是了了自己的一个心愿，将来看到有意思的文章也可以上传上来。总之，把这个博客做出来还是很有成就感的~</p>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/日志/">日志</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/我/">我</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/08/01/谈谈感受吧/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/07/31/hello-world/" class="article-date">
-      <time datetime="2017-07-31T08:46:28.840Z" itemprop="datePublished">2017-07-31</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/31/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-      
-        <p class="article-more-link">
-          <a href="/2017/07/31/hello-world/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 </div>

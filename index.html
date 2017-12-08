@@ -211,6 +211,143 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Spring事务处理" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/12/08/Spring事务处理/" class="article-date">
+      <time datetime="2017-12-08T08:33:36.000Z" itemprop="datePublished">2017-12-08</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/08/Spring事务处理/">Spring事务处理</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <h1 id="Spring声明式事务处理"><a href="#Spring声明式事务处理" class="headerlink" title="Spring声明式事务处理"></a>Spring声明式事务处理</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;在使用声明式事务处理的时候，通常是结合IoC容器和Spring已有的TransactionProxyFactoryBean对事务管理进行配置，比如：可以在TransactionProxyFactoryBean中为事务方法配置传播行为、并发事务隔离级别等事务处理属性，从而对声明式事务处理提供指导。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;声明式事务处理大致可以分为以下几个部分：
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/原创/">原创</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring/">Spring</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/事务/">事务</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2017/12/08/Spring事务处理/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-浅析Synchronized和ReentrantLock的区别" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/12/08/浅析Synchronized和ReentrantLock的区别/" class="article-date">
+      <time datetime="2017-12-08T02:30:37.000Z" itemprop="datePublished">2017-12-08</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/08/浅析Synchronized和ReentrantLock的区别/">浅析Synchronized和ReentrantLock的区别</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <h1 id="Synchronized"><a href="#Synchronized" class="headerlink" title="Synchronized"></a>Synchronized</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;当它用来修饰一个方法或者一个代码块的时候，能够保证在同一时刻最多只有一个线程执行该段代码，它是在 软件层面依赖JVM实现同步。synchronized方法或语句的使用提供了对与每个对象相关的隐式监视器锁的访问，但却强制所有锁获取和释放均要出现在一个块结构
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/日志/">日志</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReentrantLock/">ReentrantLock</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Synchronized/">Synchronized</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2017/12/08/浅析Synchronized和ReentrantLock的区别/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-MySQL查询性能优化" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -443,7 +580,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/16/Spring-FrameWork核心：IoC容器的实现/">Spring FrameWork核心：IoC容器的实现</a>
+      <a class="article-title" href="/2017/11/16/Spring-FrameWork核心：IoC容器的实现/">Spring 框架的核心：IoC容器的实现</a>
     </h1>
   
 
@@ -454,7 +591,7 @@
       
           
               <h1 id="Spring-IoC容器的设计"><a href="#Spring-IoC容器的设计" class="headerlink" title="Spring IoC容器的设计"></a>Spring IoC容器的设计</h1><h2 id="BeanFactory的应用场景"><a href="#BeanFactory的应用场景" class="headerlink" title="BeanFactory的应用场景"></a>BeanFactory的应用场景</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;BeanFactory提供的是最基本的Ioc容器的功能。<strong>BeanFactory只是一个接口类</strong>，而DefaultListableBeanFactory、XmlBeanFactory、ApplicationContext等都可以是容器附加了某种功能的具体实现。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>BeanFactory和FactoryBean</strong>：在Spring中，所有的Bean都是由<strong>BeanFactory</strong>（也就是Ioc容器）来进行<strong>管理</strong>的。而FactoryBean，他是一个能产生或者修饰对象生成的<strong>工厂Bean</strong>，他的实现与
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>BeanFactory和FactoryBean</strong>：在Spring中，所有的Bean都是由<strong>BeanFactory</strong>（也就是Ioc容器）来进行<strong>管理</strong>的。而FactoryBean，他是一个能
           
       
     </div>
@@ -630,149 +767,9 @@
 
 
   
-    <article id="post-Java多线程（4）——Lock" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/18/Java多线程（4）——Lock/" class="article-date">
-      <time datetime="2017-09-18T02:59:41.000Z" itemprop="datePublished">2017-09-18</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/18/Java多线程（4）——Lock/">Java多线程（4）——Lock</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>&nbsp;&nbsp;&nbsp;&nbsp;java的多线程有两种方式，我们先前面学习了基础的synchronized方式，大家忘记了建议先去回忆一下再来看这部分。Lock其实对应着synchronized的方式加锁，但是更加灵活，本节讲的时候会对照着synchronized相关的知识来说。</p>
-<hr>
-<h1 id="ReentrantLock类"><a href="#ReentrantLock类" class="headerlink" title="ReentrantLock类"></a>ReentrantLock类</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;Java中实现并发控制锁的一个关键类。我们可以使用synchronized关键字来实现线程间的同步互斥
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/转载/">转载</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多线程/">多线程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/性能/">性能</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/09/18/Java多线程（4）——Lock/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Java多线程（3）——线程间通信" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/18/Java多线程（3）——线程间通信/" class="article-date">
-      <time datetime="2017-09-18T02:34:14.000Z" itemprop="datePublished">2017-09-18</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/18/Java多线程（3）——线程间通信/">Java多线程（3）——线程间通信</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>&nbsp;&nbsp;&nbsp;&nbsp;本文主要学习线程间相互通信的内容。线程见需要通信，才能协同完成工作，虽然这增加的这里的复杂度，也很容易出错，但是线程间通信是很重要也很不可缺少的功能。</p>
-<hr>
-<h1 id="等待与通知"><a href="#等待与通知" class="headerlink" title="等待与通知"></a>等待与通知</h1><h2 id="wait、notify介绍"><a href="#wait、notify介绍" class="headerlink" title="wait、notify介绍"></a>wait、notify介绍</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;如果看一眼java最基础的一个类Object的源码的话，会发现Object类有两个方法，wait、notify。所有的类都是默认继承Object类的，所以我们创建的所有的类都有这两个方法。<br>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/转载/">转载</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多线程/">多线程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/性能/">性能</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/09/18/Java多线程（3）——线程间通信/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 </div>
