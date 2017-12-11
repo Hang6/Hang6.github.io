@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="小Hang同学的博客">
 <meta property="og:description" content="Spring IoC容器的设计BeanFactory的应用场景&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;BeanFactory提供的是最基本的Ioc容器的功能。BeanFactory只是一个接口类，而DefaultListableBeanFactory、XmlBeanFactory、ApplicationContext等都可以是容器附加了某种功能的具体实现。 &amp;nbsp;&amp;nbsp;&amp;nbs">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-12-11T08:24:43.535Z">
+<meta property="og:updated_time" content="2017-12-11T08:27:19.615Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring 框架的核心：IoC容器的实现">
 <meta name="twitter:description" content="Spring IoC容器的设计BeanFactory的应用场景&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;BeanFactory提供的是最基本的Ioc容器的功能。BeanFactory只是一个接口类，而DefaultListableBeanFactory、XmlBeanFactory、ApplicationContext等都可以是容器附加了某种功能的具体实现。 &amp;nbsp;&amp;nbsp;&amp;nbs">
@@ -207,7 +207,7 @@
             </nav>
         </header>                
     </div>
-    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
       <div class="body-wrap"><article id="post-Spring框架核心：IoC容器的实现" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -254,7 +254,7 @@
       
           
         <h1 id="Spring-IoC容器的设计"><a href="#Spring-IoC容器的设计" class="headerlink" title="Spring IoC容器的设计"></a>Spring IoC容器的设计</h1><h2 id="BeanFactory的应用场景"><a href="#BeanFactory的应用场景" class="headerlink" title="BeanFactory的应用场景"></a>BeanFactory的应用场景</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;BeanFactory提供的是最基本的Ioc容器的功能。<strong>BeanFactory只是一个接口类</strong>，而DefaultListableBeanFactory、XmlBeanFactory、ApplicationContext等都可以是容器附加了某种功能的具体实现。<br><br></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>BeanFactory和FactoryBean</strong>：在Spring中，所有的Bean都是由<strong>BeanFactory</strong>（也就是Ioc容器）来进行<strong>管理</strong>的。而FactoryBean，他是一个能产生或者修饰对象生成的<strong>工厂Bean</strong>，他的实现与设计模式中的工厂模式和修饰器模式类似。<br><br></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>BeanFactory和FactoryBean</strong>：在Spring中，所有的Bean都是由<strong>BeanFactory</strong>（也就是Ioc容器）来进行<strong>管理</strong>的。而FactoryBean，他是一个能<a id="more"></a>产生或者修饰对象生成的<strong>工厂Bean</strong>，他的实现与设计模式中的工厂模式和修饰器模式类似。<br><br></p>
 <h2 id="BeanFactory容器的设计原理"><a href="#BeanFactory容器的设计原理" class="headerlink" title="BeanFactory容器的设计原理"></a>BeanFactory容器的设计原理</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;直接的BeanFactory实现是Ioc容器的<strong>基本形式</strong>，而各种ApplicationContext的实现是Ioc容器的<strong>高级表现</strong>形式。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>DefaultListableBeanFactory</strong>是非常重要的一个类，这个类实际上包含了基本Ioc容器所具有的重要功能，XMLBeanFactory继承自他，设计应用上下文ApplicationContext时也会用到它。<br><br></p>
 <h2 id="ApplicationContext的应用场景"><a href="#ApplicationContext的应用场景" class="headerlink" title="ApplicationContext的应用场景"></a>ApplicationContext的应用场景</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;ApplicationContext是一个高级形态的Ioc容器，他在BeanFactory的基础上添加了附加功能，这些功能为ApplicationContext提供了以下BeanFactory所不具备的新特性：</p>
@@ -298,17 +298,17 @@
   
     
     <div class="copyright">
-        <p><span>Title:</span><a href="/2017/11/16/Spring框架核心：IoC容器的实现/">Spring 框架的核心：IoC容器的实现</a></p>
-        <p><span>Author:</span><a href="/" title="Back to Homepage">小Hang同学</a></p>
-        <p><span>Created:</span>2017-11-16, 21:21:37</p>
-        <p><span>Updated:</span>2017-12-11, 16:24:43</p>
+        <p><span>本文标题:</span><a href="/2017/11/16/Spring框架核心：IoC容器的实现/">Spring 框架的核心：IoC容器的实现</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">小Hang同学</a></p>
+        <p><span>发布时间:</span>2017-11-16, 21:21:37</p>
+        <p><span>最后更新:</span>2017-12-11, 16:27:19</p>
         <p>
-            <span>Full URL:</span><a class="post-url" href="/2017/11/16/Spring框架核心：IoC容器的实现/" title="Spring 框架的核心：IoC容器的实现">http://www.yhang6.com/2017/11/16/Spring框架核心：IoC容器的实现/</a>
-            <span class="copy-path" data-clipboard-text="From http://www.yhang6.com/2017/11/16/Spring框架核心：IoC容器的实现/　　By 小Hang同学" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/11/16/Spring框架核心：IoC容器的实现/" title="Spring 框架的核心：IoC容器的实现">http://www.yhang6.com/2017/11/16/Spring框架核心：IoC容器的实现/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://www.yhang6.com/2017/11/16/Spring框架核心：IoC容器的实现/　　作者: 小Hang同学" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
-            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
         </p>
     </div>
 
@@ -335,7 +335,7 @@
 </article>
 
     <div id="toc" class="toc-article">
-        <strong class="toc-title">Contents</strong>
+        <strong class="toc-title">文章目录</strong>
         
             <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-IoC容器的设计"><span class="toc-number">1.</span> <span class="toc-text">Spring IoC容器的设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#BeanFactory的应用场景"><span class="toc-number">1.1.</span> <span class="toc-text">BeanFactory的应用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BeanFactory容器的设计原理"><span class="toc-number">1.2.</span> <span class="toc-text">BeanFactory容器的设计原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ApplicationContext的应用场景"><span class="toc-number">1.3.</span> <span class="toc-text">ApplicationContext的应用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IoC容器中Bean的生命周期"><span class="toc-number">1.4.</span> <span class="toc-text">IoC容器中Bean的生命周期</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IoC容器的初始化过程"><span class="toc-number">2.</span> <span class="toc-text">IoC容器的初始化过程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#BeanDefinition的Resource定位"><span class="toc-number">2.1.</span> <span class="toc-text">BeanDefinition的Resource定位</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BeanDefinition的载入和解析"><span class="toc-number">2.2.</span> <span class="toc-text">BeanDefinition的载入和解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BeanDefinition在IoC容器中的注册"><span class="toc-number">2.3.</span> <span class="toc-text">BeanDefinition在IoC容器中的注册</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IoC容器的依赖注入"><span class="toc-number">3.</span> <span class="toc-text">IoC容器的依赖注入</span></a></li></ol>
         
@@ -351,10 +351,10 @@
         }
     </style>
 
-    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
 
     <script>
-        yiliaConfig.toc = ["Hide", "Show", !!"false"];
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
     </script>
 
 
@@ -412,15 +412,15 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/11/29/Spring-MVC的请求流程/" title="Pre: Spring MVC的请求流程">
+            <a href="/2017/11/29/Spring-MVC的请求流程/" title="上一篇: Spring MVC的请求流程">
                 <i class="fa fa-angle-left"></i>
             </a>
         
 
-        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/10/31/深入Web请求过程/" title="Next: 深入Web请求过程">
+            <a href="/2017/10/31/深入Web请求过程/" title="下一篇: 深入Web请求过程">
                 <i class="fa fa-angle-right"></i>
             </a>
         
@@ -443,14 +443,14 @@
                 2016-2017 小Hang同学
             </div>
             <div class="footer-right">
-                <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
             </div>
         </div>
         
             <div class="visit">
                 
                     <span id="busuanzi_container_site_pv" style='display:none'>
-                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
                         </span>
                     </span>
                 
@@ -459,7 +459,7 @@
                 
                 
                     <span id="busuanzi_container_page_pv" style='display:none'>
-                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
                         </span>
                     </span>
                 
@@ -492,9 +492,9 @@
 
 
 <div class="scroll" id="scroll">
-    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
-    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
-    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
 </div>
 <script>
     // Open in New Window
