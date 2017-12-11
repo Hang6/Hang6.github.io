@@ -457,7 +457,7 @@
     <entry>
       <title><![CDATA[Java线程池]]></title>
       <url>/2017/10/26/Java%E7%BA%BF%E7%A8%8B%E6%B1%A0/</url>
-      <content type="html"><![CDATA[<p>&nbsp;&nbsp;&nbsp;&nbsp;Java在JDK1.5之后加入了java.util.concurrent包，这包中有一个接口Executor，它是Java线程池的顶级接口。但在严格意义上讲它并不是一个线程池，而是一个执行线程的工具。真正的线程池接口是ExrcutorService。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;那么我们为什么要使用线程池呢，我们都知道，每当我们创建一个线程的时候，都会耗费相应的时间和空间。而线程池的主要作用就是减少时间和空间的开销。即：<br></p>
+      <content type="html"><![CDATA[<p>&nbsp;&nbsp;&nbsp;&nbsp;Java在JDK1.5之后加入了java.util.concurrent包，这包中有一个接口Executor，它是Java线程池的顶级接口。但在严格意义上讲它并不是一个线程池，而是一个执行线程的工具。真正的线程池接口是ExrcutorService。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;那么我们为什么要使用线程池呢，我们都知道，每当我们创建一个线程的时候，都会耗费相应的时间和空间。而线程池的主要作用就是减少时间和空间的<a id="more"></a>开销。即：<br></p>
 <ul>
 <li><strong>减少创建和销毁线程的次数</strong>，每个工作线程都可以被重复利用，可执行多个任务。</li>
 <li>可以根据系统的承受能力，<strong>调整线程池中工作线程的数目，防止消耗过多的内存</strong>（JDk1.5以后每个线程堆栈大小为1MB）。</li>
