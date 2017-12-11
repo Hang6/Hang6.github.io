@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="小Hang同学的博客">
 <meta property="og:description" content="概述&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Spring MVC是建立在IoC容器的基础上的，Spring IoC是一个独立的模块，它并不是直接在Web容器中发挥作用，要想在Web容器中使用IoC容器，需要Spring为IoC设计一个启动过程，把IoC容器导入，并在Web容器中建立起来。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;这个过程是和Web容器的启动过程集成在一起的。这个过程">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-12-08T08:37:15.964Z">
+<meta property="og:updated_time" content="2017-12-11T13:26:00.734Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring MVC的请求流程">
 <meta name="twitter:description" content="概述&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Spring MVC是建立在IoC容器的基础上的，Spring IoC是一个独立的模块，它并不是直接在Web容器中发挥作用，要想在Web容器中使用IoC容器，需要Spring为IoC设计一个启动过程，把IoC容器导入，并在Web容器中建立起来。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;这个过程是和Web容器的启动过程集成在一起的。这个过程">
@@ -267,7 +267,7 @@
 <p><br></p>
 <h1 id="Spring-MVC的设计与实现"><a href="#Spring-MVC的设计与实现" class="headerlink" title="Spring MVC的设计与实现"></a>Spring MVC的设计与实现</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;在上文的代码中，可以看到DispatcherServlet也进行了配置，它是一个<strong>前端控制器</strong>，所有的Web请求都要通过它来处理，进行转发、匹配、数据处理后，并转由页面进行展现。因此这<strong>个DispatcherServlet</strong>可以看成是Spring MVC实现中<strong>最为核心的部分</strong>。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;除了这条主线，在Spring MVC中，对于不同的Web请求的<strong>映射需求</strong>，Spring MVC提供了不同的<strong>HandlerMapping</strong>的实现。另外，不同Controller的实现也对应了不同的控制器使用场景，这些Controller控制器需要实现<strong>handleRequest接口</strong>方法，并返回<strong>ModelAndView</strong>对象。<br><br></p>
-<h2 id="Spring-MVC设计概述"><a href="#Spring-MVC设计概述" class="headerlink" title="Spring MVC设计概述"></a>Spring MVC设计概述</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;在完成ContextLoaderListener的初始化后，Web容器开始初始化DispatcherServlet。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;DispatcherServlet会<strong>建立自己的上下文</strong>来持有Spring MVC的Bean对象，在建立自己持有的IoC容器时，会从ServletContext中<strong>得到根上下文作为</strong>DIspatcherServlet持有上下文的<strong>双亲上下文</strong>。有了这个根上下文，再对自己持有的上下文进行初始化，然后保存到ServletContext中，供以后检索和使用。DispatcherServlet的启动过程就是Spring MVC的启动过程。</p>
+<h2 id="Spring-MVC设计概述"><a href="#Spring-MVC设计概述" class="headerlink" title="Spring MVC设计概述"></a>Spring MVC设计概述</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;在完成ContextLoaderListener的初始化后，Web容器开始初始化DispatcherServlet。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;DispatcherServlet会<strong>建立自己的上下文</strong>来持有Spring MVC的Bean对象，在建立自己持有的IoC容器时，会从ServletContext中<strong>得到根上下文作为</strong>DispatcherServlet持有上下文的<strong>双亲上下文</strong>。有了这个根上下文，再对自己持有的上下文进行初始化，然后保存到ServletContext中，供以后检索和使用。DispatcherServlet的启动过程就是Spring MVC的启动过程。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;DispatcherServlet的工作大致可以分为两部分：</p>
 <ol>
 <li><strong>初始化</strong>，由initServletBean()启动，通过initWebApplicationContext()方法最终调用DispatcherServlet的<strong>initStrategies方法</strong>，在这个方法里，DispatcherServlet对MVC其他部分进行了初始化，比如<strong>handlerMapping和ViewResolver</strong>等。</li>
@@ -290,7 +290,7 @@
         <p><span>本文标题:</span><a href="/2017/11/29/Spring-MVC的请求流程/">Spring MVC的请求流程</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">小Hang同学</a></p>
         <p><span>发布时间:</span>2017-11-29, 19:25:08</p>
-        <p><span>最后更新:</span>2017-12-08, 16:37:15</p>
+        <p><span>最后更新:</span>2017-12-11, 21:26:00</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/11/29/Spring-MVC的请求流程/" title="Spring MVC的请求流程">http://www.yhang6.com/2017/11/29/Spring-MVC的请求流程/</a>
             <span class="copy-path" data-clipboard-text="原文: http://www.yhang6.com/2017/11/29/Spring-MVC的请求流程/　　作者: 小Hang同学" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
