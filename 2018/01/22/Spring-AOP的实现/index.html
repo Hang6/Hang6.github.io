@@ -15,18 +15,18 @@
 
 
 
-<meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 近期在学习SpringMVC的有关知识，里面涉及到HTTP协议里的GET,POST,PUT和DELETE这四种与服务器交互的基本方法，感觉懵懵懂懂，不是很理解，于是上网查询相关资料。来做一下简单的总结，方便以后学习，有什么不对的地方欢迎指正。  含义1.GET GET请求用于向服务器发出索取请求，从而获取相关信息，它的操作是幂等的、安全的（不管进行">
-<meta name="keywords" content="GET,POST,PUT,DELETE">
+<meta name="description" content="AOP概述&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Spring AOP最重要的设计模式——代理模式 Advice通知&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Advice（通知）定义在连接点做什么，为切面增强提供织入接口。Advice是AOP联盟定义的一个接口，在Spring AOP的实现中，使用了这个统一接">
+<meta name="keywords" content="Spring,AOP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="浅谈GET,POST,PUT,DELETE含义及区别">
-<meta property="og:url" content="http://www.yhang6.com/2017/08/18/浅谈GET-POST-PUT-DELETE的含义与区别/index.html">
+<meta property="og:title" content="Spring AOP的实现">
+<meta property="og:url" content="http://www.yhang6.com/2018/01/22/Spring-AOP的实现/index.html">
 <meta property="og:site_name" content="小Hang同学的博客">
-<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 近期在学习SpringMVC的有关知识，里面涉及到HTTP协议里的GET,POST,PUT和DELETE这四种与服务器交互的基本方法，感觉懵懵懂懂，不是很理解，于是上网查询相关资料。来做一下简单的总结，方便以后学习，有什么不对的地方欢迎指正。  含义1.GET GET请求用于向服务器发出索取请求，从而获取相关信息，它的操作是幂等的、安全的（不管进行">
+<meta property="og:description" content="AOP概述&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Spring AOP最重要的设计模式——代理模式 Advice通知&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Advice（通知）定义在连接点做什么，为切面增强提供织入接口。Advice是AOP联盟定义的一个接口，在Spring AOP的实现中，使用了这个统一接">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-09-06T02:38:18.000Z">
+<meta property="og:updated_time" content="2018-01-22T07:00:47.956Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="浅谈GET,POST,PUT,DELETE含义及区别">
-<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 近期在学习SpringMVC的有关知识，里面涉及到HTTP协议里的GET,POST,PUT和DELETE这四种与服务器交互的基本方法，感觉懵懵懂懂，不是很理解，于是上网查询相关资料。来做一下简单的总结，方便以后学习，有什么不对的地方欢迎指正。  含义1.GET GET请求用于向服务器发出索取请求，从而获取相关信息，它的操作是幂等的、安全的（不管进行">
+<meta name="twitter:title" content="Spring AOP的实现">
+<meta name="twitter:description" content="AOP概述&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Spring AOP最重要的设计模式——代理模式 Advice通知&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Advice（通知）定义在连接点做什么，为切面增强提供织入接口。Advice是AOP联盟定义的一个接口，在Spring AOP的实现中，使用了这个统一接">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>浅谈GET,POST,PUT,DELETE含义及区别 | 小Hang同学的博客</title>
+<title>Spring AOP的实现 | 小Hang同学的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -209,11 +209,11 @@
     </div>
     <link class="menu-list" tags="標籤" friends="友情鏈接" about="關於我"/>
 </nav>
-      <div class="body-wrap"><article id="post-浅谈GET-POST-PUT-DELETE的含义与区别" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Spring-AOP的实现" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/08/18/浅谈GET-POST-PUT-DELETE的含义与区别/" class="article-date">
-      <time datetime="2017-08-18T02:10:03.000Z" itemprop="datePublished">2017-08-18</time>
+      <a href="/2018/01/22/Spring-AOP的实现/" class="article-date">
+      <time datetime="2018-01-22T06:56:01.000Z" itemprop="datePublished">2018-01-22</time>
 </a>
 
 
@@ -228,7 +228,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      浅谈GET,POST,PUT,DELETE含义及区别
+      Spring AOP的实现
     </h1>
   
 
@@ -237,13 +237,13 @@
       <div class="article-info article-info-post">
         
     <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/日志/">日志</a>
+    <a class="article-category-link" href="/categories/原创/">原创</a>
     </div>
 
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DELETE/">DELETE</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GET/">GET</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/POST/">POST</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PUT/">PUT</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AOP/">AOP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring/">Spring</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -253,20 +253,21 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>&nbsp;&nbsp;&nbsp;&nbsp; 近期在学习SpringMVC的有关知识，里面涉及到HTTP协议里的GET,POST,PUT和DELETE这四种与服务器交互的基本方法，感觉懵懵懂懂，不是很理解，于是上网查询相关资料。来做一下简单的总结，方便以后学习，有什么不对的地方欢迎指正。</p>
+        <h1 id="AOP概述"><a href="#AOP概述" class="headerlink" title="AOP概述"></a>AOP概述</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;Spring AOP最重要的设计模式——<strong>代理模式</strong></p>
+<h2 id="Advice通知"><a href="#Advice通知" class="headerlink" title="Advice通知"></a>Advice通知</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;Advice（通知）定义在连接点做什么，为切面增强提供织入接口。Advice是AOP联盟定义的一个接口，在Spring AOP的实现中，使用了这个统一接<a id="more"></a>口，为AOP切面增强的织入功能做了更多的细化和扩展，比如提供了更具体的通知类型，如BeforeAdvice、AfterAdvice、ThrowsAdvice等。</p>
+<h2 id="Pointcut切点"><a href="#Pointcut切点" class="headerlink" title="Pointcut切点"></a>Pointcut切点</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;Pointcut决定Advice通知应该作用于哪个连接点，也就是说通过<strong>Pointcut</strong>来<strong>定义</strong>需要增强的方法的<strong>集合</strong>，这些集合的选取可以按照一定的规则来完成。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;Pointcut需要返回一个<strong>MethodMatcher</strong>，由这个MethodMatcher来<strong>判断是否需要对当前方法调用进行增强</strong>，或者是否需要对当前调用方法应用配置好的Advice通知。</p>
+<h2 id="Advisor通知器"><a href="#Advisor通知器" class="headerlink" title="Advisor通知器"></a>Advisor通知器</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;完成对目标方法的切面增强设计和关注点的设计以后，需要一个Advisor对象把它们结合起来。通过Advisor，可以定义应该使用哪个通知并在哪个关注点使用它。</p>
 <hr>
-<h2 id="含义"><a href="#含义" class="headerlink" title="含义"></a>含义</h2><p><strong>1.GET</strong><br> GET请求用于向服务器发出索取请求，从而获取相关信息，它的操作是幂等的、安全的（不管进行多少次操作，该资源的状态都不会改变）。其类似于我们请求数据库的select(R)操作，只用作查询数据，没有副作用。</p>
-<a id="more"></a>
-<p><strong>2.POST</strong><br> POST请求用于向服务器发送数据，从而改变信息，该操作既不安全也不幂等，比较常见的问题：当我们多次发送POST请求时，会创建多个资源。其类似于请求数据库的insert(C)操作，创建新的内容。目前几乎所有的提交操作都使用POST请求。</p>
-<p><strong>3.PUT</strong><br> PUT操作和POST请求类似，但是PUT操作是幂等的（不管进行多少次操作，结果是一样。如：修改了一篇文章，用PUT请求多次，该文章还是一样）。PUT操作类似于数据库的update(U)操作，修改相关类容。</p>
-<p><strong>4.DELETE</strong><br> 顾名思义，DELETE请求用于删除某个数据，和数据库的delete(D)操作一样。</p>
+<h1 id="Spring-AOP的设计与实现"><a href="#Spring-AOP的设计与实现" class="headerlink" title="Spring AOP的设计与实现"></a>Spring AOP的设计与实现</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;Spring AOP最核心的思想便是使用<strong>代理对象</strong>来完成对目标方法的调用，使其能按照我们配置的方式去实现切面增强。在Spring中，是通过配置和调用ProxyFactoryBean来完成建立代理对象这个任务。配置如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&lt;bean id=&quot;testAdvisor&quot; class=&quot;com.abc.TestAdvisor&quot;/&gt;</div><div class="line">&lt;bean id=&quot;testAOP&quot; class=&quot;org.springframework.aop.ProxyFactoryBean&quot;&gt;</div><div class="line">&lt;property name=&quot;proxyInterfaces&quot;&gt;</div><div class="line">    &lt;value&gt;com.test.AbcInterface&lt;/value&gt;</div><div class="line">&lt;/property&gt;</div><div class="line">&lt;property name=&quot;target&quot;&gt;</div><div class="line">    &lt;bean class=&quot;com.abc.TestTarget&quot;/&gt;</div><div class="line">&lt;/property&gt;</div><div class="line">&lt;property name=&quot;interceptorNames&quot;&gt;</div><div class="line">    &lt;list&gt;&lt;value&gt; testAdvisor&lt;/value&gt;&lt;/list&gt;</div><div class="line">&lt;/property&gt;</div><div class="line">&lt;/bean&gt;</div></pre></td></tr></table></figure>
+<h2 id="AopProxy代理对象"><a href="#AopProxy代理对象" class="headerlink" title="AopProxy代理对象"></a>AopProxy代理对象</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;代理对象可以通过两种方式生成，一种是<strong>JDK动态代理</strong>，另一种是<strong>CGLIB</strong>来生成。如果目标对象是接口类，适合使用JDK来生成代理对象，否则Spring会使用CGLIB来生成目标对象的代理对象。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;对于JDK动态代理，通过调用Proxy的newProxyInstance方法生成代理对象。在生成对象时，需要指明三个参数，一个是类装载器，一个是代理接口，另一个是Proxy回调方法所在的对象，这个对象需要实现<strong>InvocationHandler接口</strong>，这个接口定义了<strong>invoke()方法</strong>，提供代理对象的回调入口，这个方法完成了AOP编织实现的封装。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;对于CGLIB，是通过<strong>Enhancer对象</strong>生成代理对象。在Enhancer中，通过设置callback回调，封装了AOP的实现。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;在JDk动态代理中，代理对象会通过<strong>invoke()方法</strong>来完成对拦截器链和目标方法的调用；而CGLIB会通过<strong>intercept()方法</strong>来调用拦截器链和目标方法。如果没有设置拦截器，那么会对目标方法直接进行调用。</p>
+<h2 id="AOP拦截器链的调用"><a href="#AOP拦截器链的调用" class="headerlink" title="AOP拦截器链的调用"></a>AOP拦截器链的调用</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;AOP<br>对目标对象增强的实现封装在AOP的拦截器链中，由一个个具体的拦截器来完成。虽然有两种不同的代理方式，但是它们对AOP拦截的处理都殊途同归：它们<strong>对拦截器链的调用都是在ReflectiveMethodInvocation中通过proceed方法实现的</strong>。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;在运行拦截器的拦截方法之前，需要通过<strong>Pointcut切点中的matches对代理方法完成匹配判断</strong>，通过这个判断来决定拦截器是否满足切面增强的要求。满足后，会递归调用proceed方法，逐个运行拦截器的拦截方法。以此来完成了目标方法的切面增强。</p>
 <hr>
-<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><h3 id="PUT和POST的区别"><a href="#PUT和POST的区别" class="headerlink" title="PUT和POST的区别"></a>PUT和POST的区别</h3><p>&nbsp;&nbsp;&nbsp;&nbsp; 如上文所说，PUT和POST都是向服务器发送数据，如果服务端允许，那么创建操作既可以用POST，也可以使用PUT。两者的区别在于：PUT方法是幂等的，而POST不是；在请求时，PUT方法需要作用在一个具体的资源上（如：“<a href="http://hi.baidu.com/mianshiti?key1=value1”" target="_blank" rel="external">http://hi.baidu.com/mianshiti?key1=value1”</a> ），它会将提交的数据编码在url中，而url的长度又会因浏览器的长度限制而存在数据传输有限问题；POST方法会将提交的数据放在请求的body中，不会显示在url上（如：“<a href="http://hi.baidu.com/mianshiti”" target="_blank" rel="external">http://hi.baidu.com/mianshiti”</a> ），因此没有数据大小限制的问题。<br><br>&nbsp;&nbsp;&nbsp;&nbsp; 因为PUT方法把数据编码在url中，所以这些变量会显示在浏览器的地址栏上，也会被记录在服务器端的日志中，所以相比较之下，POST方法是更加安全的,此处的安全和GET提到的“安全”是不同概念，此处是真正意义上的Security。</p>
-<hr>
-<h3 id="GET和POST的区别"><a href="#GET和POST的区别" class="headerlink" title="GET和POST的区别"></a>GET和POST的区别</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;首先说原理区别：<br>&nbsp;&nbsp;&nbsp;&nbsp;一般在浏览器输入网站访问资源都是通过GET方式，在form提交中，可以通过method改变提交方式；正如上文所说，GET方式是幂等的、安全的(只限于非修改信息)，而POST方法是既不幂等、也不安全的。GET方法一般用于<strong>查询/获取</strong>信息，而POST方法一般用于<strong>更新/创建</strong>资源信息。<br><br>&nbsp;&nbsp;&nbsp;&nbsp; 上面说了原理性问题，但在实际操作的时候却没有多少人按照HTTP规范做，这也是导致GET和POST容易混淆的原因，导致这个问题的原因很多，比如说：<br>&nbsp;&nbsp;&nbsp;&nbsp;(1)很多人贪方便，更新资源时用了GET，POST方法要用form表单，麻烦一点。<br>&nbsp;&nbsp;&nbsp;&nbsp;(2)增删改查操作其实都可以用GET/POST方法完成。<br><br></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;表现形式区别：<br>&nbsp;&nbsp;&nbsp;&nbsp;跟PUT和POST一样，GET方法也需要将提交的数据在地址栏上显示出来，所以POST是更加安全的；传输数据大小也和PUT与POST一样，GET方法会有数据大小的限制，这里需要强调一点：HTTP协议没有对传输数据大小进行限制，对url的长度也没有限制，但特定的浏览器和服务器对url长度是有限制的。</p>
-<hr>
-<p>参考文章：<a href="http://blog.csdn.net/gideal_wang/article/details/4316691" target="_blank" rel="external">http://blog.csdn.net/gideal_wang/article/details/4316691</a></p>
+<p>参考：《Spring技术内幕》——计文柯<br>转载请注明出处：<a href="http://www.yhang6.com/">小Hang同学的博客</a></p>
 
       
     </div>
@@ -275,13 +276,13 @@
   
     
     <div class="copyright">
-        <p><span>本文標題:</span><a href="/2017/08/18/浅谈GET-POST-PUT-DELETE的含义与区别/">浅谈GET,POST,PUT,DELETE含义及区别</a></p>
+        <p><span>本文標題:</span><a href="/2018/01/22/Spring-AOP的实现/">Spring AOP的实现</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主頁">小Hang同学</a></p>
-        <p><span>發布時間:</span>2017-08-18, 10:10:03</p>
-        <p><span>最後更新:</span>2017-09-06, 10:38:18</p>
+        <p><span>發布時間:</span>2018-01-22, 14:56:01</p>
+        <p><span>最後更新:</span>2018-01-22, 15:00:47</p>
         <p>
-            <span>原始鏈接:</span><a class="post-url" href="/2017/08/18/浅谈GET-POST-PUT-DELETE的含义与区别/" title="浅谈GET,POST,PUT,DELETE含义及区别">http://www.yhang6.com/2017/08/18/浅谈GET-POST-PUT-DELETE的含义与区别/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://www.yhang6.com/2017/08/18/浅谈GET-POST-PUT-DELETE的含义与区别/　　作者: 小Hang同学" title="點擊複製文章鏈接"><i class="fa fa-clipboard"></i></span>
+            <span>原始鏈接:</span><a class="post-url" href="/2018/01/22/Spring-AOP的实现/" title="Spring AOP的实现">http://www.yhang6.com/2018/01/22/Spring-AOP的实现/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://www.yhang6.com/2018/01/22/Spring-AOP的实现/　　作者: 小Hang同学" title="點擊複製文章鏈接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -293,16 +294,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/09/05/关于Java虚拟机的垃圾回收/">
-                    关于Java虚拟机的垃圾回收
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/08/01/谈谈感受吧/">
-                    谈谈感受吧
+                <a href="/2017/12/08/Spring事务处理/">
+                    Spring事务处理
                 </a>
             </div>
         
@@ -314,7 +309,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目錄</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#含义"><span class="toc-number">1.</span> <span class="toc-text">含义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#区别"><span class="toc-number">2.</span> <span class="toc-text">区别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PUT和POST的区别"><span class="toc-number">2.1.</span> <span class="toc-text">PUT和POST的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GET和POST的区别"><span class="toc-number">2.2.</span> <span class="toc-text">GET和POST的区别</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#AOP概述"><span class="toc-number">1.</span> <span class="toc-text">AOP概述</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Advice通知"><span class="toc-number">1.1.</span> <span class="toc-text">Advice通知</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pointcut切点"><span class="toc-number">1.2.</span> <span class="toc-text">Pointcut切点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Advisor通知器"><span class="toc-number">1.3.</span> <span class="toc-text">Advisor通知器</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-AOP的设计与实现"><span class="toc-number">2.</span> <span class="toc-text">Spring AOP的设计与实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#AopProxy代理对象"><span class="toc-number">2.1.</span> <span class="toc-text">AopProxy代理对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AOP拦截器链的调用"><span class="toc-number">2.2.</span> <span class="toc-text">AOP拦截器链的调用</span></a></li></ol></li></ol>
         
     </div>
     <style>
@@ -350,7 +345,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"浅谈GET,POST,PUT,DELETE含义及区别　| 小Hang同学的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"Spring AOP的实现　| 小Hang同学的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -366,7 +361,7 @@
     
       <div class="duoshuo" id="comments">
     <div id="comment-box" ></div>
-    <div class="ds-thread" id="ds-thread" data-thread-key="2017/08/18/浅谈GET-POST-PUT-DELETE的含义与区别/" data-title="浅谈GET,POST,PUT,DELETE含义及区别" data-url="http://www.yhang6.com/2017/08/18/浅谈GET-POST-PUT-DELETE的含义与区别/"></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2018/01/22/Spring-AOP的实现/" data-title="Spring AOP的实现" data-url="http://www.yhang6.com/2018/01/22/Spring-AOP的实现/"></div>
     <script>
         var duoshuoQuery = {short_name:""};
         var loadComment = function(){
@@ -389,15 +384,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/09/05/关于Java虚拟机的垃圾回收/" title="上一篇: 关于Java虚拟机的垃圾回收">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主頁"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/08/01/谈谈感受吧/" title="下一篇: 谈谈感受吧">
+            <a href="/2017/12/08/Spring事务处理/" title="下一篇: Spring事务处理">
                 <i class="fa fa-angle-right"></i>
             </a>
         

@@ -207,9 +207,78 @@
             </nav>
         </header>                
     </div>
-    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+    <link class="menu-list" tags="標籤" friends="友情鏈接" about="關於我"/>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-Spring-AOP的实现" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/01/22/Spring-AOP的实现/" class="article-date">
+      <time datetime="2018-01-22T06:56:01.000Z" itemprop="datePublished">2018-01-22</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/22/Spring-AOP的实现/">Spring AOP的实现</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <h1 id="AOP概述"><a href="#AOP概述" class="headerlink" title="AOP概述"></a>AOP概述</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;Spring AOP最重要的设计模式——<strong>代理模式</strong></p>
+<h2 id="Advice通知"><a href="#Advice通知" class="headerlink" title="Advice通知"></a>Advice通知</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;Advice（通知）定义在连接点做什么，为切面增强提供织入接口。Advice是AOP联盟定义的一个接口，在Spring AOP的实现中，使用了这个统一接
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/原创/">原创</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AOP/">AOP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring/">Spring</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2018/01/22/Spring-AOP的实现/#more">查看全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-Spring事务处理" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -261,7 +330,7 @@
 
       
         <p class="article-more-link">
-          <a href="/2017/12/08/Spring事务处理/#more">more >></a>
+          <a href="/2017/12/08/Spring事务处理/#more">查看全文 >></a>
         </p>
       
       <div class="clearfix"></div>
@@ -329,7 +398,7 @@
 
       
         <p class="article-more-link">
-          <a href="/2017/12/08/浅析Synchronized和ReentrantLock的区别/#more">more >></a>
+          <a href="/2017/12/08/浅析Synchronized和ReentrantLock的区别/#more">查看全文 >></a>
         </p>
       
       <div class="clearfix"></div>
@@ -402,7 +471,7 @@
 
       
         <p class="article-more-link">
-          <a href="/2017/12/07/MySQL查询性能优化/#more">more >></a>
+          <a href="/2017/12/07/MySQL查询性能优化/#more">查看全文 >></a>
         </p>
       
       <div class="clearfix"></div>
@@ -473,7 +542,7 @@
 
       
         <p class="article-more-link">
-          <a href="/2017/11/30/Explain参数解析/#more">more >></a>
+          <a href="/2017/11/30/Explain参数解析/#more">查看全文 >></a>
         </p>
       
       <div class="clearfix"></div>
@@ -542,7 +611,7 @@
 
       
         <p class="article-more-link">
-          <a href="/2017/11/29/Spring-MVC的请求流程/#more">more >></a>
+          <a href="/2017/11/29/Spring-MVC的请求流程/#more">查看全文 >></a>
         </p>
       
       <div class="clearfix"></div>
@@ -590,8 +659,7 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              <h1 id="Spring-IoC容器的设计"><a href="#Spring-IoC容器的设计" class="headerlink" title="Spring IoC容器的设计"></a>Spring IoC容器的设计</h1><h2 id="BeanFactory的应用场景"><a href="#BeanFactory的应用场景" class="headerlink" title="BeanFactory的应用场景"></a>BeanFactory的应用场景</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;BeanFactory提供的是最基本的Ioc容器的功能。<strong>BeanFactory只是一个接口类</strong>，而DefaultListableBeanFactory、XmlBeanFactory、ApplicationContext等都可以是容器附加了某种功能的具体实现。<br><br></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>BeanFactory和FactoryBean</strong>：在Spring中，所有的Bean都是由<strong>BeanFactory</strong>（也就是Ioc容器）来进行<strong>管理</strong>的。而FactoryBean，他是一个能
+              <h1 id="Spring-IoC容器的设计"><a href="#Spring-IoC容器的设计" class="headerlink" title="Spring IoC容器的设计"></a>Spring IoC容器的设计</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;在面向对象系统中，对象封装了数据和对数据的处理，对象的依赖关系常常体现在对数据和方法的依赖上。在实际编程中，我们应该尽量实现高内聚低耦
           
       
     </div>
@@ -611,7 +679,7 @@
 
       
         <p class="article-more-link">
-          <a href="/2017/11/16/Spring框架核心：IoC容器的实现/#more">more >></a>
+          <a href="/2017/11/16/Spring框架核心：IoC容器的实现/#more">查看全文 >></a>
         </p>
       
       <div class="clearfix"></div>
@@ -680,75 +748,7 @@
 
       
         <p class="article-more-link">
-          <a href="/2017/10/31/深入Web请求过程/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Java线程池" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/26/Java线程池/" class="article-date">
-      <time datetime="2017-10-26T10:54:01.000Z" itemprop="datePublished">2017-10-26</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/26/Java线程池/">Java线程池</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>&nbsp;&nbsp;&nbsp;&nbsp;Java在JDK1.5之后加入了java.util.concurrent包，这包中有一个接口Executor，它是Java线程池的顶级接口。但在严格意义上讲它并不是一个线程池，而是一个执行线程的工具。真正的线程池接口是ExrcutorService。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;那么我们为什么要使用线程池呢，我们都知道，每当我们创建一个线程的时候，都会耗费相应的时间和空间。而线程池的主要作用就是减少时间和空间的
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/原创/">原创</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ThreadPoolExecutor/">ThreadPoolExecutor</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/线程池/">线程池</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/10/26/Java线程池/#more">more >></a>
+          <a href="/2017/10/31/深入Web请求过程/#more">查看全文 >></a>
         </p>
       
       <div class="clearfix"></div>
@@ -778,17 +778,17 @@
         <div id="footer-info">
             <div class="footer-left">
                 <i class="fa fa-copyright"></i> 
-                2016-2017 小Hang同学
+                2016-2018 小Hang同学
             </div>
             <div class="footer-right">
-                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+                <a href="http://hexo.io/" target="_blank" title="快速、簡潔且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="簡而不減 Hexo 雙欄博客主題  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
             </div>
         </div>
         
             <div class="visit">
                 
                     <span id="busuanzi_container_site_pv" style='display:none'>
-                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        <span id="site-visit" title="本站到訪數"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
                         </span>
                     </span>
                 
@@ -797,7 +797,7 @@
                 
                 
                     <span id="busuanzi_container_page_pv" style='display:none'>
-                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        <span id="page-visit"  title="本頁閱讀量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
                         </span>
                     </span>
                 
@@ -830,9 +830,9 @@
 
 
 <div class="scroll" id="scroll">
-    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
-    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
-    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+    <a href="#" title="返回頂部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看評論"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="轉到底部"><i class="fa fa-arrow-down"></i></a>
 </div>
 <script>
     // Open in New Window
