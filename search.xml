@@ -16,7 +16,7 @@
 <h2 id="AopProxy代理对象"><a href="#AopProxy代理对象" class="headerlink" title="AopProxy代理对象"></a>AopProxy代理对象</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;代理对象可以通过两种方式生成，一种是<strong>JDK动态代理</strong>，另一种是<strong>CGLIB</strong>来生成。如果目标对象是接口类，适合使用JDK来生成代理对象，否则Spring会使用CGLIB来生成目标对象的代理对象。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;对于JDK动态代理，通过调用Proxy的newProxyInstance方法生成代理对象。在生成对象时，需要指明三个参数，一个是类装载器，一个是代理接口，另一个是Proxy回调方法所在的对象，这个对象需要实现<strong>InvocationHandler接口</strong>，这个接口定义了<strong>invoke()方法</strong>，提供代理对象的回调入口，这个方法完成了AOP编织实现的封装。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;对于CGLIB，是通过<strong>Enhancer对象</strong>生成代理对象。在Enhancer中，通过设置callback回调，封装了AOP的实现。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;在JDk动态代理中，代理对象会通过<strong>invoke()方法</strong>来完成对拦截器链和目标方法的调用；而CGLIB会通过<strong>intercept()方法</strong>来调用拦截器链和目标方法。如果没有设置拦截器，那么会对目标方法直接进行调用。</p>
-<h2 id="AOP拦截器链的调用"><a href="#AOP拦截器链的调用" class="headerlink" title="AOP拦截器链的调用"></a>AOP拦截器链的调用</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;AOP<br>对目标对象增强的实现封装在AOP的拦截器链中，由一个个具体的拦截器来完成。虽然有两种不同的代理方式，但是它们对AOP拦截的处理都殊途同归：它们<strong>对拦截器链的调用都是在ReflectiveMethodInvocation中通过proceed方法实现的</strong>。</p>
+<h2 id="AOP拦截器链的调用"><a href="#AOP拦截器链的调用" class="headerlink" title="AOP拦截器链的调用"></a>AOP拦截器链的调用</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;AOP对目标对象增强的实现封装在AOP的拦截器链中，由一个个具体的拦截器来完成。虽然有两种不同的代理方式，但是它们对AOP拦截的处理都殊途同归：它们<strong>对拦截器链的调用都是在ReflectiveMethodInvocation中通过proceed方法实现的</strong>。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;在运行拦截器的拦截方法之前，需要通过<strong>Pointcut切点中的matches对代理方法完成匹配判断</strong>，通过这个判断来决定拦截器是否满足切面增强的要求。满足后，会递归调用proceed方法，逐个运行拦截器的拦截方法。以此来完成了目标方法的切面增强。</p>
 <hr>
 <p>参考：《Spring技术内幕》——计文柯<br>转载请注明出处：<a href="http://www.yhang6.com/">小Hang同学的博客</a></p>
