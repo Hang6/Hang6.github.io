@@ -842,12 +842,7 @@
 <li>对一个变量执行unlock操作之前，必须先把变量同步回主内存中（执行store、write操作）。</li>
 </ol>
 <h1 id="对于volatile型变量的特殊规则"><a href="#对于volatile型变量的特殊规则" class="headerlink" title="对于volatile型变量的特殊规则"></a>对于volatile型变量的特殊规则</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;关键字volatile可以说是Java虚拟机提供的最轻量级的同步机制，当一个变量定义为volatile之后，他将具备两种特性：保证变量对所有的线程的可见性、禁止指令重排序优化。</p>
-<h2 id="保证变量对所有的线程的可见性"><a href="#保证变量对所有的线程的可见性" class="headerlink" title="保证变量对所有的线程的可见性"></a>保证变量对所有的线程的可见性</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;这里的“可见性”是指当一条线程修改了这个变量的值，新值对于其他线程来说是可以立即得知的：当线程1进行修改时，会导致线程2工作内存中缓存变量的缓存行无效，当线程2再次读取变量的值时回去主内存中读取。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;它是通过内存屏障和禁止重排序来实现的：</p>
-<ul>
-<li>对volatile变量执行写操作时，会在写操作后加入一条store屏障指令</li>
-<li>对volatile变量进行读操作时，会在读操作前加入一条load屏障执令</li>
-</ul>
+<h2 id="保证变量对所有的线程的可见性"><a href="#保证变量对所有的线程的可见性" class="headerlink" title="保证变量对所有的线程的可见性"></a>保证变量对所有的线程的可见性</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;这里的“可见性”是指当一条线程修改了这个变量的值，新值对于其他线程来说是可以立即得知的：当线程1进行修改时，会导致线程2工作内存中缓存变量的缓存行无效，当线程2再次读取变量的值时会去主内存中读取。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;由于Java里面的运算并非原子操作，所以volatile变量的运算在并发下是不安全的，例如运算num++，它其实分为三步：读取num的值，将num+1，写入最新的num的值。因此，在<strong>不符合以下两条规则</strong>的运算场景中，我们仍然要通过加锁（使用synchronized或java.util.concurrent中的原子类）来保证原子性：</p>
 <ul>
 <li>运算结果并不依赖变量的当前值，或者能够确保只有单一的线程修改变量的值。</li>
@@ -856,6 +851,11 @@
 <h2 id="volatile变量禁止指令重排序优化"><a href="#volatile变量禁止指令重排序优化" class="headerlink" title="volatile变量禁止指令重排序优化"></a>volatile变量禁止指令重排序优化</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;普通的变量仅仅会保证在该方法的执行过程中所有的依赖赋值结果的地方都能获取到正确的结果，而不能保证变量赋值操作的顺序与程序代码中的执行顺序一致，而volatile变量将会禁止此情况发生。举个例子：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">//x,y为非volatile变量</div><div class="line">//flag为volatile变量</div><div class="line"></div><div class="line">x = 2           //语句1</div><div class="line">y = 1           //语句2</div><div class="line">flag = true     //语句3</div><div class="line">x = 3           //语句4</div><div class="line">y = 0           //语句5</div></pre></td></tr></table></figure>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;由于flag为volatile变量，所以在进行指令重排序时，不会将语句3放到语句1、2之前，不会将语句3放到语句4、5之后；但是语句1和2、语句3和4的执行顺序是不做保证的。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;它是通过内存屏障和禁止重排序来实现的：</p>
+<ul>
+<li>对volatile变量执行写操作时，会在写操作后加入一条store屏障指令</li>
+<li>对volatile变量进行读操作时，会在读操作前加入一条load屏障执令</li>
+</ul>
 <h1 id="先行发生原则-happens-before"><a href="#先行发生原则-happens-before" class="headerlink" title="先行发生原则(happens-before)"></a>先行发生原则(happens-before)</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>先行发生</strong>时Java内存模型中定义的两项操作之间的偏序关系，如果操作A先行发生于操作B，其实就是说在发生操作B之前，操作A产生的影响能够被操作B观察到，“影响”包括修改了内存中共享变量的值，发送了的消息，调用了方法等。<strong>先行发生原则</strong>是判断数据是否存在竞争、线程是否安全的主要依据，依靠这个原则，我们可以通过几条规则一览子地解决<strong>并发环境</strong>下两个操作之间是否可能存在冲突的所有问题。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;下面是Java内存模型下一些“天然的”先行发生关系，这些先行发生关系无须任何同步器协助就已经存在，可以在编码中直接使用。如果两个操作之间的关系不在此列，并且无法从下列规则推导出来的话，他们就没有顺序性保障，虚拟机可以对它们随意的进行重排序。</p>
 <ul>
@@ -956,14 +956,14 @@
       <title><![CDATA[关于Java虚拟机的垃圾回收]]></title>
       <url>/2017/09/05/%E5%85%B3%E4%BA%8EJava%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/</url>
       <content type="html"><![CDATA[<h1 id="JVM的内存区域分配"><a href="#JVM的内存区域分配" class="headerlink" title="JVM的内存区域分配"></a>JVM的内存区域分配</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;要讲垃圾收集算法，首先需要分清楚JVM的内存区域分配：JVM的运行时数据区可以分为程序计数器（Program Counter Register）、虚拟机栈（VM Stack）、本地方法栈（Native Method Stack）、堆（Heap）、方法区（Method Area）五个部分。其中Sun HotSpot虚拟机将虚拟机栈和本地方法栈合二为一，并且方法区是堆的一个逻辑部分。而我们将要讲到的垃圾回收就是发生在堆中。<br><a id="more"></a></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;从垃圾收集的角度讲，HotSpot虚拟机将堆区分为GC堆和方法区，也有人将其分为永生代（方法区）、新生代、老年代，其中新生代和老年代属于GC堆，而新生代又可分为Eden空间、From Survivor空间、To Survivior空间。至此，堆区的内存分布大致已经讲清楚了，下面我们将介绍几种垃圾收集算法。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;从垃圾收集的角度讲，HotSpot虚拟机将堆区分为GC堆和方法区，也有人将其分为永生代（方法区）、新生代、老年代，其中新生代和老年代属于GC堆，而新生代又可分为Eden空间和两个Survivior空间。至此，堆区的内存分布大致已经讲清楚了，下面我们将介绍几种垃圾收集算法。</p>
 <hr>
 <h1 id="各垃圾收集算法的含义"><a href="#各垃圾收集算法的含义" class="headerlink" title="各垃圾收集算法的含义"></a>各垃圾收集算法的含义</h1><h2 id="标记-清除算法"><a href="#标记-清除算法" class="headerlink" title="标记-清除算法"></a>标记-清除算法</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;“标记-清除”算法是最基础的收集算法，它分为“标记”和“清除”两个阶段：首先标记出所有需要回收的对象，标记完成后，统一回收所有标记的对象。之所以说它是最基础的收集算法，是因为后续的收集算法都是基于这种思路并对其不足进而改进得到的。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;该方法主要有两个不足：</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;1.效率问题，标记和清除两个过程的效率都不高</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;2.空间问题，该方法清除之后会产生大量零散的内存空间，若之后程序遇到需要分配较大对象而内存空间不足时，会提前触发下一次的垃圾收集动作。</p>
 <h2 id="标记-整理算法"><a href="#标记-整理算法" class="headerlink" title="标记-整理算法"></a>标记-整理算法</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;“标记-整理”算法过程与“标记-清理”算法一样，只是后续步骤不是直接对可回收对象进行清理，而是让所有存活的对象都向一端移动，然后直接清理掉存活端边界以外的内存。</p>
-<h2 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;“复制”算法将内存分为一块较大的Eden空间和两块较小的From Survivior和To Survivior空间，HotSpot虚拟机默认将三者的比例分为8:1:1，每次新生代的可用内存空间为整个新生代容量的90%(80%+10%)。当产生垃圾收集动作时，虚拟机会将存活的对象复制到To Survivior空间，然后把已使用过的内存空间一次清理掉，这样就不存在垃圾收集后空闲内存空间零散的情况；若回收后To Survivior空间没有足够的空间存放上一次新生代收集下来的存活对象，就需要依赖其他内存(这里指老年代)进行<strong>分配担保</strong>。</p>
+<h2 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;“复制”算法将内存分为一块较大的Eden空间和两块较小的Survivior空间，HotSpot虚拟机默认将三者的比例分为8:1:1，每次新生代的可用内存空间为整个新生代容量的90%(80%+10%)。当产生垃圾收集动作时，虚拟机会将存活的对象复制到剩下的Survivior空间，然后把已使用过的内存空间一次清理掉，这样就不存在垃圾收集后空闲内存空间零散的情况；若回收后Survivior空间没有足够的空间存放上一次新生代收集下来的存活对象，就需要依赖其他内存(这里指老年代)进行<strong>分配担保</strong>。</p>
 <hr>
 <h1 id="对象已死？"><a href="#对象已死？" class="headerlink" title="对象已死？"></a>对象已死？</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;在垃圾收集器对堆进行回收之前，第一件事情就是要确定这些对象之中哪些还“存活”，哪些已经“死去”（即不可能再被任何途径使用）。那么我们怎么判断对象是否“死去”了呢？</p>
 <h2 id="引用计数算法"><a href="#引用计数算法" class="headerlink" title="引用计数算法"></a>引用计数算法</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;该方法的实现原理是：给对象中添加一个引用计数器，每当一个地方引用它，计数器值加1；当引用失效时，计数器值减1；任何时刻计数器为0的对象就是不可能再被使用的。</p>
