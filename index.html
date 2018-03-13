@@ -211,6 +211,75 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-MySQL相关笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/03/13/MySQL相关笔记/" class="article-date">
+      <time datetime="2018-03-13T08:10:54.000Z" itemprop="datePublished">2018-03-13</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/13/MySQL相关笔记/">MySQL相关笔记</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <h1 id="MySQL引擎"><a href="#MySQL引擎" class="headerlink" title="MySQL引擎"></a>MySQL引擎</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;MySQL的默认引擎是InnoDB，该引擎支持行锁，支持事务安全表。其次，MySQL其他常用的引擎是MyISAM，但是它只支持表锁，并且不支持事务安全表。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;InnoDB引擎的默认隔离级别为Reaptable Read，他消除了不可重复读（删、改）的现象，并与MVCC兼容消除了幻读（增）的现象。MVCC只与Read Committed和Reaptable Read两种隔离级别兼容。
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/原创/">原创</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2018/03/13/MySQL相关笔记/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-Spring-AOP的实现" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -680,75 +749,6 @@
       
         <p class="article-more-link">
           <a href="/2017/11/16/Spring框架核心：IoC容器的实现/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-深入Web请求过程" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/31/深入Web请求过程/" class="article-date">
-      <time datetime="2017-10-31T07:18:25.000Z" itemprop="datePublished">2017-10-31</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/31/深入Web请求过程/">深入Web请求过程</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <h1 id="B-S网络架构概述"><a href="#B-S网络架构概述" class="headerlink" title="B/S网络架构概述"></a>B/S网络架构概述</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;B/S网络架构都基于统一的应用层协议HTTP来交互数据，HTTP是一种<strong>无状态的短链接</strong>通信。通常一次请求就完成了一次数据交互，然后这次通信链接就断开了。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;当一个用户在浏览器里输入一个URL并发送请求时，将会发生很多操作:</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;首先会请求DNS把域名解析成对应的IP地址，然后根据IP地址在互联网上找到对应的服务器，向这个服务器发起一个Get请求，由这个服务器决定返回默认的数据资源给访问用户。
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/原创/">原创</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CDN/">CDN</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DNS/">DNS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web/">Web</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/10/31/深入Web请求过程/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

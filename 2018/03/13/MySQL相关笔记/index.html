@@ -15,18 +15,18 @@
 
 
 
-<meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 近期在学习SpringMVC的有关知识，里面涉及到HTTP协议里的GET,POST,PUT和DELETE这四种与服务器交互的基本方法，感觉懵懵懂懂，不是很理解，于是上网查询相关资料。来做一下简单的总结，方便以后学习，有什么不对的地方欢迎指正。  含义1.GET GET请求用于向服务器发出索取请求，从而获取相关信息，它的操作是幂等的、安全的（不管进行">
-<meta name="keywords" content="GET,POST,PUT,DELETE">
+<meta name="description" content="MySQL引擎&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;MySQL的默认引擎是InnoDB，该引擎支持行锁，支持事务安全表。其次，MySQL其他常用的引擎是MyISAM，但是它只支持表锁，并且不支持事务安全表。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;InnoDB引擎的默认隔离级别为Reaptable Read，他消除了不可重复读（删、改）的现象，并与MVCC兼容消除了幻读（增）的现">
+<meta name="keywords" content="MySQL">
 <meta property="og:type" content="article">
-<meta property="og:title" content="浅谈GET,POST,PUT,DELETE含义及区别">
-<meta property="og:url" content="http://www.yhang6.com/2017/08/18/浅谈GET-POST-PUT-DELETE的含义与区别/index.html">
+<meta property="og:title" content="MySQL相关笔记">
+<meta property="og:url" content="http://www.yhang6.com/2018/03/13/MySQL相关笔记/index.html">
 <meta property="og:site_name" content="小Hang同学的博客">
-<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 近期在学习SpringMVC的有关知识，里面涉及到HTTP协议里的GET,POST,PUT和DELETE这四种与服务器交互的基本方法，感觉懵懵懂懂，不是很理解，于是上网查询相关资料。来做一下简单的总结，方便以后学习，有什么不对的地方欢迎指正。  含义1.GET GET请求用于向服务器发出索取请求，从而获取相关信息，它的操作是幂等的、安全的（不管进行">
+<meta property="og:description" content="MySQL引擎&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;MySQL的默认引擎是InnoDB，该引擎支持行锁，支持事务安全表。其次，MySQL其他常用的引擎是MyISAM，但是它只支持表锁，并且不支持事务安全表。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;InnoDB引擎的默认隔离级别为Reaptable Read，他消除了不可重复读（删、改）的现象，并与MVCC兼容消除了幻读（增）的现">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-09-06T02:38:18.000Z">
+<meta property="og:updated_time" content="2018-03-13T08:59:43.236Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="浅谈GET,POST,PUT,DELETE含义及区别">
-<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 近期在学习SpringMVC的有关知识，里面涉及到HTTP协议里的GET,POST,PUT和DELETE这四种与服务器交互的基本方法，感觉懵懵懂懂，不是很理解，于是上网查询相关资料。来做一下简单的总结，方便以后学习，有什么不对的地方欢迎指正。  含义1.GET GET请求用于向服务器发出索取请求，从而获取相关信息，它的操作是幂等的、安全的（不管进行">
+<meta name="twitter:title" content="MySQL相关笔记">
+<meta name="twitter:description" content="MySQL引擎&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;MySQL的默认引擎是InnoDB，该引擎支持行锁，支持事务安全表。其次，MySQL其他常用的引擎是MyISAM，但是它只支持表锁，并且不支持事务安全表。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;InnoDB引擎的默认隔离级别为Reaptable Read，他消除了不可重复读（删、改）的现象，并与MVCC兼容消除了幻读（增）的现">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>浅谈GET,POST,PUT,DELETE含义及区别 | 小Hang同学的博客</title>
+<title>MySQL相关笔记 | 小Hang同学的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -209,11 +209,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-浅谈GET-POST-PUT-DELETE的含义与区别" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-MySQL相关笔记" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/08/18/浅谈GET-POST-PUT-DELETE的含义与区别/" class="article-date">
-      <time datetime="2017-08-18T02:10:03.000Z" itemprop="datePublished">2017-08-18</time>
+      <a href="/2018/03/13/MySQL相关笔记/" class="article-date">
+      <time datetime="2018-03-13T08:10:54.000Z" itemprop="datePublished">2018-03-13</time>
 </a>
 
 
@@ -228,7 +228,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      浅谈GET,POST,PUT,DELETE含义及区别
+      MySQL相关笔记
     </h1>
   
 
@@ -237,13 +237,13 @@
       <div class="article-info article-info-post">
         
     <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/日志/">日志</a>
+    <a class="article-category-link" href="/categories/原创/">原创</a>
     </div>
 
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DELETE/">DELETE</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GET/">GET</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/POST/">POST</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PUT/">PUT</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -253,20 +253,38 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>&nbsp;&nbsp;&nbsp;&nbsp; 近期在学习SpringMVC的有关知识，里面涉及到HTTP协议里的GET,POST,PUT和DELETE这四种与服务器交互的基本方法，感觉懵懵懂懂，不是很理解，于是上网查询相关资料。来做一下简单的总结，方便以后学习，有什么不对的地方欢迎指正。</p>
+        <h1 id="MySQL引擎"><a href="#MySQL引擎" class="headerlink" title="MySQL引擎"></a>MySQL引擎</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;MySQL的默认引擎是InnoDB，该引擎支持行锁，支持事务安全表。其次，MySQL其他常用的引擎是MyISAM，但是它只支持表锁，并且不支持事务安全表。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;InnoDB引擎的默认隔离级别为Reaptable Read，他消除了不可重复读（删、改）的现象，并与MVCC兼容消除了幻读（增）的现象。MVCC只与Read Committed和Reaptable Read两种隔离级别兼容。<a id="more"></a></p>
 <hr>
-<h2 id="含义"><a href="#含义" class="headerlink" title="含义"></a>含义</h2><p><strong>1.GET</strong><br> GET请求用于向服务器发出索取请求，从而获取相关信息，它的操作是幂等的、安全的（不管进行多少次操作，该资源的状态都不会改变）。其类似于我们请求数据库的select(R)操作，只用作查询数据，没有副作用。</p>
-<a id="more"></a>
-<p><strong>2.POST</strong><br> POST请求用于向服务器发送数据，从而改变信息，该操作既不安全也不幂等，比较常见的问题：当我们多次发送POST请求时，会创建多个资源。其类似于请求数据库的insert(C)操作，创建新的内容。目前几乎所有的提交操作都使用POST请求。</p>
-<p><strong>3.PUT</strong><br> PUT操作和POST请求类似，但是PUT操作是幂等的（不管进行多少次操作，结果是一样。如：修改了一篇文章，用PUT请求多次，该文章还是一样）。PUT操作类似于数据库的update(U)操作，修改相关类容。</p>
-<p><strong>4.DELETE</strong><br> 顾名思义，DELETE请求用于删除某个数据，和数据库的delete(D)操作一样。</p>
+<p><br></p>
+<h1 id="MySQL的事务"><a href="#MySQL的事务" class="headerlink" title="MySQL的事务"></a>MySQL的事务</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;MySQL的事务有四个特性：原子性、一致性、隔离性、持久性。</p>
+<ul>
+<li>原子性：构成事务的所有操作必须是一个逻辑单元，要么全部执行，要么全部不执行。</li>
+<li>一致性：数据库总是从一个一致性的状态转换到另外一个一致性的状态。</li>
+<li>隔离性：通常来说，一个事务所做的修改在最终提交之前，对其他事务是不可见的。</li>
+<li>持久性：一旦事务提交，其所做的修改会永久保存到数据库中。</li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;事务实现隔离性的原理就是依赖于InnoDB引擎行锁。</p>
 <hr>
-<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><h3 id="PUT和POST的区别"><a href="#PUT和POST的区别" class="headerlink" title="PUT和POST的区别"></a>PUT和POST的区别</h3><p>&nbsp;&nbsp;&nbsp;&nbsp; 如上文所说，PUT和POST都是向服务器发送数据，如果服务端允许，那么创建操作既可以用POST，也可以使用PUT。两者的区别在于：PUT方法是幂等的，而POST不是；在请求时，PUT方法需要作用在一个具体的资源上（如：“<a href="http://hi.baidu.com/mianshiti?key1=value1”" target="_blank" rel="external">http://hi.baidu.com/mianshiti?key1=value1”</a> ），它会将提交的数据编码在url中，而url的长度又会因浏览器的长度限制而存在数据传输有限问题；POST方法会将提交的数据放在请求的body中，不会显示在url上（如：“<a href="http://hi.baidu.com/mianshiti”" target="_blank" rel="external">http://hi.baidu.com/mianshiti”</a> ），因此没有数据大小限制的问题。<br><br>&nbsp;&nbsp;&nbsp;&nbsp; 因为PUT方法把数据编码在url中，所以这些变量会显示在浏览器的地址栏上，也会被记录在服务器端的日志中，所以相比较之下，POST方法是更加安全的,此处的安全和GET提到的“安全”是不同概念，此处是真正意义上的Security。</p>
+<p><br></p>
+<h1 id="MySQL索引"><a href="#MySQL索引" class="headerlink" title="MySQL索引"></a>MySQL索引</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;MySQL的数据是放在外部存储的，也就是说IO才是性能瓶颈的关键，所以我们的索引需要减少树的深度，所以我们需要更多分叉的树，还需要更适合磁盘操作特性的数据结构。因此，MySQL选择了B+树作为其索引的数据结构。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;使用B+树作为索引数据结构的优势：</p>
+<ul>
+<li>只有叶子节点才记录数据，非叶子节点只包含索引；所有非终端节点（内部节点）并不存储数据信息，而是保存其叶子节点的最小值作为索引。这样，一次性读入内存中的需要查找的关键字就越多。相对来说IO读写次数也就降低了。</li>
+<li>能够提供稳定高效的范围扫描功能；这个特点主要因为所有叶子节点相互连接，并且叶子节点本身依关键字的大小自小而大顺序链接。</li>
+</ul>
 <hr>
-<h3 id="GET和POST的区别"><a href="#GET和POST的区别" class="headerlink" title="GET和POST的区别"></a>GET和POST的区别</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;首先说原理区别：<br>&nbsp;&nbsp;&nbsp;&nbsp;一般在浏览器输入网站访问资源都是通过GET方式，在form提交中，可以通过method改变提交方式；正如上文所说，GET方式是幂等的、安全的(只限于非修改信息)，而POST方法是既不幂等、也不安全的。GET方法一般用于<strong>查询/获取</strong>信息，而POST方法一般用于<strong>更新/创建</strong>资源信息。<br><br>&nbsp;&nbsp;&nbsp;&nbsp; 上面说了原理性问题，但在实际操作的时候却没有多少人按照HTTP规范做，这也是导致GET和POST容易混淆的原因，导致这个问题的原因很多，比如说：<br>&nbsp;&nbsp;&nbsp;&nbsp;(1)很多人贪方便，更新资源时用了GET，POST方法要用form表单，麻烦一点。<br>&nbsp;&nbsp;&nbsp;&nbsp;(2)增删改查操作其实都可以用GET/POST方法完成。<br><br></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;表现形式区别：<br>&nbsp;&nbsp;&nbsp;&nbsp;跟PUT和POST一样，GET方法也需要将提交的数据在地址栏上显示出来，所以POST是更加安全的；传输数据大小也和PUT与POST一样，GET方法会有数据大小的限制，这里需要强调一点：HTTP协议没有对传输数据大小进行限制，对url的长度也没有限制，但特定的浏览器和服务器对url长度是有限制的。</p>
+<p><br></p>
+<h1 id="MySQL三段封锁协议"><a href="#MySQL三段封锁协议" class="headerlink" title="MySQL三段封锁协议"></a>MySQL三段封锁协议</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;共享锁（S锁）：又称读锁，若事务T对数据对象A加上S锁，则其他事务只能再对A加S锁，不能加X锁，直到事务T释放A上的锁。保证了其他事务可以读取数据A，但是在T释放A的锁之前不能对其进行修改。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;排他锁（X锁）：又称写锁，若事务T对数据对象A加上X锁，则其他事务都不能再对A加上任何类型的锁。保证了其他事务在T释放A的锁之前既不能读取也不能修改A。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>三段封锁协议：</strong></p>
+<ul>
+<li>一级封锁协议：事务T在修改数据R之前必须对其先加上X锁，直到事务结束（正常或异常）才释放。1级封锁协议可防止丢失修改，并保证事务T是可恢复的。在1级封锁协议中，如果仅仅是读数据，是不需要加锁的，所以可能产生不可重复读和脏读。</li>
+<li>二级封锁协议：在1级封锁协议的基础上加上 事务T在读取数据R之前必须对R加上S锁，<strong>读完后可释放锁</strong>。2级封锁协议防止了修改丢失，还可进一步防止脏读。</li>
+<li>三级封锁协议：在1级封锁协议的基础上加上 事务T在读取数据R之前必须对R加上S锁，<strong>直到事务结束才释放</strong>。3级封锁协议防止了修改丢失和脏读外，还防止了不可重复读。</li>
+</ul>
 <hr>
-<p>参考文章：<a href="http://blog.csdn.net/gideal_wang/article/details/4316691" target="_blank" rel="external">http://blog.csdn.net/gideal_wang/article/details/4316691</a></p>
+<p>转载请注明出处：<a href="http://www.yhang6.com/">小Hang同学的博客</a></p>
 
       
     </div>
@@ -275,13 +293,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/08/18/浅谈GET-POST-PUT-DELETE的含义与区别/">浅谈GET,POST,PUT,DELETE含义及区别</a></p>
+        <p><span>本文标题:</span><a href="/2018/03/13/MySQL相关笔记/">MySQL相关笔记</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">小Hang同学</a></p>
-        <p><span>发布时间:</span>2017-08-18, 10:10:03</p>
-        <p><span>最后更新:</span>2017-09-06, 10:38:18</p>
+        <p><span>发布时间:</span>2018-03-13, 16:10:54</p>
+        <p><span>最后更新:</span>2018-03-13, 16:59:43</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/08/18/浅谈GET-POST-PUT-DELETE的含义与区别/" title="浅谈GET,POST,PUT,DELETE含义及区别">http://www.yhang6.com/2017/08/18/浅谈GET-POST-PUT-DELETE的含义与区别/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://www.yhang6.com/2017/08/18/浅谈GET-POST-PUT-DELETE的含义与区别/　　作者: 小Hang同学" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2018/03/13/MySQL相关笔记/" title="MySQL相关笔记">http://www.yhang6.com/2018/03/13/MySQL相关笔记/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://www.yhang6.com/2018/03/13/MySQL相关笔记/　　作者: 小Hang同学" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -293,16 +311,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/09/05/关于Java虚拟机的垃圾回收/">
-                    关于Java虚拟机的垃圾回收
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/08/01/谈谈感受吧/">
-                    谈谈感受吧
+                <a href="/2018/01/22/Spring-AOP的实现/">
+                    Spring AOP的实现
                 </a>
             </div>
         
@@ -314,7 +326,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#含义"><span class="toc-number">1.</span> <span class="toc-text">含义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#区别"><span class="toc-number">2.</span> <span class="toc-text">区别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PUT和POST的区别"><span class="toc-number">2.1.</span> <span class="toc-text">PUT和POST的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GET和POST的区别"><span class="toc-number">2.2.</span> <span class="toc-text">GET和POST的区别</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MySQL引擎"><span class="toc-number">1.</span> <span class="toc-text">MySQL引擎</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MySQL的事务"><span class="toc-number">2.</span> <span class="toc-text">MySQL的事务</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MySQL索引"><span class="toc-number">3.</span> <span class="toc-text">MySQL索引</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MySQL三段封锁协议"><span class="toc-number">4.</span> <span class="toc-text">MySQL三段封锁协议</span></a></li></ol>
         
     </div>
     <style>
@@ -350,7 +362,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"浅谈GET,POST,PUT,DELETE含义及区别　| 小Hang同学的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"MySQL相关笔记　| 小Hang同学的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -366,7 +378,7 @@
     
       <div class="duoshuo" id="comments">
     <div id="comment-box" ></div>
-    <div class="ds-thread" id="ds-thread" data-thread-key="2017/08/18/浅谈GET-POST-PUT-DELETE的含义与区别/" data-title="浅谈GET,POST,PUT,DELETE含义及区别" data-url="http://www.yhang6.com/2017/08/18/浅谈GET-POST-PUT-DELETE的含义与区别/"></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2018/03/13/MySQL相关笔记/" data-title="MySQL相关笔记" data-url="http://www.yhang6.com/2018/03/13/MySQL相关笔记/"></div>
     <script>
         var duoshuoQuery = {short_name:""};
         var loadComment = function(){
@@ -389,15 +401,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/09/05/关于Java虚拟机的垃圾回收/" title="上一篇: 关于Java虚拟机的垃圾回收">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/08/01/谈谈感受吧/" title="下一篇: 谈谈感受吧">
+            <a href="/2018/01/22/Spring-AOP的实现/" title="下一篇: Spring AOP的实现">
                 <i class="fa fa-angle-right"></i>
             </a>
         
