@@ -15,18 +15,18 @@
 
 
 
-<meta name="description" content="慢查询基础：优化数据访问&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;查询性能低下最基本的原因是访问的数据太多，大部分性能低下的查询都可以通过减少访问的数据量的方式进行优化。对于低效的查询，通过下列两个步骤来分析总是很有效：  确认应用程序是否在检索大量超过需要的数据 确认MySQL服务器层是否在分析大量超过需要的数据行。  向数据库请求了不需要的数据&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbs">
-<meta name="keywords" content="MySQL,性能优化">
+<meta name="description" content="Redis持久化的两种方式&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Redis是一种基于内存的数据库，因为不需要从磁盘读取数据，所以Redis带来了高效的访问速度，除此之外，redis还支持多种数据结构的存储：String，List，Hash散列表，Set和SortSet。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;因为Redis是基于内存的数据库，所以当Redis发生掉电或者宕机等意">
+<meta name="keywords" content="Redis,持久化">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL查询性能优化">
-<meta property="og:url" content="http://www.yhang6.com/2017/12/07/MySQL查询性能优化/index.html">
+<meta property="og:title" content="Redis的持久化">
+<meta property="og:url" content="http://www.yhang6.com/2018/04/10/Redis的持久化/index.html">
 <meta property="og:site_name" content="小Hang同学的博客">
-<meta property="og:description" content="慢查询基础：优化数据访问&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;查询性能低下最基本的原因是访问的数据太多，大部分性能低下的查询都可以通过减少访问的数据量的方式进行优化。对于低效的查询，通过下列两个步骤来分析总是很有效：  确认应用程序是否在检索大量超过需要的数据 确认MySQL服务器层是否在分析大量超过需要的数据行。  向数据库请求了不需要的数据&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbs">
+<meta property="og:description" content="Redis持久化的两种方式&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Redis是一种基于内存的数据库，因为不需要从磁盘读取数据，所以Redis带来了高效的访问速度，除此之外，redis还支持多种数据结构的存储：String，List，Hash散列表，Set和SortSet。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;因为Redis是基于内存的数据库，所以当Redis发生掉电或者宕机等意">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-04-10T12:20:11.869Z">
+<meta property="og:updated_time" content="2018-04-10T12:24:39.542Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL查询性能优化">
-<meta name="twitter:description" content="慢查询基础：优化数据访问&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;查询性能低下最基本的原因是访问的数据太多，大部分性能低下的查询都可以通过减少访问的数据量的方式进行优化。对于低效的查询，通过下列两个步骤来分析总是很有效：  确认应用程序是否在检索大量超过需要的数据 确认MySQL服务器层是否在分析大量超过需要的数据行。  向数据库请求了不需要的数据&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbs">
+<meta name="twitter:title" content="Redis的持久化">
+<meta name="twitter:description" content="Redis持久化的两种方式&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Redis是一种基于内存的数据库，因为不需要从磁盘读取数据，所以Redis带来了高效的访问速度，除此之外，redis还支持多种数据结构的存储：String，List，Hash散列表，Set和SortSet。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;因为Redis是基于内存的数据库，所以当Redis发生掉电或者宕机等意">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>MySQL查询性能优化 | 小Hang同学的博客</title>
+<title>Redis的持久化 | 小Hang同学的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -209,11 +209,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-MySQL查询性能优化" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Redis的持久化" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/12/07/MySQL查询性能优化/" class="article-date">
-      <time datetime="2017-12-07T12:23:29.000Z" itemprop="datePublished">2017-12-07</time>
+      <a href="/2018/04/10/Redis的持久化/" class="article-date">
+      <time datetime="2018-04-10T12:19:29.000Z" itemprop="datePublished">2018-04-10</time>
 </a>
 
 
@@ -228,7 +228,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      MySQL查询性能优化
+      Redis的持久化
     </h1>
   
 
@@ -243,7 +243,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/性能优化/">性能优化</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/">Redis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/持久化/">持久化</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -253,77 +253,34 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <h1 id="慢查询基础：优化数据访问"><a href="#慢查询基础：优化数据访问" class="headerlink" title="慢查询基础：优化数据访问"></a>慢查询基础：优化数据访问</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;查询性能低下最基本的原因是访问的数据太多，大部分性能低下的查询都可以通过减少访问的数据量的方式进行优化。对于低效的查询，通过下列两个步骤来分析总是很有效：</p>
-<ol>
-<li>确认应用程序是否在检索大量超过需要的数据</li>
-<li>确认MySQL服务器层是否在分析大量超过需要的数据行。</li>
-</ol>
-<h2 id="向数据库请求了不需要的数据"><a href="#向数据库请求了不需要的数据" class="headerlink" title="向数据库请求了不需要的数据"></a>向数据库请求了不需要的数据</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;下面是一些典型的案例：<a id="more"></a></p>
-<ul>
-<li>查询不需要的记录</li>
-<li>多表关联时返回全部列</li>
-<li>总是取出全部列</li>
-<li>重复查询相同的数据</li>
-</ul>
-<h2 id="扫描额外的记录"><a href="#扫描额外的记录" class="headerlink" title="扫描额外的记录"></a>扫描额外的记录</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;衡量查询开销的三个指标：</p>
-<ul>
-<li>响应时间</li>
-<li>扫描的行数</li>
-<li>返回的行数</li>
-</ul>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;如果发现查询需要扫描大量的行数但只返回少数的行，那么通常使用下面的技巧去优化：</p>
-<ul>
-<li>使用索引覆盖扫描。把所有需要用的列都放到索引中，这样存储引擎无须回表获取对应行就可以返回结果</li>
-<li>改变库表结构。</li>
-<li>重写复杂的查询，让MySQL优化器能够以更优化的方式执行这个查询</li>
-</ul>
+        <h1 id="Redis持久化的两种方式"><a href="#Redis持久化的两种方式" class="headerlink" title="Redis持久化的两种方式"></a>Redis持久化的两种方式</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;Redis是一种<strong>基于内存</strong>的数据库，因为不需要从磁盘读取数据，所以Redis带来了高效的访问速度，除此之外，redis还支持<strong>多种数据结构</strong>的存储：String，List，Hash散列表，Set和SortSet。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;因为Redis是基于内存的数据库，所以当Redis发生掉电或者宕机等意外时，内存里面的数据是会丢失的。因此，Redis用两种方法对数据进行了持<a id="more"></a>久化，来防止数据的丢失。分别是<strong>RDB</strong>和<strong>AOF</strong>。Redis默认开启RDB，而AOF默认是关闭的。</p>
 <hr>
 <p><br></p>
-<h1 id="重构查询的方式"><a href="#重构查询的方式" class="headerlink" title="重构查询的方式"></a>重构查询的方式</h1><ol>
-<li>是否需要将一个复杂的查询分成多个简单的查询，这是设计查询时需要考虑的重要问题</li>
-<li>切分查询。将大查询切分成小查询，完成的功能一样，但将其拆分为几个次，每次完成一小部分任务</li>
-<li>分解关联查询。将一条查询分解为多条查询，但返回同样的结果。</li>
-</ol>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;用<strong>分解关联查询</strong>的方式重构查询有如下优势：</p>
-<ul>
-<li>让缓存的效率更高</li>
-<li>将查询分解后，执行单个查询可以减少锁竞争</li>
-<li>在应用层做关联，可以更容易对数据库进行拆分，更容易做到高性能和可扩展</li>
-<li>查询本身效率可能有所提升</li>
-<li>减少冗余记录的查询</li>
-</ul>
+<h1 id="RDB持久化"><a href="#RDB持久化" class="headerlink" title="RDB持久化"></a>RDB持久化</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;RDB持久化可以在指定时间间隔内生成数据集的时间点快照，RDB每次持久化都会将内存中所有的数据都进行备份，存储到名为dump.rdb的二进制文件中，如果该文件已经存在，则将其覆盖。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;RDB有三种方式对数据进行持久化：sava，bgsave以及配置文件进行设置。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;配置文件里可以对Redis进行设置，让它在“N秒内数据至少有M个改动”这一条件被满足时，自动保存一次数据集。保存方式为调用bgsave方法。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;当我们运用save方法进行调用的时候，会对其他命令造成阻塞；而bgsave会调用fork()方法创建一个子进程，子进程对数据进行持久化，父进程执行其他命令，所以bgsava不会造成阻塞。</p>
+<h3 id="RDB的优点"><a href="#RDB的优点" class="headerlink" title="RDB的优点"></a>RDB的优点</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;RDB是一个非常紧凑的文件，它保存了Redis在某个时间点上的数据集。这种文件很适合<strong>备份、灾难恢复</strong>。RDB可以<strong>最大化Redis的性能</strong>：父进程在保存RDB文件的时候只需fork出一个子进程，子进程进行保存工作，父进程无须进行磁盘IO。RDB在恢复大数据集时的速度比AOF要快。</p>
+<h3 id="RDB的缺点"><a href="#RDB的缺点" class="headerlink" title="RDB的缺点"></a>RDB的缺点</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;RDB根据时间间隔来持久化数据，如果在时间间隔内发生宕机或者其他意外，在这段时间内的所有数据将会丢失。</p>
 <hr>
 <p><br></p>
-<h1 id="查询执行基础"><a href="#查询执行基础" class="headerlink" title="查询执行基础"></a>查询执行基础</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;MySQL查询执行路径：</p>
-<ol>
-<li>客户端发送一条查询给服务器</li>
-<li>服务器先检查查询缓存，如果命中缓存，则立即返回查询结果；如果未命中，进入下一阶段</li>
-<li>服务器进行SQL解析、预处理，再由优化器生成对应的执行计划</li>
-<li>MySQL根据优化器生成的执行计划，调用存储引擎的API来执行查询</li>
-<li>将结果返回给客户端</li>
-</ol>
-<h2 id="查询优化器"><a href="#查询优化器" class="headerlink" title="查询优化器"></a>查询优化器</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;一条查询可以有很多种执行方式，最后返回的结果都相同。优化器的作用就是找到其中最好的执行计划，但是由于多种原因，优化器选择的执行计划也并不总是最优的。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;查询优化器有很多优化策略来生成一个最优的执行计划。优化策略可以分为两种，一种是静态优化，另一种是动态优化。</p>
+<h1 id="AOF持久化"><a href="#AOF持久化" class="headerlink" title="AOF持久化"></a>AOF持久化</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;与RDB通过直接保存Redis的键值对数据不同，AOF持久化是通过<strong>保存</strong>Redis<strong>执行的写命令</strong>来记录Redis的内存数据的。AOF有三个持久化频率，分别为：</p>
 <ul>
-<li><strong>静态优化</strong>：静态优化可以直接对解析树进行分析，并完成优化。静态优化不依赖于特别的数值，它在第一次完成后就一直有效，即使使用不同的参数重复执行查询也不会发生变化。可以认为这是一种“编译时优化”。</li>
-<li><strong>动态优化</strong>：动态优化和上下文有关，也可其他很多因素有关。它需要在每次查询的时候重新评估，可以认为这是“运行时优化”。</li>
+<li>always：每执行以个Redis命令都要同步写入磁盘</li>
+<li>everysec：每秒执行一次同步，显示的将多个命令同步到磁盘</li>
+<li>no：让操作系统来决定应该何时同步</li>
 </ul>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>MySQL能够处理的一些优化类型</strong>：</p>
-<ul>
-<li>重新定义关联表的顺序</li>
-<li>将外连接转化成内连接</li>
-<li>使用等价变换规则</li>
-<li>优化COUNT()、MIN()和MAX()</li>
-<li>预估并转化为常数表达式</li>
-<li>覆盖索引扫描</li>
-<li>子优化查询</li>
-<li>提前终止查询</li>
-<li>等值传播</li>
-<li>列表IN()的比较</li>
-</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;AOF<strong>默认是everysec</strong>级别。AOF文件的生成过程具体包括<strong>命令追加、文件写入、文件同步</strong>三个步骤。</p>
+<h3 id="AOF的优点"><a href="#AOF的优点" class="headerlink" title="AOF的优点"></a>AOF的优点</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;AOF持久化会让Redis变得<strong>更加耐久</strong>，在默认情况下，即使发生故障停机，最多也只会丢失1秒的数据。Redis可以在AOF文件体积变得过大时，<strong>对AOF文件进行重写</strong>以缩小文件体积。<br>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<h3 id="AOF的缺点"><a href="#AOF的缺点" class="headerlink" title="AOF的缺点"></a>AOF的缺点</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;对于相同的数据集来说，AOF的体积通常要大于RDB的体积。根据所使用的 fsync 策略，AOF 的速度可能会慢于 RDB 。</p>
 <hr>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;想要获得高性能的查询效果，<strong>查询优化、索引优化、库表结构优化</strong>需要齐头并进，一个不落。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;当一个查询性能很低下时，可以<strong>查询慢日志</strong>，检查程序是否检索了大量超过需要的数据，MySQL服务器层是否分析大量超过需要的数据行；还可以用<strong>Explain检查查询</strong>是否建立索引或者没有使用索引。然后通过发现的问题进行性能改进。</p>
+<p><br></p>
+<h1 id="RDB和AOF之间的相互作用"><a href="#RDB和AOF之间的相互作用" class="headerlink" title="RDB和AOF之间的相互作用"></a>RDB和AOF之间的相互作用</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;在版本号大于等于2.4的Redis 中，BGSAVE执行的过程中，不可以执行 BGREWRITEAOF。 反过来说，在 BGREWRITEAOF 执行的过程中，也不可以执行BGSAVE 。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;这可以防止两个 Redis 后台进程同时对磁盘进行大量的I/O操作。如果 BGSAVE 正在执行，并且用户显示地调用BGREWRITEAOF命令， 那么服务器将向用户回复一个OK状态，并告知用户，BGREWRITEAOF已经被预定执行：一旦 BGSAVE 执行完毕，BGREWRITEAOF就会正式开始。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;当Redis 启动时，如果RDB持久化和AOF持久化都被打开了，那么程序会优先使用AOF文件来恢复数据集，因为AOF文件所保存的数据通常是最完整的。</p>
+<hr>
+<p>转载请注明出处：<a href="http://www.yhang6.com/">小Hang同学的博客</a></p>
 
       
     </div>
@@ -332,13 +289,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/12/07/MySQL查询性能优化/">MySQL查询性能优化</a></p>
+        <p><span>本文标题:</span><a href="/2018/04/10/Redis的持久化/">Redis的持久化</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">小Hang同学</a></p>
-        <p><span>发布时间:</span>2017-12-07, 20:23:29</p>
-        <p><span>最后更新:</span>2018-04-10, 20:20:11</p>
+        <p><span>发布时间:</span>2018-04-10, 20:19:29</p>
+        <p><span>最后更新:</span>2018-04-10, 20:24:39</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/12/07/MySQL查询性能优化/" title="MySQL查询性能优化">http://www.yhang6.com/2017/12/07/MySQL查询性能优化/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://www.yhang6.com/2017/12/07/MySQL查询性能优化/　　作者: 小Hang同学" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2018/04/10/Redis的持久化/" title="Redis的持久化">http://www.yhang6.com/2018/04/10/Redis的持久化/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://www.yhang6.com/2018/04/10/Redis的持久化/　　作者: 小Hang同学" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -350,16 +307,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/12/08/浅析Synchronized和ReentrantLock的区别/">
-                    浅析Synchronized和ReentrantLock的区别
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/11/30/Explain参数解析/">
-                    Explain参数解析
+                <a href="/2018/03/13/MySQL相关笔记/">
+                    MySQL相关笔记
                 </a>
             </div>
         
@@ -371,7 +322,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#慢查询基础：优化数据访问"><span class="toc-number">1.</span> <span class="toc-text">慢查询基础：优化数据访问</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#向数据库请求了不需要的数据"><span class="toc-number">1.1.</span> <span class="toc-text">向数据库请求了不需要的数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#扫描额外的记录"><span class="toc-number">1.2.</span> <span class="toc-text">扫描额外的记录</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#重构查询的方式"><span class="toc-number">2.</span> <span class="toc-text">重构查询的方式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#查询执行基础"><span class="toc-number">3.</span> <span class="toc-text">查询执行基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#查询优化器"><span class="toc-number">3.1.</span> <span class="toc-text">查询优化器</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis持久化的两种方式"><span class="toc-number">1.</span> <span class="toc-text">Redis持久化的两种方式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#RDB持久化"><span class="toc-number">2.</span> <span class="toc-text">RDB持久化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RDB的优点"><span class="toc-number">2.0.1.</span> <span class="toc-text">RDB的优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RDB的缺点"><span class="toc-number">2.0.2.</span> <span class="toc-text">RDB的缺点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AOF持久化"><span class="toc-number">3.</span> <span class="toc-text">AOF持久化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#AOF的优点"><span class="toc-number">3.0.1.</span> <span class="toc-text">AOF的优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AOF的缺点"><span class="toc-number">3.0.2.</span> <span class="toc-text">AOF的缺点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#RDB和AOF之间的相互作用"><span class="toc-number">4.</span> <span class="toc-text">RDB和AOF之间的相互作用</span></a></li></ol>
         
     </div>
     <style>
@@ -407,7 +358,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"MySQL查询性能优化　| 小Hang同学的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"Redis的持久化　| 小Hang同学的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -423,7 +374,7 @@
     
       <div class="duoshuo" id="comments">
     <div id="comment-box" ></div>
-    <div class="ds-thread" id="ds-thread" data-thread-key="2017/12/07/MySQL查询性能优化/" data-title="MySQL查询性能优化" data-url="http://www.yhang6.com/2017/12/07/MySQL查询性能优化/"></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2018/04/10/Redis的持久化/" data-title="Redis的持久化" data-url="http://www.yhang6.com/2018/04/10/Redis的持久化/"></div>
     <script>
         var duoshuoQuery = {short_name:""};
         var loadComment = function(){
@@ -446,15 +397,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/12/08/浅析Synchronized和ReentrantLock的区别/" title="上一篇: 浅析Synchronized和ReentrantLock的区别">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/11/30/Explain参数解析/" title="下一篇: Explain参数解析">
+            <a href="/2018/03/13/MySQL相关笔记/" title="下一篇: MySQL相关笔记">
                 <i class="fa fa-angle-right"></i>
             </a>
         
